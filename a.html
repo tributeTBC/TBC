@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tribute Token</title>
+    <style>
+        body {
+            background-color: black;
+            color: white;
+            font-family: 'Courier New', Courier, monospace;
+        }
+
+        #console {
+            border: 2px dashed white;
+            padding: 20px;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        a {
+            text-decoration: none;
+            color: white;
+            display: block;
+            padding: 5px;
+            border-radius: 5px;
+        }
+
+        a:hover {
+            color: lightgreen;
+        }
+
+        #contentArea {
+            display: none;
+        }
+
+        #topButton {
+            display: none;
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            cursor: pointer;
+            background-color: #000;
+            color: #FFF;
+            padding: 5px 10px;
+            border-radius: 5px;
+        }
+
+        .ascii-coin-art {
+            display: none;
+        }
+
+        @media (min-width: 768px) {
+            .ascii-coin-art {
+                display: block;
+                position: absolute;
+                top: 20px;
+                right: 20px;
+            }
+        }
+
+        .subtree {
+            display: none;
+        }
+
+        .subtree-active {
+            display: block;
+        }
+    </style>
+</head>
+<body>
+
+<div id="console">
+    <pre>
+    +---------------------------+
+    | Tribute Token            |
+    +---------------------------+
+    </pre>
+
+    <div style="display: flex; justify-content: space-between;">
+        <div>
+            C:\>DIR<br>
+            +¦ <a href="#" onclick="showContent('contract')">Contract</a>
+            +¦ <a href="#" onclick="showContent('buy')">Buy</a>
+            +¦ <a href="#" onclick="toggleSubtree('social')">Social</a>
+            |   L¦ <a href="#" onclick="showContent('twitter')">Twitter</a>
+            |   L¦ <a href="#" onclick="showContent('telegram')">Telegram</a>
+            L¦ <a href="#" onclick="showContent('contact')">Contact</a>
+        </div>
+    </div>
+</div>
+
+<!-- Return to top button -->
+<div id="topButton" onclick="goToTop()">^ Top</div>
+
+<!-- Content Area -->
+<div id="contentArea">
+    <!-- Content will be populated here upon link click -->
+</div>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        // Event listener for scrolling
+        window.onscroll = function() {scrollFunction()};
+
+        function scrollFunction() {
+            if (document.body.scrollTop > 50 || document.documentElement.scrollTop > 50) {
+                document.getElementById("topButton").style.display = "block";
+            } else {
+                document.getElementById("topButton").style.display = "none";
+            }
+        }
+    });
+
+    function goToTop() {
+        document.body.scrollTop = 0;
+        document.documentElement.scrollTop = 0;
+    }
+
+    function showContent(linkID) {
+        // Here you can customize how content is shown based on linkID
+        let contentArea = document.getElementById("contentArea");
+        contentArea.style.display = "block";
+
+        // For now, we'll just populate the content area with the linkID as an example
+        contentArea.innerText = "You clicked on link: " + linkID;
+    }
+
+    function toggleSubtree(subtreeID) {
+        let subtree = document.getElementById(subtreeID);
+        subtree.classList.toggle('subtree-active');
+    }
+</script>
+
+</body>
+</html>
