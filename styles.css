@@ -1,5 +1,6 @@
 body {
     font-family: 'Courier New', Courier, monospace;
+    min-width: 80vw;
     background-color: #1e1e1e;
     color: #f3f3f3;
     margin: 0;
@@ -9,6 +10,7 @@ body {
 
 #console {
     max-width: 800px;
+    min-width: 95%;
     margin: 5% auto;
     border-radius: 5px;
     background-color: #222;
