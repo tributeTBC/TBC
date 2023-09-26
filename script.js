@@ -24,10 +24,18 @@ document.getElementById("commands").addEventListener("click", function(event) {
     }
 });
 
-function handleCommand(command) {
+function handleCommand(commandInput) {
     const commandsList = ['story', 'contracts', 'buy', 'tokenomics', 'contact'];
-    if (commandsList.includes(command)) {
-        fetch(`./${command}.txt`).then(response => {
+
+    if (commandInput === "clear") {
+        document.getElementById("output").textContent = ""; // Clear the output
+        return; // Exit early
+    }
+
+    const commandLower = commandInput.toLowerCase();
+
+    if (commandsList.includes(commandLower)) {
+        fetch(`./${commandInput}.txt`).then(response => {
             if (!response.ok) {
                 throw new Error('Network response was not ok');
             }
@@ -43,6 +51,7 @@ function handleCommand(command) {
         appendToOutput('Command not found!');
     }
 }
+
 
 function appendToOutput(text) {
     const outputElem = document.getElementById("output");
