@@ -1,54 +1,50 @@
 document.addEventListener('DOMContentLoaded', (event) => {
-    if (window.innerWidth > 600) {
+    if (window.innerWidth > 600) {  
         document.getElementById("input").focus();
-    }
-});
-
-document.getElementById("commands").addEventListener("click", function(event) {
-    if (event.target.tagName === "SPAN" && event.target.hasAttribute("data-command")) {
-        event.preventDefault();
-        const displayCommand = event.target.getAttribute("data-display-command");
-        const actualCommand = event.target.getAttribute("data-command");
-        
-        appendToOutput("root@tribute:~# " + displayCommand);
-        executeCommand(actualCommand);
-        scrollToBottom();
     }
 });
 
 document.getElementById("input").addEventListener("keydown", function(event) {
     if (event.key === "Enter") {
-        const inputValue = event.target.value.trim();
-        if (inputValue) {
-            appendToOutput("root@tribute:~# " + inputValue);
-            executeCommand(inputValue);
-            event.target.value = "";
-            scrollToBottom();
-        }
+        const inputValue = event.target.value.trim().toLowerCase();
+        appendToOutput("root@tribute:~# " + inputValue);
+        handleCommand(inputValue, inputValue);
+        event.target.value = "";
+        scrollToBottom();
         event.preventDefault();
     }
 });
 
-function executeCommand(command) {
+document.getElementById("commands").addEventListener("click", function(event) {
+    if (event.target.tagName === "SPAN" && event.target.hasAttribute("data-command")) {
+        const actualCommand = event.target.getAttribute("data-command").trim().toLowerCase();
+        const displayCommand = event.target.getAttribute("data-display-command").trim();
+        appendToOutput("root@tribute:~# " + displayCommand);
+        handleCommand(actualCommand, displayCommand);
+        scrollToBottom();
+    }
+});
+
+function handleCommand(commandInput, displayCommand) {
     const commandsList = ['story', 'contracts', 'buy', 'tokenomics', 'contact', 'clear'];
 
-    if (command === "clear") {
+    if (commandInput === "clear") {
         document.getElementById("output").textContent = "";
         return;
     }
 
-    if (commandsList.includes(command.toLowerCase())) {
-        fetch(`./${command}.txt`).then(response => {
+    if (commandsList.includes(commandInput)) {
+        fetch(`./${commandInput}.txt`).then(response => {
             if (!response.ok) {
                 throw new Error('Network response was not ok');
             }
             return response.text();
         }).then(content => {
-            content = content.replace(/(http:\/\/[^\s]+|https:\/\/[^\s]+)/g, '<a href="$1" target="_blank">$1</a>');
-            appendToOutput(content);
+            content = content.replace(/\/n/g, '<br>');
+            appendToOutput(content, true);
             scrollToBottom();
         }).catch(err => {
-            appendToOutput('\nError fetching file content!');
+            appendToOutput('Error fetching file content!');
             scrollToBottom();
         });
     } else {
@@ -56,14 +52,23 @@ function executeCommand(command) {
     }
 }
 
-function appendToOutput(text) {
+function appendToOutput(text, isHTML = false) {
     const outputElem = document.getElementById("output");
     if (text.startsWith("root@tribute:~# ")) {
         text = `<div class="command-line">${text}</div>`;
+    } else if (isHTML) {
+        text += '<br>';
     } else {
         text = text + '\n';
     }
-    outputElem.innerHTML += text;
+
+    if (isHTML) {
+        outputElem.innerHTML += text;
+    } else {
+        const textNode = document.createTextNode(text);
+        outputElem.appendChild(textNode);
+    }
+
     trimOutputToLastLines(42);
 }
 
