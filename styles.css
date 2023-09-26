@@ -1,7 +1,7 @@
 body {
     font-family: 'Courier New', Courier, monospace;
     min-width: 80vw;
-    background-color: #1e1e1e;
+    background-color: #000; /* Setting terminal black background */
     color: #f3f3f3;
     margin: 0;
     padding: 0;
@@ -80,6 +80,9 @@ body {
 }
 
 .input-container {
+    background-color: #000; /* Black background */
+    padding: 10px; /* Padding inside the input box */
+    border-top: 1px solid #444; /* Line separating the console from the output */
     display: flex;
     margin-top: 10px;
 }
