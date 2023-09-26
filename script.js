@@ -26,7 +26,7 @@ document.getElementById("commands").addEventListener("click", function(event) {
     }
 });
 
-function handleCommand(commandInput, actualCommand = commandInput) {
+ffunction handleCommand(commandInput, actualCommand = commandInput) {
     appendToOutput("root@tribute:~# " + actualCommand);
 
     const commandsList = ['story', 'contracts', 'buy', 'tokenomics', 'contact', 'clear'];
@@ -44,6 +44,7 @@ function handleCommand(commandInput, actualCommand = commandInput) {
             }
             return response.text();
         }).then(content => {
+            content = makeLinksClickable(content);
             appendToOutput(content);
             scrollToBottom();
         }).catch(err => {
@@ -54,6 +55,15 @@ function handleCommand(commandInput, actualCommand = commandInput) {
         appendToOutput('Command not found!');
     }
 }
+
+function makeLinksClickable(text) {
+    // Regular expression to identify URLs in text
+    const urlRegex = /(https?:\/\/[^\s]+)/g;
+    return text.replace(urlRegex, function(url) {
+        return `<a href="${url}" target="_blank">${url}</a>`;
+    });
+}
+
 
 function appendToOutput(text) {
     const outputElem = document.getElementById("output");
