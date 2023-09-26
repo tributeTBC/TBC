@@ -2,17 +2,17 @@ document.addEventListener('DOMContentLoaded', (event) => {
     document.getElementById("input").focus();
 });
 
-let currentTimeouts = []; // Store all ongoing timeouts
-let stopTyping = false; // Flag to control the typewriter
+let currentTimeouts = [];
+let stopTyping = false;
 
 function typeWriter(txt, outputElem) {
-    stopAndClear(); // Ensure any previous content is cleared and typing is stopped
+    stopAllTyping();  // Clear any ongoing typing
     let index = 0;
     function typeChar() {
         if (index < txt.length && !stopTyping) {
             outputElem.textContent += txt.charAt(index);
             index++;
-            let timeoutId = setTimeout(typeChar, 50); // Adjust speed as needed
+            let timeoutId = setTimeout(typeChar, 50);
             currentTimeouts.push(timeoutId);
         }
     }
@@ -34,17 +34,9 @@ document.getElementById("input").addEventListener("keydown", function(event) {
 
 document.getElementById("commands").addEventListener("click", function(event) {
     if (event.target.tagName === "SPAN") {
-        if (!stopTyping) {  
-            handleCommand(event.target.textContent);
-            scrollToBottom();
-            return;
-        }
-        
-        stopTyping = true;
-        setTimeout(() => {
-            handleCommand(event.target.textContent);
-            scrollToBottom();
-        }, 1000);
+        stopAllTyping();  // Interrupt any ongoing typing
+        handleCommand(event.target.textContent);
+        scrollToBottom();
     }
 });
 
@@ -72,18 +64,21 @@ function handleCommand(command) {
             return;
     }
 
-    fetch(`./${fileName}.txt`).then(response => {
-        if (!response.ok) {
-            throw new Error('Network response was not ok');
-        }
-        return response.text();
-    }).then(content => {
-        typeWriter(content, document.getElementById("output"));
-        scrollToBottom();
-    }).catch(err => {
-        typeWriter('\nError fetching file content!', document.getElementById("output"));
-        scrollToBottom();
-    });
+    fetch(`./${fileName}.txt`)
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            return response.text();
+        })
+        .then(content => {
+            typeWriter(content, document.getElementById("output"));
+            scrollToBottom();
+        })
+        .catch(err => {
+            typeWriter('\nError fetching file content!', document.getElementById("output"));
+            scrollToBottom();
+        });
 }
 
 function scrollToBottom() {
@@ -91,8 +86,8 @@ function scrollToBottom() {
     output.scrollTop = output.scrollHeight;
 }
 
-function stopAndClear() {
+function stopAllTyping() {
     stopTyping = true;
     currentTimeouts.forEach(timeoutId => clearTimeout(timeoutId));
-    document.getElementById("output").textContent = ''; // Clear the output
+    currentTimeouts = [];
 }
