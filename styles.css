@@ -84,7 +84,7 @@ body {
     background-color: #000; /* Black background for the output */
     color: #f3f3f3;
     font-size: 0.9em;
-    border-radius: 8px; /* Smoothed edges for the output area */
+    
 }
 
 .input-container {
