@@ -7,7 +7,7 @@ document.getElementById("input").addEventListener("keydown", function(event) {
         const inputValue = event.target.value.trim().toLowerCase(); // Normalize to lowercase
         if (inputValue) {
             appendToOutput("root@tribute:~# " + inputValue); // Appends the command
-            handleCommand(inputValue); // Executes the command
+            handleCommand(inputValue, inputValue); // Executes the command
             event.target.value = "";
             scrollToBottom();
         }
@@ -15,20 +15,19 @@ document.getElementById("input").addEventListener("keydown", function(event) {
     }
 });
 
-
 document.getElementById("commands").addEventListener("click", function(event) {
-    if (event.target.tagName === "SPAN") {
-        event.preventDefault();
-        const command = event.target.textContent.trim().toLowerCase();
-        const actualCommand = event.target.getAttribute("data-actual-command") || command;
-        appendToOutput("root@tribute:~# " + command);
-        handleCommand(command, actualCommand);
+    if (event.target.tagName === "SPAN" && event.target.hasAttribute("data-actual-command")) {
+        event.preventDefault(); // Prevent default behavior
+        const commandToShow = event.target.textContent.trim().toLowerCase(); // Displayed command
+        const actualCommand = event.target.getAttribute("data-actual-command").trim().toLowerCase(); // Actual command for processing
+        appendToOutput("root@tribute:~# " + commandToShow); // Appends the displayed command
+        handleCommand(actualCommand, commandToShow); // Executes the actual command
         scrollToBottom();
     }
 });
 
 function handleCommand(commandInput, actualCommand = commandInput) {
-    const commandsList = ['story', 'contracts', 'buy', 'tokenomics', 'contact'];
+    const commandsList = ['story', 'contracts', 'buy', 'tokenomics', 'contact', 'clear'];
     const commandLower = actualCommand.toLowerCase();
 
     if (commandLower === "clear") {
@@ -53,11 +52,6 @@ function handleCommand(commandInput, actualCommand = commandInput) {
         appendToOutput('Command not found!');
     }
 }
-
-
-
-
-
 
 function appendToOutput(text) {
     const outputElem = document.getElementById("output");
