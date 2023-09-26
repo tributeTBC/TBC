@@ -9,37 +9,31 @@
 <body>
     <div id="console">
         <div id="header-bar">
-    <div id="branding">
-        <img id="logo" src="tribute2w.png" alt="Tribute Logo">
-        <div id="brand-text">
-            <h1 id="project-name">Tribute</h1>
-            <span id="project-tagline">the best coin in the world</span>
+            <div id="branding">
+                <img id="logo" src="tribute2w.png" alt="Tribute Logo">
+                <div id="brand-text">
+                    <h1 id="project-name">Tribute</h1>
+                    <span id="project-tagline">the best coin in the world</span>
+                </div>
+            </div>
+            <div class="commands-wrapper">
+                <span class="type-to-console">Type to console or use:</span>
+                <div id="commands">
+                    <span onclick="handleCommand('showstory -f Tribute', 'story')">Story</span>
+                    <span onclick="handleCommand('showcontracts -a Tribute', 'contracts')">Contracts</span>
+                    <span onclick="handleCommand('buy -thebestcoinintheworld', 'buy')">Buy</span>
+                    <span onclick="handleCommand('showtokenomics Tribute', 'tokenomics')">Tokenomics</span>
+                    <span onclick="handleCommand('how to follow the satoshi', 'contact')">Contact</span>
+                    <span onclick="handleCommand('clear', 'clear')">Clear</span>
+                </div>
+            </div>
         </div>
-    </div>
-    <div class="commands-wrapper">
-        <span onclick="handleCommand('clear')" data-actual-command="clear">Clear</span>
-        <span class="type-to-console">Type to console or use:</span>
-        
-        <div id="commands">
-            
-            <span onclick="handleCommand('showstory -f Tribute')" data-actual-command="story">Story</span>
-            <span onclick="handleCommand('showcontracts -a Tribute')" data-actual-command="contracts">Contracts</span>
-            <span onclick="handleCommand('buy -thebestcoinintheworld')" data-actual-command="buy">Buy</span>
-            <span onclick="handleCommand('showtokenomics Tribute')" data-actual-command="tokenomics">Tokenomics</span>
-            <span onclick="handleCommand('how to follow the satoshi')" data-actual-command="contact">Contact</span>
-
-        </div>
-    </div>
-</div>
         <div id="output" class="scroll-box"></div>
         <div class="input-container">
             <span class="prefix">root@tribute:~#</span>
             <input type="text" id="input" autofocus>
-            
         </div>
-        
     </div>
-
     <script src="script.js"></script>
 </body>
 </html>
