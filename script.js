@@ -14,7 +14,7 @@ function typeWriter(txt, outputElem) {
         if (index < txt.length) {
             outputElem.textContent += txt.charAt(index);
             index++;
-            setTimeout(typeChar, 50);
+            setTimeout(typeChar, 1);
         } else {
             typingInProgress = false;
         }
