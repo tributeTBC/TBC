@@ -1,15 +1,14 @@
 document.addEventListener('DOMContentLoaded', (event) => {
-    if (window.innerWidth > 600) {  // Check if the viewport width is greater than 600px
+    if (window.innerWidth > 600) {
         document.getElementById("input").focus();
     }
 });
 
 document.getElementById("input").addEventListener("keydown", function(event) {
     if (event.key === "Enter") {
-        const inputValue = event.target.value.trim().toLowerCase(); // Normalize to lowercase
+        const inputValue = event.target.value.trim().toLowerCase();
         if (inputValue) {
-            appendToOutput("root@tribute:~# " + inputValue); // Appends the command
-            handleCommand(inputValue, inputValue); // Executes the command
+            handleCommand(inputValue, inputValue);
             event.target.value = "";
             scrollToBottom();
         }
@@ -19,22 +18,23 @@ document.getElementById("input").addEventListener("keydown", function(event) {
 
 document.getElementById("commands").addEventListener("click", function(event) {
     if (event.target.tagName === "SPAN" && event.target.hasAttribute("data-actual-command")) {
-        event.preventDefault(); // Prevent default behavior
-        const commandToShow = event.target.textContent.trim().toLowerCase(); // Displayed command
-        const actualCommand = event.target.getAttribute("data-actual-command").trim().toLowerCase(); // Actual command for processing
-        appendToOutput("root@tribute:~# " + commandToShow); // Appends the displayed command
-        handleCommand(actualCommand, commandToShow); // Executes the actual command
+        event.preventDefault();
+        const commandToShow = event.target.textContent.trim().toLowerCase();
+        const actualCommand = event.target.getAttribute("data-actual-command").trim().toLowerCase();
+        handleCommand(actualCommand, commandToShow);
         scrollToBottom();
     }
 });
 
 function handleCommand(commandInput, actualCommand = commandInput) {
+    appendToOutput("root@tribute:~# " + actualCommand);
+
     const commandsList = ['story', 'contracts', 'buy', 'tokenomics', 'contact', 'clear'];
     const commandLower = actualCommand.toLowerCase();
 
     if (commandLower === "clear") {
-        document.getElementById("output").textContent = ""; // Clear the output
-        return; // Exit early
+        document.getElementById("output").textContent = "";
+        return;
     }
 
     if (commandsList.includes(commandLower)) {
@@ -44,8 +44,6 @@ function handleCommand(commandInput, actualCommand = commandInput) {
             }
             return response.text();
         }).then(content => {
-            const commandOutput = `root@tribute:~# ${commandInput}`;
-            appendToOutput(commandOutput);
             appendToOutput(content);
             scrollToBottom();
         }).catch(err => {
