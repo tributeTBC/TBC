@@ -98,16 +98,18 @@ body {
 .prefix {
     margin-right: 5px;
     color: #f3f3f3;
+    line-height: 24px; /* Add a line-height to align with the input text */
 }
 
 #input {
     width: 100%;
-    padding: 5px;
-    background-color: #000; /* Black background for the input field */
+    padding: 5px 5px; /* Adjust padding for vertical alignment */
+    background-color: #000;
     color: #f3f3f3;
     border: none;
-    border-radius: 8px; /* Smoothed edges for the input field */
+    border-radius: 8px;
     outline: none;
+    line-height: 24px; /* Add a line-height to align with the prefix */
 }
 
 #input::placeholder {
