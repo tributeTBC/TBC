@@ -2,43 +2,21 @@ document.addEventListener('DOMContentLoaded', (event) => {
     document.getElementById("input").focus();
 });
 
-let typingInProgress = false;
-
-function typeWriter(txt, outputElem) {
-    if (typingInProgress) return;
-
-    let index = 0;
-    typingInProgress = true;
-    
-    function typeChar() {
-        if (index < txt.length) {
-            outputElem.textContent += txt.charAt(index);
-            index++;
-            setTimeout(typeChar, 50);
-        } else {
-            typingInProgress = false;
-        }
-    }
-    typeChar();
-}
-
 document.getElementById("input").addEventListener("keydown", function(event) {
     if (event.key === "Enter") {
         const inputValue = event.target.value.trim();
         if (inputValue) {
-            document.getElementById("output").textContent += inputValue + '\n';
+            appendToOutput('> ' + inputValue);
             handleCommand(inputValue);
             event.target.value = "";
-            scrollToBottom();
         }
-        event.preventDefault();
+        event.preventDefault(); // Prevent the default action
     }
 });
 
 document.getElementById("commands").addEventListener("click", function(event) {
     if (event.target.tagName === "SPAN") {
         handleCommand(event.target.textContent);
-        scrollToBottom();
     }
 });
 
@@ -62,7 +40,7 @@ function handleCommand(command) {
             fileName = 'contact';
             break;
         default:
-            typeWriter('Command not found!', document.getElementById("output"));
+            appendToOutput('Command not found!');
             return;
     }
 
@@ -72,13 +50,24 @@ function handleCommand(command) {
         }
         return response.text();
     }).then(content => {
-        document.getElementById("output").textContent = ''; // Clear the output
-        typeWriter(content, document.getElementById("output"));
-        scrollToBottom();
+        appendToOutput(content);
     }).catch(err => {
-        typeWriter('\nError fetching file content!', document.getElementById("output"));
-        scrollToBottom();
+        appendToOutput('Error fetching file content!');
     });
+}
+
+function appendToOutput(content) {
+    const output = document.getElementById("output");
+    output.textContent += content + '\n';
+    limitLinesToLast(output, 42);
+    scrollToBottom();
+}
+
+function limitLinesToLast(element, lineCount) {
+    const lines = element.textContent.split('\n');
+    if (lines.length > lineCount) {
+        element.textContent = lines.slice(-lineCount).join('\n');
+    }
 }
 
 function scrollToBottom() {
