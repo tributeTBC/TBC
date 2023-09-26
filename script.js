@@ -1,76 +1,81 @@
-let inputElem = document.getElementById("input");
-let outputElem = document.getElementById("output");
-let typeDelay = 8; // Time delay between characters for typing effect in milliseconds
-let isTyping = false;
+document.addEventListener('DOMContentLoaded', (event) => {
+    document.getElementById("input").focus();
+});
 
-// Command to filename mapping
-const commandMappings = {
-    "showstory -f Tribute": "story.txt",
-    "showcontracts -a Tribute": "contracts.txt",
-    "buy -thebestcoinintheworld": "buy.txt",
-    "showtokenomics Tribute": "tokenomics.txt",
-    "how to follow the satoshi": "contact.txt"
-};
+let currentTimeouts = []; // Store all ongoing timeouts
+let stopTyping = false; // Flag to control the typewriter
 
-inputElem.addEventListener("keydown", function(event) {
-    if (event.key === "Enter") {
-        event.preventDefault();
-
-        if (!isTyping) {
-            let command = inputElem.value.trim();
-            addTextToOutput("\nroot@tribute:~# " + command);
-            inputElem.value = "";
-            handleCommand(command);
+function typeWriter(txt, outputElem) {
+    let index = 0;
+    function typeChar() {
+        if (index < txt.length && !stopTyping) {
+            outputElem.textContent += txt.charAt(index);
+            index++;
+            let timeoutId = setTimeout(typeChar, 3); // Adjust speed as needed
+            currentTimeouts.push(timeoutId);
         }
+    }
+    typeChar();
+}
+
+document.getElementById("input").addEventListener("keydown", function(event) {
+    if (event.key === "Enter") {
+        const inputValue = event.target.value.trim();
+        if (inputValue) {
+            document.getElementById("output").textContent += '\n' + inputValue;
+            handleCommand(inputValue);
+            event.target.value = "";
+        }
+        event.preventDefault();  // Prevent the default action
+    }
+});
+
+document.getElementById("commands").addEventListener("click", function(event) {
+    if (event.target.tagName === "SPAN") {
+        // Clear current text and stop ongoing typewriter effect
+        stopTyping = true;
+        currentTimeouts.forEach(timeoutId => clearTimeout(timeoutId)); // Clear all timeouts
+        document.getElementById("output").textContent += '\nCommand broke early!\n';
+
+        setTimeout(() => {
+            stopTyping = false; // Reset for the next command
+            handleCommand(event.target.textContent);
+        }, 1000);
     }
 });
 
 function handleCommand(command) {
-    isTyping = true;
+    let fileName = '';
 
-    if (commandMappings[command]) {
-        fetch(commandMappings[command])
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error("Error fetching file content!");
-                }
-                return response.text();
-            })
-            .then(content => {
-                addTextToOutput("\n" + content);
-                addTextToOutput("\nroot@tribute:~# ");
-                isTyping = false;
-            })
-            .catch(error => {
-                addTextToOutput("\n" + error.message);
-                addTextToOutput("\nroot@tribute:~# ");
-                isTyping = false;
-            });
-    } else {
-        addTextToOutput("\nCommand not found or file doesn't exist!");
-        addTextToOutput("\nroot@tribute:~# ");
-        isTyping = false;
+    switch (command.toLowerCase()) {
+        case 'story':
+            fileName = 'story';
+            break;
+        case 'contracts':
+            fileName = 'contracts';
+            break;
+        case 'buy':
+            fileName = 'buy';
+            break;
+        case 'tokenomics':
+            fileName = 'tokenomics';
+            break;
+        case 'contact':
+            fileName = 'contact';
+            break;
+        default:
+            typeWriter('Command not found!', document.getElementById("output"));
+            return;
     }
-}
 
-function addTextToOutput(text) {
-    let startPos = 0;
-    let interval = setInterval(() => {
-        if (startPos < text.length) {
-            outputElem.textContent += text[startPos];
-            startPos++;
-        } else {
-            clearInterval(interval);
+    fetch(`./${fileName}.txt`).then(response => {
+        if (!response.ok) {
+            throw new Error('Network response was not ok');
         }
-    }, typeDelay);
+        return response.text();
+    }).then(content => {
+        typeWriter('\n' + content, document.getElementById("output"));
+    }).catch(err => {
+        typeWriter('\nError fetching file content!', document.getElementById("output"));
+    });
 }
-
-document.getElementById("commands").addEventListener("click", function(event) {
-    if (event.target.tagName.toLowerCase() === "span") {
-        let command = event.target.textContent.trim();
-        if (!isTyping) {
-            inputElem.value = "";
-            handleCommand(command);
-        }
-    }
-});
