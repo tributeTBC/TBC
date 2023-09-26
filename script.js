@@ -26,16 +26,15 @@ document.getElementById("commands").addEventListener("click", function(event) {
 
 function handleCommand(commandInput) {
     const commandsList = ['story', 'contracts', 'buy', 'tokenomics', 'contact'];
+    const commandLower = commandInput.toLowerCase();
 
-    if (commandInput === "clear") {
+    if (commandLower === "clear") {
         document.getElementById("output").textContent = ""; // Clear the output
         return; // Exit early
     }
 
-    const commandLower = commandInput.toLowerCase();
-
     if (commandsList.includes(commandLower)) {
-        fetch(`./${commandInput}.txt`).then(response => {
+        fetch(`./${commandLower}.txt`).then(response => {
             if (!response.ok) {
                 throw new Error('Network response was not ok');
             }
@@ -51,6 +50,7 @@ function handleCommand(commandInput) {
         appendToOutput('Command not found!');
     }
 }
+
 
 
 function appendToOutput(text) {
