@@ -5,7 +5,7 @@ document.addEventListener('DOMContentLoaded', (event) => {
 let typingInProgress = false;
 
 function typeWriter(txt, outputElem) {
-    if (typingInProgress) return; // Prevent overlapping typeWriter calls
+    if (typingInProgress) return;
 
     let index = 0;
     typingInProgress = true;
@@ -14,7 +14,7 @@ function typeWriter(txt, outputElem) {
         if (index < txt.length) {
             outputElem.textContent += txt.charAt(index);
             index++;
-            setTimeout(typeChar, 1);
+            setTimeout(typeChar, 50);
         } else {
             typingInProgress = false;
         }
