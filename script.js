@@ -6,7 +6,7 @@ let currentTimeouts = [];
 let stopTyping = false;
 
 function typeWriter(txt, outputElem) {
-    stopAllTyping();  // Clear any ongoing typing
+    //stopAllTyping();  // Clear any ongoing typing
     let index = 0;
     function typeChar() {
         if (index < txt.length && !stopTyping) {
