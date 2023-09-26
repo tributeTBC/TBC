@@ -121,21 +121,20 @@ body, html {
     margin-right: 10px;
     vertical-align: middle;
 }
-.clear-output {
-    position: absolute;
-    bottom: 5px;
-    right: 5px;
-    padding: 5px 10px;
+#clear-output {
+    position: absolute; 
+    bottom: 10px;
+    right: 10px;
+    padding: 5px 15px;
     background-color: #2e2e2e;
     color: #e4e4e4;
-    border: none;
+    border: 1px solid #444;
     cursor: pointer;
-    outline: none;
-    transition: background-color 0.2s ease;
+    transition: background-color 0.3s;
 }
 
-.clear-output:hover {
-    background-color: #1a1a1a;
+#clear-output:hover {
+    background-color: #444;
 }
 .type-to-console {
     margin-right: 10px;
