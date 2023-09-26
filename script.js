@@ -6,8 +6,8 @@ document.getElementById("input").addEventListener("keydown", function(event) {
     if (event.key === "Enter") {
         const inputValue = event.target.value.trim().toLowerCase(); // Normalize to lowercase
         if (inputValue) {
-            appendToOutput("root@tribute:~# " + inputValue);
-            handleCommand(inputValue, inputValue);
+            appendToOutput("root@tribute:~# " + inputValue); // Appends the command
+            handleCommand(inputValue); // Executes the command
             event.target.value = "";
             scrollToBottom();
         }
@@ -15,16 +15,17 @@ document.getElementById("input").addEventListener("keydown", function(event) {
     }
 });
 
+
 document.getElementById("commands").addEventListener("click", function(event) {
     if (event.target.tagName === "SPAN") {
         event.preventDefault(); // Prevent default behavior
         const command = event.target.textContent.trim().toLowerCase(); // Normalize to lowercase
-        appendToOutput("root@tribute:~# " + command);
-        const actualCommand = event.target.getAttribute('data-actual-command') || command;
-        handleCommand(command, actualCommand);
+        appendToOutput("root@tribute:~# " + command); // Appends the command
+        handleCommand(command); // Executes the command
         scrollToBottom();
     }
 });
+
 
 function handleCommand(commandInput, actualCommand = commandInput) {
     const commandsList = ['story', 'contracts', 'buy', 'tokenomics', 'contact'];
@@ -52,6 +53,7 @@ function handleCommand(commandInput, actualCommand = commandInput) {
         appendToOutput('Command not found!');
     }
 }
+
 
 
 
