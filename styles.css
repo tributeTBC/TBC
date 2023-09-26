@@ -11,6 +11,7 @@ body, html {
 
 #console {
     padding: 20px;
+    min-width: 95%;
     max-width: 1400px;
     width: 98%;
     border: 1px solid #444; 
@@ -50,6 +51,7 @@ body, html {
 
 #output {
     white-space: pre-wrap;
+    flex-shrink: 0;
     padding-bottom: 5px;
     flex-grow: 1;
     overflow-y: auto;
