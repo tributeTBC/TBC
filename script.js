@@ -12,7 +12,7 @@ function typeWriter(txt, outputElem) {
         if (index < txt.length && !stopTyping) {
             outputElem.textContent += txt.charAt(index);
             index++;
-            let timeoutId = setTimeout(typeChar, 2); // Adjust speed as needed
+            let timeoutId = setTimeout(typeChar, 50); // Adjust speed as needed
             currentTimeouts.push(timeoutId);
         }
     }
