@@ -69,11 +69,20 @@ function appendToOutput(text) {
 
 function trimOutputToLastLines(lineCount) {
     const outputElem = document.getElementById("output");
-    const lines = outputElem.textContent.split('\n');
-    if (lines.length > lineCount) {
-        const trimmedContent = lines.slice(-lineCount).join('\n');
-        outputElem.textContent = trimmedContent;
+    let lines = outputElem.innerHTML.split('<br>');
+
+    while (lines.length > lineCount) {
+        const removedLine = lines.shift();
+        // Check if the removed line contains the start of an anchor tag without its end
+        if (removedLine.includes('<a ') && !removedLine.includes('</a>')) {
+            let nextLine = lines.shift();
+            while (!nextLine.includes('</a>') && lines.length > 0) {
+                nextLine = lines.shift();
+            }
+        }
     }
+    
+    outputElem.innerHTML = lines.join('<br>');
 }
 
 function scrollToBottom() {
