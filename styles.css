@@ -137,3 +137,9 @@ body, html {
 .clear-output:hover {
     background-color: #1a1a1a;
 }
+.type-to-console {
+    margin-right: 10px;
+    font-size: 0.9em;
+    color: #e4e4e4;
+    opacity: 0.7; /* You can adjust the opacity if you want the text to be a bit muted */
+}
