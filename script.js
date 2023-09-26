@@ -13,6 +13,8 @@ function typeWriter(txt, outputElem) {
             index++;
             let timeoutId = setTimeout(typeChar, 3); // Adjust speed as needed
             currentTimeouts.push(timeoutId);
+        } else if (index >= txt.length) {  // This checks if the typing has finished
+            stopTyping = false;
         }
     }
     typeChar();
