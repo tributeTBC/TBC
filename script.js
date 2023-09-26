@@ -18,13 +18,15 @@ document.getElementById("input").addEventListener("keydown", function(event) {
 
 document.getElementById("commands").addEventListener("click", function(event) {
     if (event.target.tagName === "SPAN") {
-        event.preventDefault(); // Prevent default behavior
-        const command = event.target.textContent.trim().toLowerCase(); // Normalize to lowercase
-        appendToOutput("root@tribute:~# " + command); // Appends the command
-        handleCommand(command); // Executes the command
+        event.preventDefault();
+        const command = event.target.textContent.trim().toLowerCase();
+        const actualCommand = event.target.getAttribute("data-actual-command") || command;
+        appendToOutput("root@tribute:~# " + command);
+        handleCommand(command, actualCommand);
         scrollToBottom();
     }
 });
+
 
 
 function handleCommand(commandInput, actualCommand = commandInput) {
