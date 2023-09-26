@@ -1,5 +1,7 @@
 document.addEventListener('DOMContentLoaded', (event) => {
-    document.getElementById("input").focus();
+    if (window.innerWidth > 600) {  // Check if the viewport width is greater than 600px
+        document.getElementById("input").focus();
+    }
 });
 
 document.getElementById("input").addEventListener("keydown", function(event) {
