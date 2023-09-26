@@ -115,6 +115,15 @@ body {
     color: #888;
 }
 
+#output a {
+    color: #00BFFF;   /* SkyBlue color for links */
+    text-decoration: none; /* Remove the underlines */
+    transition: color 0.3s ease; /* Smooth color transition */
+}
+
+#output a:hover {
+    color: #007BFF;   /* Darker blue for hover state */
+}
 /* Responsive Design */
 @media (max-width: 600px) {
     #console {
