@@ -58,32 +58,28 @@ function executeCommand(command) {
 
 function appendToOutput(text) {
     const outputElem = document.getElementById("output");
+
     if (text.startsWith("root@tribute:~# ")) {
         text = `<div class="command-line">${text}</div>`;
     } else {
-        text = text + '\n';
+        text = text + '<br>';
     }
-    outputElem.innerHTML += text;
-    trimOutputToLastLines(42);
-}
 
-function trimOutputToLastLines(lineCount) {
-    const outputElem = document.getElementById("output");
+    // Get existing lines
     let lines = outputElem.innerHTML.split('<br>');
 
-    while (lines.length > lineCount) {
-        const removedLine = lines.shift();
-        // Check if the removed line contains the start of an anchor tag without its end
-        if (removedLine.includes('<a ') && !removedLine.includes('</a>')) {
-            let nextLine = lines.shift();
-            while (!nextLine.includes('</a>') && lines.length > 0) {
-                nextLine = lines.shift();
-            }
-        }
-    }
-    
+    // Add the new content
+    lines.push(text);
+
+    // Keep only the last 100 lines
+    lines = lines.slice(-100);
+
+    // Update the output
     outputElem.innerHTML = lines.join('<br>');
 }
+
+
+
 
 function scrollToBottom() {
     const output = document.getElementById("output");
