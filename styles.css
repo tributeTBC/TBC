@@ -53,6 +53,8 @@ body, html {
     flex-grow: 1;  /* Allow it to take available vertical space */
     overflow-y: auto;  /* Will scroll when content overflows */
     max-height: calc(42em - 2em); /* Subtract some space for padding or other UI elements */ 
+	width: 95%; /* or any desired fixed width */
+    max-width: 95%; /* to ensure it doesn't stretch beyond the desired width */		
 }
 
 
