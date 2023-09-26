@@ -99,3 +99,58 @@ body {
 #input::placeholder {
     color: #888;
 }
+/* ... Your previous styles ... */
+
+/* Responsive Design */
+@media (max-width: 600px) {
+    #console {
+        margin: 2% auto;
+        padding: 10px;
+    }
+
+    #header-bar {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    #branding {
+        margin-bottom: 10px;
+    }
+
+    #brand-text h1 {
+        font-size: 1.2em;
+    }
+
+    .commands-wrapper {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .type-to-console {
+        display: none; /* Hide the "Type to console or use:" text on small screens */
+    }
+
+    #commands {
+        flex-wrap: wrap;
+        gap: 5px;
+    }
+
+    #commands span {
+        padding: 3px 6px;
+        font-size: 0.8em;
+    }
+
+    #output {
+        height: 250px; /* Reduce the height of the output area on small screens */
+    }
+
+    .input-container {
+        flex-direction: column;
+    }
+
+    .prefix, #input {
+        width: 100%;
+    }
+}
+
