@@ -1,129 +1,99 @@
-body, html {
-    height: 100%;
-    min-width: 80vw;
+body {
+    font-family: 'Courier New', Courier, monospace;
+    background-color: #1e1e1e;
+    color: #f3f3f3;
     margin: 0;
-    font-family: 'Courier New', monospace;
-    background-color: black;
-    color: white;
-    display: flex; 
-    justify-content: center;
-    align-items: flex-start;
+    padding: 0;
+    height: 100vh;
 }
 
 #console {
+    max-width: 800px;
+    margin: 5% auto;
+    border-radius: 5px;
+    background-color: #222;
     padding: 20px;
-    max-width: 1400px;
-    min-width: 95%;
-    width: 98%;
-    border: 1px solid #444; 
-    box-shadow: 0px 0px 12px 2px rgba(0, 0, 0, 0.5); 
-    margin-top: 10vh;
-    display: flex;
-    flex-direction: column;
-    height: 42em;
-    justify-content: space-between;
-    overflow: hidden; 
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
 }
 
-#input {
-    background-color: black;
-    color: white;
-    border: none;
-    outline: none;
-    width: 100%;
-    padding: 5px;
+#header-bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid #444;
+    padding-bottom: 10px;
+    margin-bottom: 10px;
+}
+
+#branding {
+    display: flex;
+    align-items: center;
+}
+
+#logo {
+    max-height: 50px;
+    margin-right: 15px;
+}
+
+#brand-text h1 {
+    margin: 0;
+    font-size: 1.5em;
+}
+
+#brand-text span {
+    color: #888;
+}
+
+.type-to-console {
+    margin-right: 5px;
+    color: #888;
+    font-size: 0.8em;
+}
+
+#commands {
+    display: flex;
+    gap: 10px;
+}
+
+#commands span {
+    cursor: pointer;
+    padding: 5px 8px;
+    background-color: #444;
+    border-radius: 4px;
+    transition: background-color 0.3s;
+}
+
+#commands span:hover {
+    background-color: #555;
+}
+
+#output {
+    height: 400px;
+    overflow-y: auto;
+    padding: 10px;
+    border: 1px solid #444;
+    background-color: rgba(35, 35, 35, 0.75); /* Dark grey with reduced opacity */
+    color: #f3f3f3;
+    font-size: 0.9em;
 }
 
 .input-container {
     display: flex;
-    align-items: center;
+    margin-top: 10px;
 }
 
 .prefix {
     margin-right: 5px;
 }
 
-#output {
-    white-space: pre-wrap;
-    overflow-y: auto;
-    width: 98%;
-    max-height: 36em;
-    flex-grow: 1;
-}
-
-#header-bar {
-    display: flex;
-    justify-content: space-between;
-    padding: 5px 10px;
-    align-items: center;
-    background-color: #2e2e2e;
-    color: #e4e4e4;
-    border-bottom: 1px solid #444;
-    flex-wrap: wrap;
-}
-
-.commands-wrapper {
+#input {
     width: 100%;
-    text-align: right;
-    padding-top: 5px;
-}
-
-#commands {
-    clear: both;
-    font-size: 0.8em;
-    display: flex;
-    justify-content: flex-end;
-    gap: 10px;
-}
-
-#branding {
-    display: flex;
-    align-items: center;
-    font-size: 1.2em; 
-}
-
-#brand-text {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    justify-content: center;
-}
-
-#project-name {
-    font-size: 1.2em;
-    margin: 0;
-}
-
-#project-tagline {
-    font-size: 0.7em;
-    margin: 0;
-}
-
-#commands span {
-    cursor: pointer;
-    text-decoration: underline;
-}
-
-#logo {
-    max-width: 50px;
-    max-height: 50px;
-    margin-right: 10px;
-}
-.clear-btn {
-    float: left;
-    margin-right: 10px;
-    /* Add any other styling as per your needs */
-}
-.type-to-console {
-    font-family: 'Courier New', Courier, monospace; /* This will give it a more "digital" look */
-    color: #888;
-}
-.command-line {
-    background-color: rgba(42, 42, 42, 0.7); /* Dark grey background with 70% opacity */
-    color: #ffffff; /* White text color */
-    padding: 3px 6px;
-    border-radius: 3px;
-    margin: 3px 0;
+    padding: 5px;
+    background-color: #333;
+    color: #f3f3f3;
+    border: none;
+    border-radius: 4px;
+    outline: none;
 }
 
 #input::placeholder {
@@ -183,4 +153,3 @@ body, html {
         width: 100%;
     }
 }
-
