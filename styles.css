@@ -1,6 +1,5 @@
 body, html {
     height: 100%;
-    min-width: 80vw;
     margin: 0;
     font-family: 'Courier New', monospace;
     background-color: black;
@@ -12,7 +11,6 @@ body, html {
 
 #console {
     padding: 20px;
-    min-width: 95%;
     max-width: 1400px;
     width: 98%;
     border: 1px solid #444; 
@@ -21,7 +19,8 @@ body, html {
     display: flex;
     flex-direction: column;
     height: 42em;
-    overflow: hidden; /* Ensures that any overflow content doesn't expand the box */
+    justify-content: space-between;
+    overflow: hidden; 
 }
 
 #input {
@@ -31,8 +30,6 @@ body, html {
     outline: none;
     width: 100%;
     padding: 5px;
-    animation: blink 1s step-end infinite;
-    flex-grow: 1;
 }
 
 .input-container {
@@ -44,21 +41,12 @@ body, html {
     margin-right: 5px;
 }
 
-@keyframes blink {
-    50% {
-        border-color: transparent;
-    }
-}
-
 #output {
     white-space: pre-wrap;
-    flex-shrink: 0;
-    padding-bottom: 5px;
-    flex-grow: 1;
     overflow-y: auto;
     width: 98%;
-    max-width: 98%;
-    max-height: 36em; /* Adjust this if you want more or less space for the output */
+    max-height: 36em;
+    flex-grow: 1;
 }
 
 #header-bar {
@@ -109,8 +97,6 @@ body, html {
 }
 
 #commands span {
-    text-align: right;
-    margin-left: 5px;
     cursor: pointer;
     text-decoration: underline;
 }
@@ -119,12 +105,4 @@ body, html {
     max-width: 50px;
     max-height: 50px;
     margin-right: 10px;
-    vertical-align: middle;
-}
-
-.type-to-console {
-    margin-right: 10px;
-    font-size: 0.9em;
-    color: #e4e4e4;
-    opacity: 0.7; /* You can adjust the opacity if you want the text to be a bit muted */
 }
