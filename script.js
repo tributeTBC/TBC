@@ -34,7 +34,12 @@ document.getElementById("input").addEventListener("keydown", function(event) {
 
 document.getElementById("commands").addEventListener("click", function(event) {
     if (event.target.tagName === "SPAN") {
-        // Clear current text and stop ongoing typewriter effect
+        if (!stopTyping) {  // If the typewriter isn't running, execute the command directly
+            handleCommand(event.target.textContent);
+            return;
+        }
+        
+        // If we're here, the typewriter was running and we want to interrupt it
         stopTyping = true;
         currentTimeouts.forEach(timeoutId => clearTimeout(timeoutId)); // Clear all timeouts
         document.getElementById("output").textContent += '\nCommand broke early!\n';
