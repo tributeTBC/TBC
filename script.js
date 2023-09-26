@@ -71,3 +71,6 @@ function handleCommand(command) {
         appendToOutput('Error fetching file content!');
     });
 }
+document.getElementById("clearBtn").addEventListener("click", function() {
+    document.getElementById("output").textContent = '';
+});
