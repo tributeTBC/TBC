@@ -1,55 +1,76 @@
-const input = document.getElementById('input');
-const output = document.getElementById('output');
+let inputElem = document.getElementById("input");
+let outputElem = document.getElementById("output");
+let typeDelay = 8; // Time delay between characters for typing effect in milliseconds
+let isTyping = false;
 
-input.addEventListener('keyup', function(event) {
-    if (event.key === 'Enter') {
-        handleCommand(this.value);
-        this.value = '';
+// Command to filename mapping
+const commandMappings = {
+    "showstory -f Tribute": "story.txt",
+    "showcontracts -a Tribute": "contracts.txt",
+    "buy -thebestcoinintheworld": "buy.txt",
+    "showtokenomics Tribute": "tokenomics.txt",
+    "how to follow the satoshi": "contact.txt"
+};
+
+inputElem.addEventListener("keydown", function(event) {
+    if (event.key === "Enter") {
+        event.preventDefault();
+
+        if (!isTyping) {
+            let command = inputElem.value.trim();
+            addTextToOutput("\nroot@tribute:~# " + command);
+            inputElem.value = "";
+            handleCommand(command);
+        }
     }
 });
 
 function handleCommand(command) {
-    output.innerHTML += "\n" + command;
-    let fileName;
+    isTyping = true;
 
-    switch (command) {
-        case 'showstory -f Tribute':
-            fileName = 'story.txt';
-            break;
-        case 'showcontracts -a Tribute':
-            fileName = 'contracts.txt';
-            break;
-        case 'buy -thebestcoinintheworld':
-            fileName = 'buy.txt';
-            break;
-        case 'showtokenomics Tribute':
-            fileName = 'tokenomics.txt';
-            break;
-        case 'how to follow the satoshi':
-            fileName = 'contact.txt';
-            break;
-        default:
-            output.innerHTML += "\n" + "Command not found!";
-            return;
+    if (commandMappings[command]) {
+        fetch(commandMappings[command])
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error("Error fetching file content!");
+                }
+                return response.text();
+            })
+            .then(content => {
+                addTextToOutput("\n" + content);
+                addTextToOutput("\nroot@tribute:~# ");
+                isTyping = false;
+            })
+            .catch(error => {
+                addTextToOutput("\n" + error.message);
+                addTextToOutput("\nroot@tribute:~# ");
+                isTyping = false;
+            });
+    } else {
+        addTextToOutput("\nCommand not found or file doesn't exist!");
+        addTextToOutput("\nroot@tribute:~# ");
+        isTyping = false;
     }
-
-    fetch(fileName)
-        .then(response => response.text())
-        .then(data => typeWriteText(data))
-        .catch(error => output.innerHTML += "\n" + "Error fetching file content!");
 }
 
-
-function typeWriteText(text) {
-    let index = 0;
-    function typeCharacter() {
-        if (index < text.length) {
-            output.innerHTML += text[index];
-            index++;
-            setTimeout(typeCharacter, 50);
+function addTextToOutput(text) {
+    let startPos = 0;
+    let interval = setInterval(() => {
+        if (startPos < text.length) {
+            outputElem.textContent += text[startPos];
+            startPos++;
         } else {
-            output.scrollTop = output.scrollHeight;
+            clearInterval(interval);
+        }
+    }, typeDelay);
+}
+
+document.getElementById("commands").addEventListener("click", function(event) {
+    if (event.target.tagName.toLowerCase() === "span") {
+        let command = event.target.textContent.trim();
+        if (!isTyping) {
+            inputElem.value = "";
+            handleCommand(command);
         }
     }
-    typeCharacter();
-}
+});
