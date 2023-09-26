@@ -80,6 +80,7 @@ body {
 #output {
     height: 400px;
     overflow-y: auto;
+    word-wrap: break-word; /* This will ensure words wrap onto the next line if they are too long */
     padding: 10px;
     background-color: #000; /* Black background for the output */
     color: #f3f3f3;
@@ -91,7 +92,8 @@ body {
     display: flex;
     background-color: #000; /* Black background for the console typing area */
     padding: 10px;
-    align-items: center; /* Vertically center the contents of the flex container */    
+    align-items: center; /* Vertically center the contents of the flex container */  
+    
 }
 
 .prefix {
@@ -169,7 +171,8 @@ body {
     }
 
     .input-container {
-        flex-direction: column;
+        display: flex;
+    align-items: center; /* This ensures vertical alignment */
     }
 
     .prefix, #input {
