@@ -124,4 +124,9 @@ span.clear:hover {
     font-family: 'Courier New', Courier, monospace; /* This will give it a more "digital" look */
     color: #888;
 }
-
+.command-line {
+    background-color: #f3f3f3; /* Light grey background */
+    padding: 3px 6px;
+    border-radius: 3px;
+    margin: 3px 0;
+}
