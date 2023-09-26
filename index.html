@@ -19,12 +19,13 @@
             <div class="commands-wrapper">
                 <span class="type-to-console">Type to console or use:</span>
                 <div id="commands">
-                    <span onclick="handleCommand('showstory -f Tribute', 'story')">Story</span>
-                    <span onclick="handleCommand('showcontracts -a Tribute', 'contracts')">Contracts</span>
-                    <span onclick="handleCommand('buy -thebestcoinintheworld', 'buy')">Buy</span>
-                    <span onclick="handleCommand('showtokenomics Tribute', 'tokenomics')">Tokenomics</span>
-                    <span onclick="handleCommand('how to follow the satoshi', 'contact')">Contact</span>
-                    <span onclick="handleCommand('clear', 'clear')">Clear</span>
+                    <span data-command="story" data-display-command="showstory -f Tribute" onclick="handleCommand(event)">Story</span>
+<span data-command="contracts" data-display-command="showcontracts -a Tribute" onclick="handleCommand(event)">Contracts</span>
+<span data-command="buy" data-display-command="buy -thebestcoinintheworld" onclick="handleCommand(event)">Buy</span>
+<span data-command="tokenomics" data-display-command="showtokenomics Tribute" onclick="handleCommand(event)">Tokenomics</span>
+<span data-command="contact" data-display-command="how to follow the satoshi" onclick="handleCommand(event)">Contact</span>
+<span data-command="clear" data-display-command="clear" onclick="handleCommand(event)">Clear</span>
+
                 </div>
             </div>
         </div>
