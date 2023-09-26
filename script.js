@@ -7,7 +7,7 @@ document.getElementById("input").addEventListener("keydown", function(event) {
         const inputValue = event.target.value.trim().toLowerCase(); // Normalize to lowercase
         if (inputValue) {
             appendToOutput("root@tribute:~# " + inputValue);
-            handleCommand(inputValue);
+            handleCommand(inputValue, inputValue);
             event.target.value = "";
             scrollToBottom();
         }
@@ -20,13 +20,13 @@ document.getElementById("commands").addEventListener("click", function(event) {
         event.preventDefault(); // Prevent default behavior
         const command = event.target.textContent.trim().toLowerCase(); // Normalize to lowercase
         appendToOutput("root@tribute:~# " + command);
-        handleCommand(command);
+        const actualCommand = event.target.getAttribute('data-actual-command') || command;
+        handleCommand(command, actualCommand);
         scrollToBottom();
     }
 });
 
-
-function handleCommand(commandInput, actualCommand = commandInput) {
+function handleCommand(displayedCommand, actualCommand) {
     const commandsList = ['story', 'contracts', 'buy', 'tokenomics', 'contact'];
     const commandLower = actualCommand.toLowerCase();
 
