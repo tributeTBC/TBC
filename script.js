@@ -26,21 +26,17 @@ document.getElementById("commands").addEventListener("click", function(event) {
 });
 
 
-function handleCommand(displayCommand, actualCommand = "") {
-    // If actualCommand isn't provided, it will use displayCommand as the actual command.
-    actualCommand = actualCommand || displayCommand.toLowerCase();
-
-    appendToOutput("root@tribute:~# " + displayCommand, true); // This is the command that will be shown to the user.
-
+function handleCommand(commandInput, actualCommand = commandInput) {
     const commandsList = ['story', 'contracts', 'buy', 'tokenomics', 'contact'];
+    const commandLower = actualCommand.toLowerCase();
 
-    if (actualCommand === "clear") {
+    if (commandLower === "clear") {
         document.getElementById("output").textContent = ""; // Clear the output
         return; // Exit early
     }
 
-    if (commandsList.includes(actualCommand)) {
-        fetch(`./${actualCommand}.txt`).then(response => {
+    if (commandsList.includes(commandLower)) {
+        fetch(`./${commandLower}.txt`).then(response => {
             if (!response.ok) {
                 throw new Error('Network response was not ok');
             }
@@ -56,6 +52,7 @@ function handleCommand(displayCommand, actualCommand = "") {
         appendToOutput('Command not found!');
     }
 }
+
 
 
 
