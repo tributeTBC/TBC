@@ -121,3 +121,19 @@ body, html {
     margin-right: 10px;
     vertical-align: middle;
 }
+.clear-output {
+    position: absolute;
+    bottom: 5px;
+    right: 5px;
+    padding: 5px 10px;
+    background-color: #2e2e2e;
+    color: #e4e4e4;
+    border: none;
+    cursor: pointer;
+    outline: none;
+    transition: background-color 0.2s ease;
+}
+
+.clear-output:hover {
+    background-color: #1a1a1a;
+}
