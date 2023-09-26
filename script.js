@@ -1,4 +1,16 @@
+const ASCII_ART = `
+<pre>
+ _    _      _                          
+| |  | |    | |                         
+| |__| | ___| |_ __ _ _ __   ___ ___    
+|  __  |/ _ \\ | '__| | '_ \\ / __/ _ \\   
+| |  | |  __/ | |  | | | | | (_|  __/   
+|_|  |_|\\___|_|_|  |_|_| |_|\\___\\___|   
+</pre>
+`;
+
 document.addEventListener('DOMContentLoaded', (event) => {
+    document.getElementById("output").innerHTML = ASCII_ART;
     if (window.innerWidth > 600) {
         document.getElementById("input").focus();
     }
@@ -33,7 +45,7 @@ function executeCommand(command) {
     const commandsList = ['story', 'contracts', 'buy', 'tokenomics', 'contact', 'clear'];
 
     if (command === "clear") {
-        document.getElementById("output").textContent = "";
+        document.getElementById("output").innerHTML = ASCII_ART;
         return;
     }
 
@@ -71,15 +83,12 @@ function appendToOutput(text) {
     // Add the new content
     lines.push(text);
 
-    // Keep only the last 100 lines
-    lines = lines.slice(-100);
+    // Keep only the last 100 lines + ASCII art
+    lines = [ASCII_ART].concat(lines.slice(-(100 - 1)));  // Subtracting 1 for ASCII art
 
     // Update the output
     outputElem.innerHTML = lines.join('<br>');
 }
-
-
-
 
 function scrollToBottom() {
     const output = document.getElementById("output");
