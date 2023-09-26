@@ -26,17 +26,21 @@ document.getElementById("commands").addEventListener("click", function(event) {
 });
 
 
-function handleCommand(commandInput) {
-    const commandsList = ['story', 'contracts', 'buy', 'tokenomics', 'contact'];
-    const commandLower = commandInput.toLowerCase();
+function handleCommand(displayCommand, actualCommand = "") {
+    // If actualCommand isn't provided, it will use displayCommand as the actual command.
+    actualCommand = actualCommand || displayCommand.toLowerCase();
 
-    if (commandLower === "clear") {
+    appendToOutput("root@tribute:~# " + displayCommand, true); // This is the command that will be shown to the user.
+
+    const commandsList = ['story', 'contracts', 'buy', 'tokenomics', 'contact'];
+
+    if (actualCommand === "clear") {
         document.getElementById("output").textContent = ""; // Clear the output
         return; // Exit early
     }
 
-    if (commandsList.includes(commandLower)) {
-        fetch(`./${commandLower}.txt`).then(response => {
+    if (commandsList.includes(actualCommand)) {
+        fetch(`./${actualCommand}.txt`).then(response => {
             if (!response.ok) {
                 throw new Error('Network response was not ok');
             }
