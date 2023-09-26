@@ -4,7 +4,7 @@ document.addEventListener('DOMContentLoaded', (event) => {
 
 document.getElementById("input").addEventListener("keydown", function(event) {
     if (event.key === "Enter") {
-        const inputValue = event.target.value.trim();
+        const inputValue = event.target.value.trim().toLowerCase(); // Normalize to lowercase
         if (inputValue) {
             appendToOutput("root@tribute:~# " + inputValue);
             handleCommand(inputValue);
@@ -17,7 +17,7 @@ document.getElementById("input").addEventListener("keydown", function(event) {
 
 document.getElementById("commands").addEventListener("click", function(event) {
     if (event.target.tagName === "SPAN") {
-        const command = event.target.textContent;
+        const command = event.target.textContent.trim().toLowerCase(); // Normalize to lowercase
         appendToOutput("root@tribute:~# " + command);
         handleCommand(command);
         scrollToBottom();
@@ -26,7 +26,7 @@ document.getElementById("commands").addEventListener("click", function(event) {
 
 function handleCommand(command) {
     const commandsList = ['story', 'contracts', 'buy', 'tokenomics', 'contact'];
-    if (commandsList.includes(command.toLowerCase())) {
+    if (commandsList.includes(command)) {
         fetch(`./${command}.txt`).then(response => {
             if (!response.ok) {
                 throw new Error('Network response was not ok');
