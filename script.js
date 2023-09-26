@@ -2,13 +2,21 @@ document.addEventListener('DOMContentLoaded', (event) => {
     document.getElementById("input").focus();
 });
 
+let typingInProgress = false;
+
 function typeWriter(txt, outputElem) {
+    if (typingInProgress) return; // Prevent overlapping typeWriter calls
+
     let index = 0;
+    typingInProgress = true;
+    
     function typeChar() {
         if (index < txt.length) {
             outputElem.textContent += txt.charAt(index);
             index++;
             setTimeout(typeChar, 50);
+        } else {
+            typingInProgress = false;
         }
     }
     typeChar();
