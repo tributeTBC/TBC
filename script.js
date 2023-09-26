@@ -61,7 +61,12 @@ function handleCommand(commandInput, actualCommand = commandInput) {
 
 function appendToOutput(text) {
     const outputElem = document.getElementById("output");
-    outputElem.textContent += text + '\n';
+    if (text.startsWith("root@tribute:~# ")) {
+        text = `<div class="command-line">${text}</div>`;
+    } else {
+        text = text + '\n';
+    }
+    outputElem.innerHTML += text;
     trimOutputToLastLines(42);
 }
 
