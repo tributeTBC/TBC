@@ -1,50 +1,54 @@
 document.addEventListener('DOMContentLoaded', (event) => {
-    if (window.innerWidth > 600) {  
+    if (window.innerWidth > 600) {
         document.getElementById("input").focus();
-    }
-});
-
-document.getElementById("input").addEventListener("keydown", function(event) {
-    if (event.key === "Enter") {
-        const inputValue = event.target.value.trim().toLowerCase();
-        appendToOutput("root@tribute:~# " + inputValue);
-        handleCommand(inputValue, inputValue);
-        event.target.value = "";
-        scrollToBottom();
-        event.preventDefault();
     }
 });
 
 document.getElementById("commands").addEventListener("click", function(event) {
     if (event.target.tagName === "SPAN" && event.target.hasAttribute("data-command")) {
-        const actualCommand = event.target.getAttribute("data-command").trim().toLowerCase();
-        const displayCommand = event.target.getAttribute("data-display-command").trim();
+        event.preventDefault();
+        const displayCommand = event.target.getAttribute("data-display-command");
+        const actualCommand = event.target.getAttribute("data-command");
+        
         appendToOutput("root@tribute:~# " + displayCommand);
-        handleCommand(actualCommand, displayCommand);
+        executeCommand(actualCommand);
         scrollToBottom();
     }
 });
 
-function handleCommand(commandInput, displayCommand) {
+document.getElementById("input").addEventListener("keydown", function(event) {
+    if (event.key === "Enter") {
+        const inputValue = event.target.value.trim();
+        if (inputValue) {
+            appendToOutput("root@tribute:~# " + inputValue);
+            executeCommand(inputValue);
+            event.target.value = "";
+            scrollToBottom();
+        }
+        event.preventDefault();
+    }
+});
+
+function executeCommand(command) {
     const commandsList = ['story', 'contracts', 'buy', 'tokenomics', 'contact', 'clear'];
 
-    if (commandInput === "clear") {
+    if (command === "clear") {
         document.getElementById("output").textContent = "";
         return;
     }
 
-    if (commandsList.includes(commandInput)) {
-        fetch(`./${commandInput}.txt`).then(response => {
+    if (commandsList.includes(command.toLowerCase())) {
+        fetch(`./${command}.txt`).then(response => {
             if (!response.ok) {
                 throw new Error('Network response was not ok');
             }
             return response.text();
         }).then(content => {
-            content = content.replace(/\/n/g, '<br>');
-            appendToOutput(content, true);
+            content = content.replace(/(http:\/\/[^\s]+|https:\/\/[^\s]+)/g, '<a href="$1" target="_blank">$1</a>');
+            appendToOutput(content);
             scrollToBottom();
         }).catch(err => {
-            appendToOutput('Error fetching file content!');
+            appendToOutput('\nError fetching file content!');
             scrollToBottom();
         });
     } else {
@@ -52,23 +56,14 @@ function handleCommand(commandInput, displayCommand) {
     }
 }
 
-function appendToOutput(text, isHTML = false) {
+function appendToOutput(text) {
     const outputElem = document.getElementById("output");
     if (text.startsWith("root@tribute:~# ")) {
         text = `<div class="command-line">${text}</div>`;
-    } else if (isHTML) {
-        text += '<br>';
     } else {
         text = text + '\n';
     }
-
-    if (isHTML) {
-        outputElem.innerHTML += text;
-    } else {
-        const textNode = document.createTextNode(text);
-        outputElem.appendChild(textNode);
-    }
-
+    outputElem.innerHTML += text;
     trimOutputToLastLines(42);
 }
 
