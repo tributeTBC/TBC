@@ -125,7 +125,8 @@ span.clear:hover {
     color: #888;
 }
 .command-line {
-    background-color: #f3f3f3; /* Light grey background */
+    background-color: rgba(42, 42, 42, 0.7); /* Dark grey background with 70% opacity */
+    color: #ffffff; /* White text color */
     padding: 3px 6px;
     border-radius: 3px;
     margin: 3px 0;
