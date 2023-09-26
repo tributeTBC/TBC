@@ -84,13 +84,15 @@ body {
     background-color: #000; /* Black background for the output */
     color: #f3f3f3;
     font-size: 0.9em;
+    border-radius: 8px; /* Smoothed edges for the output area */
 }
 
 .input-container {
     display: flex;
-    margin-top: 10px;
+    margin-top: 0; /* Removed the margin to eliminate the grey space */
     background-color: #000; /* Black background for the console typing area */
     padding: 10px;
+    border-radius: 8px; /* Smoothed edges for the container */
 }
 
 .prefix {
@@ -104,7 +106,7 @@ body {
     background-color: #000; /* Black background for the input field */
     color: #f3f3f3;
     border: none;
-    border-radius: 4px;
+    border-radius: 8px; /* Smoothed edges for the input field */
     outline: none;
 }
 
