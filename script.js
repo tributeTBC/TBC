@@ -1,15 +1,17 @@
 document.addEventListener('DOMContentLoaded', (event) => {
-    if (window.innerWidth > 600) {  
+    if (window.innerWidth > 600) {
         document.getElementById("input").focus();
     }
 });
 
 document.getElementById("commands").addEventListener("click", function(event) {
-    if (event.target.tagName === "SPAN" && event.target.hasAttribute("data-actual-command")) {
-        event.preventDefault(); 
-        const commandToShow = event.target.getAttribute("data-actual-command").trim(); 
-        appendToOutput("root@tribute:~# " + commandToShow);
-        handleCommand(commandToShow);
+    if (event.target.tagName === "SPAN" && event.target.hasAttribute("data-command")) {
+        event.preventDefault();
+        const displayCommand = event.target.getAttribute("data-display-command");
+        const actualCommand = event.target.getAttribute("data-command");
+        
+        appendToOutput("root@tribute:~# " + displayCommand);
+        executeCommand(actualCommand);
         scrollToBottom();
     }
 });
@@ -19,7 +21,7 @@ document.getElementById("input").addEventListener("keydown", function(event) {
         const inputValue = event.target.value.trim();
         if (inputValue) {
             appendToOutput("root@tribute:~# " + inputValue);
-            handleCommand(inputValue); 
+            executeCommand(inputValue);
             event.target.value = "";
             scrollToBottom();
         }
@@ -27,17 +29,16 @@ document.getElementById("input").addEventListener("keydown", function(event) {
     }
 });
 
-function handleCommand(commandInput) {
-    const commandsList = ['showstory -f tribute', 'contracts', 'buy', 'tokenomics', 'contact', 'clear'];
+function executeCommand(command) {
+    const commandsList = ['story', 'contracts', 'buy', 'tokenomics', 'contact', 'clear'];
 
-    if (commandInput === "clear") {
+    if (command === "clear") {
         document.getElementById("output").textContent = "";
         return;
     }
 
-    if (commandsList.includes(commandInput.toLowerCase())) {
-        const commandEndpoint = commandInput.split(' ')[0];
-        fetch(`./${commandEndpoint}.txt`).then(response => {
+    if (commandsList.includes(command.toLowerCase())) {
+        fetch(`./${command}.txt`).then(response => {
             if (!response.ok) {
                 throw new Error('Network response was not ok');
             }
