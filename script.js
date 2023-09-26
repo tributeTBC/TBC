@@ -6,19 +6,35 @@ document.getElementById("input").addEventListener("keydown", function(event) {
     if (event.key === "Enter") {
         const inputValue = event.target.value.trim();
         if (inputValue) {
-            appendToOutput('> ' + inputValue);
+            appendToOutput(`root@tribute:~# ${inputValue}`);
             handleCommand(inputValue);
             event.target.value = "";
         }
-        event.preventDefault(); // Prevent the default action
+        event.preventDefault();
     }
 });
 
 document.getElementById("commands").addEventListener("click", function(event) {
     if (event.target.tagName === "SPAN") {
+        appendToOutput(`root@tribute:~# ${event.target.textContent}`);
         handleCommand(event.target.textContent);
     }
 });
+
+function appendToOutput(content) {
+    const outputElem = document.getElementById("output");
+    const currentContent = outputElem.textContent.split('\n');
+    
+    currentContent.push(content);
+
+    // Ensure only the last 42 lines are displayed
+    while (currentContent.length > 42) {
+        currentContent.shift();
+    }
+
+    outputElem.textContent = currentContent.join('\n');
+    outputElem.scrollTop = outputElem.scrollHeight;
+}
 
 function handleCommand(command) {
     let fileName = '';
@@ -54,23 +70,4 @@ function handleCommand(command) {
     }).catch(err => {
         appendToOutput('Error fetching file content!');
     });
-}
-
-function appendToOutput(content) {
-    const output = document.getElementById("output");
-    output.textContent += content + '\n';
-    limitLinesToLast(output, 42);
-    scrollToBottom();
-}
-
-function limitLinesToLast(element, lineCount) {
-    const lines = element.textContent.split('\n');
-    if (lines.length > lineCount) {
-        element.textContent = lines.slice(-lineCount).join('\n');
-    }
-}
-
-function scrollToBottom() {
-    const output = document.getElementById("output");
-    output.scrollTop = output.scrollHeight;
 }
