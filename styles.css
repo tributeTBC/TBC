@@ -108,3 +108,20 @@ body, html {
     max-height: 50px;
     margin-right: 10px;
 }
+span.clear {
+    background-color: #555;
+    color: #ddd;
+    padding: 5px 10px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+span.clear:hover {
+    background-color: #444;
+}
+.type-to-console {
+    font-family: 'Courier New', Courier, monospace; /* This will give it a more "digital" look */
+    color: #888;
+}
+
