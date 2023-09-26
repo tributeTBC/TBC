@@ -18,16 +18,18 @@ document.getElementById("input").addEventListener("keydown", function(event) {
 
 document.getElementById("commands").addEventListener("click", function(event) {
     if (event.target.tagName === "SPAN" && event.target.hasAttribute("data-actual-command")) {
-        event.preventDefault();
-        const commandToShow = event.target.textContent.trim().toLowerCase();
-        const actualCommand = event.target.getAttribute("data-actual-command").trim().toLowerCase();
+        event.preventDefault(); 
+        const commandToShow = event.target.getAttribute("data-actual-command").trim(); // Actual command for display
+        const actualCommand = event.target.getAttribute("data-actual-command").trim(); // Actual command for processing
+        appendToOutput("root@tribute:~# " + commandToShow);
         handleCommand(actualCommand, commandToShow);
         scrollToBottom();
     }
 });
 
-ffunction handleCommand(commandInput, actualCommand = commandInput) {
-    appendToOutput("root@tribute:~# " + actualCommand);
+function handleCommand(commandInput, displayCommand = commandInput) {
+    appendToOutput("root@tribute:~# " + displayCommand);
+    
 
     const commandsList = ['story', 'contracts', 'buy', 'tokenomics', 'contact', 'clear'];
     const commandLower = actualCommand.toLowerCase();
