@@ -89,10 +89,9 @@ body {
 
 .input-container {
     display: flex;
-    margin-top: 0; /* Removed the margin to eliminate the grey space */
     background-color: #000; /* Black background for the console typing area */
     padding: 10px;
-    border-radius: 8px; /* Smoothed edges for the container */
+    align-items: center; /* Vertically center the contents of the flex container */    
 }
 
 .prefix {
