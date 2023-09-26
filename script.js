@@ -6,9 +6,10 @@ document.getElementById("input").addEventListener("keydown", function(event) {
     if (event.key === "Enter") {
         const inputValue = event.target.value.trim();
         if (inputValue) {
-            appendToOutput(`root@tribute:~# ${inputValue}`);
+            appendToOutput("root@tribute:~# " + inputValue);
             handleCommand(inputValue);
             event.target.value = "";
+            scrollToBottom();
         }
         event.preventDefault();
     }
@@ -16,58 +17,49 @@ document.getElementById("input").addEventListener("keydown", function(event) {
 
 document.getElementById("commands").addEventListener("click", function(event) {
     if (event.target.tagName === "SPAN") {
-        appendToOutput(`root@tribute:~# ${event.target.textContent}`);
-        handleCommand(event.target.textContent);
+        const command = event.target.textContent;
+        appendToOutput("root@tribute:~# " + command);
+        handleCommand(command);
+        scrollToBottom();
     }
 });
 
-function appendToOutput(content) {
-    const outputElem = document.getElementById("output");
-    const currentContent = outputElem.textContent.split('\n');
-    
-    currentContent.push(content);
-
-    // Ensure only the last 42 lines are displayed
-    while (currentContent.length > 42) {
-        currentContent.shift();
+function handleCommand(command) {
+    const commandsList = ['story', 'contracts', 'buy', 'tokenomics', 'contact'];
+    if (commandsList.includes(command.toLowerCase())) {
+        fetch(`./${command}.txt`).then(response => {
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            return response.text();
+        }).then(content => {
+            appendToOutput(content);
+            scrollToBottom();
+        }).catch(err => {
+            appendToOutput('\nError fetching file content!');
+            scrollToBottom();
+        });
+    } else {
+        appendToOutput('Command not found!');
     }
-
-    outputElem.textContent = currentContent.join('\n');
-    outputElem.scrollTop = outputElem.scrollHeight;
 }
 
-function handleCommand(command) {
-    let fileName = '';
+function appendToOutput(text) {
+    const outputElem = document.getElementById("output");
+    outputElem.textContent += text + '\n';
+    trimOutputToLastLines(42);
+}
 
-    switch (command.toLowerCase()) {
-        case 'story':
-            fileName = 'story';
-            break;
-        case 'contracts':
-            fileName = 'contracts';
-            break;
-        case 'buy':
-            fileName = 'buy';
-            break;
-        case 'tokenomics':
-            fileName = 'tokenomics';
-            break;
-        case 'contact':
-            fileName = 'contact';
-            break;
-        default:
-            appendToOutput('Command not found!');
-            return;
+function trimOutputToLastLines(lineCount) {
+    const outputElem = document.getElementById("output");
+    const lines = outputElem.textContent.split('\n');
+    if (lines.length > lineCount) {
+        const trimmedContent = lines.slice(-lineCount).join('\n');
+        outputElem.textContent = trimmedContent;
     }
+}
 
-    fetch(`./${fileName}.txt`).then(response => {
-        if (!response.ok) {
-            throw new Error('Network response was not ok');
-        }
-        return response.text();
-    }).then(content => {
-        appendToOutput(content);
-    }).catch(err => {
-        appendToOutput('Error fetching file content!');
-    });
+function scrollToBottom() {
+    const output = document.getElementById("output");
+    output.scrollTop = output.scrollHeight;
 }
