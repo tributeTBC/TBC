@@ -17,12 +17,14 @@ document.getElementById("input").addEventListener("keydown", function(event) {
 
 document.getElementById("commands").addEventListener("click", function(event) {
     if (event.target.tagName === "SPAN") {
+        event.preventDefault(); // Prevent default behavior
         const command = event.target.textContent.trim().toLowerCase(); // Normalize to lowercase
         appendToOutput("root@tribute:~# " + command);
         handleCommand(command);
         scrollToBottom();
     }
 });
+
 
 function handleCommand(commandInput) {
     const commandsList = ['story', 'contracts', 'buy', 'tokenomics', 'contact'];
