@@ -1,0 +1,114 @@
+body, html {
+    height: 100%;
+    margin: 0;
+    font-family: 'Courier New', monospace;
+    background-color: black;
+    color: white;
+    display: flex; 
+    justify-content: center;
+    align-items: flex-start;
+}
+
+#console {
+    padding: 20px;
+    max-width: 1000px;
+    width: 95%;  
+    border: 1px solid #444; 
+    box-shadow: 0px 0px 12px 2px rgba(0, 0, 0, 0.5); 
+    margin-top: 10vh;
+    display: flex;
+    flex-direction: column;  /* Change to column direction */
+    height: calc(42em);
+}
+
+
+#input {
+    background-color: black;
+    color: white;
+    border: none;
+    outline: none;
+    width: 100%;
+    padding: 5px;
+    animation: blink 1s step-end infinite;
+    flex-grow: 1;  /* Make input take the rest of the space after prefix */
+}
+.input-container {
+    display: flex;
+    align-items: center;
+}
+
+.prefix {
+    margin-right: 5px;
+}
+
+@keyframes blink {
+    50% {
+        border-color: transparent;
+    }
+}
+
+#output {
+    white-space: pre-wrap;
+    padding-bottom: 5px;
+    flex-grow: 1;  /* Allow it to take available vertical space */
+    overflow-y: auto;  /* Will scroll when content overflows */
+    max-height: calc(42em - 2em); /* Subtract some space for padding or other UI elements */ 
+}
+
+
+#header-bar {
+    display: flex;
+    justify-content: space-between;
+    padding: 5px 10px;
+    align-items: center; /* Align items vertically center */
+    background-color: #2e2e2e;
+    color: #e4e4e4;
+    border-bottom: 1px solid #444;
+    flex-wrap: wrap; /* Allows child elements to wrap to the next line if there's not enough space */
+}
+.commands-wrapper {
+	width: 100%; /* This will ensure that it spans the full width of its parent */
+    text-align: right; /* Aligns commands to the right */
+    padding-top: 5px; /* Some space above the commands for separation */
+}
+
+#commands {
+     font-size: 0.8em; /* Smaller font size for the commands */
+    display: flex;
+    justify-content: flex-end; /* This ensures contents align to the right in a flex container */
+    gap: 10px
+}
+#branding {
+    display: flex;
+    align-items: center;
+    font-size: 1.2em; 
+}
+#brand-text {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: center;
+}
+
+#project-name {
+    font-size: 1.2em;
+    margin: 0;
+}
+
+#project-tagline {
+    font-size: 0.7em;
+    margin: 0;
+}
+
+#commands span {
+	text-align: right; /* Aligns commands to the right */
+    margin-left: 5px;
+    cursor: pointer;
+    text-decoration: underline;
+}
+#logo {
+    max-width: 50px;  /* Adjust as per your logo's desired size */
+    max-height: 50px; /* Adjust as per your logo's desired size */
+    margin-right: 10px; /* Gives space between logo and the adjacent text */
+    vertical-align: middle; /* Helps align the image vertically with the text */
+}
