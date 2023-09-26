@@ -74,7 +74,12 @@ function handleCommand(command) {
         }
         return response.text();
     }).then(content => {
-        typeWriter('\n' + content, document.getElementById("output"));
+        let outputElem = document.getElementById("output");
+        // Check if the last character is not a newline, if not then add a newline.
+        if (outputElem.textContent.slice(-1) !== '\n') {
+            outputElem.textContent += '\n';
+        }
+        typeWriter(content, outputElem);
     }).catch(err => {
         typeWriter('\nError fetching file content!', document.getElementById("output"));
     });
