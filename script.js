@@ -83,12 +83,13 @@ function appendToOutput(text) {
     // Add the new content
     lines.push(text);
 
-    // Keep only the last 100 lines + ASCII art
-    lines = [ASCII_ART].concat(lines.slice(-(100 - 1)));  // Subtracting 1 for ASCII art
+    // Keep only the last 100 lines
+    lines = lines.slice(-100);
 
     // Update the output
     outputElem.innerHTML = lines.join('<br>');
 }
+
 
 function scrollToBottom() {
     const output = document.getElementById("output");
