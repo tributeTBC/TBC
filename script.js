@@ -6,6 +6,7 @@ let currentTimeouts = []; // Store all ongoing timeouts
 let stopTyping = false; // Flag to control the typewriter
 
 function typeWriter(txt, outputElem) {
+    stopAndClear(); // Ensure any previous content is cleared and typing is stopped
     let index = 0;
     function typeChar() {
         if (index < txt.length && !stopTyping) {
@@ -13,8 +14,6 @@ function typeWriter(txt, outputElem) {
             index++;
             let timeoutId = setTimeout(typeChar, 1); // Adjust speed as needed
             currentTimeouts.push(timeoutId);
-        } else if (index >= txt.length) {  // This checks if the typing has finished
-            stopTyping = false;
         }
     }
     typeChar();
@@ -24,7 +23,6 @@ document.getElementById("input").addEventListener("keydown", function(event) {
     if (event.key === "Enter") {
         const inputValue = event.target.value.trim();
         if (inputValue) {
-            stopAndClear(); // Clear existing text and stop ongoing typing
             document.getElementById("output").textContent += inputValue + '\n';
             handleCommand(inputValue);
             event.target.value = "";
@@ -36,13 +34,13 @@ document.getElementById("input").addEventListener("keydown", function(event) {
 
 document.getElementById("commands").addEventListener("click", function(event) {
     if (event.target.tagName === "SPAN") {
-        if (!stopTyping) {  // If the typewriter isn't running, execute the command directly
+        if (!stopTyping) {  
             handleCommand(event.target.textContent);
+            scrollToBottom();
             return;
         }
         
-        stopAndClear(); // Clear existing text and stop ongoing typing
-        
+        stopTyping = true;
         setTimeout(() => {
             handleCommand(event.target.textContent);
             scrollToBottom();
@@ -71,7 +69,6 @@ function handleCommand(command) {
             break;
         default:
             typeWriter('Command not found!', document.getElementById("output"));
-            scrollToBottom();
             return;
     }
 
@@ -81,12 +78,7 @@ function handleCommand(command) {
         }
         return response.text();
     }).then(content => {
-        let outputElem = document.getElementById("output");
-        // Check if the last character is not a newline, if not then add a newline.
-        if (outputElem.textContent.slice(-1) !== '\n') {
-            outputElem.textContent += '\n';
-        }
-        typeWriter(content, outputElem);
+        typeWriter(content, document.getElementById("output"));
         scrollToBottom();
     }).catch(err => {
         typeWriter('\nError fetching file content!', document.getElementById("output"));
@@ -102,5 +94,5 @@ function scrollToBottom() {
 function stopAndClear() {
     stopTyping = true;
     currentTimeouts.forEach(timeoutId => clearTimeout(timeoutId));
-    document.getElementById("output").textContent += '\nCommand broke early!\n';
+    document.getElementById("output").textContent = ''; // Clear the output
 }
