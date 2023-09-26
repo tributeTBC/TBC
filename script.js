@@ -44,6 +44,8 @@ function handleCommand(commandInput, actualCommand = commandInput) {
             }
             return response.text();
         }).then(content => {
+            const commandOutput = `root@tribute:~# ${commandInput}`;
+            appendToOutput(commandOutput);
             appendToOutput(content);
             scrollToBottom();
         }).catch(err => {
