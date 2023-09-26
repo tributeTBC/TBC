@@ -26,7 +26,7 @@ document.getElementById("commands").addEventListener("click", function(event) {
     }
 });
 
-function handleCommand(displayedCommand, actualCommand) {
+function handleCommand(commandInput, actualCommand = commandInput) {
     const commandsList = ['story', 'contracts', 'buy', 'tokenomics', 'contact'];
     const commandLower = actualCommand.toLowerCase();
 
@@ -52,6 +52,7 @@ function handleCommand(displayedCommand, actualCommand) {
         appendToOutput('Command not found!');
     }
 }
+
 
 
 
