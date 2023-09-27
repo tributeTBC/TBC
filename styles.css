@@ -92,6 +92,7 @@ body {
 
 .input-container {
     display: flex;
+    font-family: 'VT323', monospace;
     background-color: #000; /* Black background for the console typing area */
     padding: 10px;
     align-items: center; /* Vertically center the contents of the flex container */  
@@ -106,6 +107,7 @@ body {
 }
 
 #input {
+    font-family: 'VT323', monospace;
     width: 100%;
     padding: 5px 5px; /* Adjust padding for vertical alignment */
     background-color: #000;
@@ -119,6 +121,8 @@ body {
 
 #input::placeholder {
     color: #888;
+    font-family: 'VT323', monospace;
+    font-style: italic; /* Optionally, you can make the placeholder italic or apply other styles */
 }
 
 #output a {
@@ -131,11 +135,7 @@ body {
     color: #007BFF;   /* Darker blue for hover state */
 }
 
-input::placeholder {
-    font-family: 'VT323', monospace;
-    
-    font-style: italic; /* Optionally, you can make the placeholder italic or apply other styles */
-}
+
 /* Responsive Design */
 @media (max-width: 600px) {
     #console {
