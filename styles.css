@@ -178,17 +178,17 @@ body {
 
     #output {
         height: 250px;
-        font-size: 0.4em;
+        font-size: 0.8em;
     }
 
     .input-container {
         display: flex;
     align-items: center; /* This ensures vertical alignment */
-        font-size: 0.4em;
+        font-size: 0.8em;
     }
 
     .prefix, #input {
         width: 100%;
-        font-size: 0.4em;
+        font-size: 0.8em;
     }
 }
