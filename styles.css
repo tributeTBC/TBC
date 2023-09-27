@@ -1,5 +1,6 @@
 body {
-    font-family: 'Courier New', Courier, monospace;
+    /*font-family: 'Courier New', Courier, monospace;*/
+    font-family: 'VT323', monospace;
     min-width: 80vw;
     background-color: #000; /* Setting terminal black background */
     color: #f3f3f3;
