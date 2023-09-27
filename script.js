@@ -80,9 +80,9 @@ function adjustForMobile() {
 
 document.addEventListener('DOMContentLoaded', (event) => {
     const isMobile = window.innerWidth < 768;
-    const ASCII_ART = isMobile ? ASCII_ART_MOBILE : ASCII_ART_DESKTOP;
-    const outputElement = document.getElementById("output");
+    ASCII_ART = isMobile ? ASCII_ART_MOBILE : ASCII_ART_DESKTOP; // Assign value here
 
+    const outputElement = document.getElementById("output");
     outputElement.innerHTML = ASCII_ART;
 
     if (isMobile) {
