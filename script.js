@@ -139,7 +139,7 @@ function executeCommand(command) {
     if (command === "clear") {
         setTimeout(() => {
             document.getElementById("output").innerHTML = ASCII_ART;
-        }, 1500);  // 1500ms is 1.5 seconds
+        }, 1000);  // 1500ms is 1.5 seconds
         return;
     }
 
