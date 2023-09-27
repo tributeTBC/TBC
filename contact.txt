@@ -1,20 +1,3 @@
-<div class="section" id="contact">
-        <div style="max-width: 800px; margin: 0 auto; text-align: center;">
-            <h2 style="font-size: 32px; font-weight: bold; margin-bottom: 40px;">Contact Us</h2>
-            <div style="display: flex; justify-content: center; gap: 20px;">
-                <a href="https://twitter.com/TributeTBC" target="_blank" style="text-decoration: none; color: #ffffff;">
-                    <i class="fab fa-twitter fa-2x"></i>
-                    <span style="font-size: 18px; font-weight: bold;">Twitter</span>
-                </a>
-                <a href="https://t.me/tributeoffical" target="_blank" style="text-decoration: none; color: #ffffff;">
-                    <i class="fab fa-telegram fa-2x"></i>
-                    <span style="font-size: 18px; font-weight: bold;">Telegram</span>
-                </a>
-                <a href="https://etherscan.io/address/your_contract_address" target="_blank"
-                    style="text-decoration: none; color: #ffffff;">
-                    <i class="fa-brands fa-ethereum fa-2x"></i>
-                    <span style="font-size: 18px; font-weight: bold;">Contract</span>
-                </a>
-            </div>
-        </div>
-        <script src="https://kit.fontawesome.com/17381ddf1c.js" crossorigin="anonymous"></script>
+https://twitter.com/TributeTBC <span style="font-size: 18px; font-weight: bold;">Twitter</span> <br>
+https://t.me/tributeoffical <span style="font-size: 18px; font-weight: bold;">Telegram</span><br>
+https://etherscan.io/address/your_contract_address <span style="font-size: 18px; font-weight: bold;">Contract</span><br>
