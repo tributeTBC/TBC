@@ -100,6 +100,7 @@ body {
 
 .prefix {
     margin-right: 5px;
+    font-size: 1.2em;
     color: #f3f3f3;
     line-height: 24px; /* Add a line-height to align with the input text */
 }
@@ -113,6 +114,7 @@ body {
     border-radius: 8px;
     outline: none;
     line-height: 24px; /* Add a line-height to align with the prefix */
+    font-size: 1.2em;
 }
 
 #input::placeholder {
@@ -182,9 +184,11 @@ input::placeholder {
     .input-container {
         display: flex;
     align-items: center; /* This ensures vertical alignment */
+        font-size: 0.4em;
     }
 
     .prefix, #input {
         width: 100%;
+        font-size: 0.4em;
     }
 }
