@@ -80,7 +80,7 @@ body {
 }
 
 #output {
-    height: 400px;
+    height: 600px;
     overflow-y: auto;
     word-wrap: break-word; /* This will ensure words wrap onto the next line if they are too long */
     padding: 10px;
