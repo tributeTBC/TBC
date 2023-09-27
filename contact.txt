@@ -1,3 +1,3 @@
 https://twitter.com/TributeTBC <span style="font-size: 18px; font-weight: bold;">Twitter</span> <br>
 https://t.me/tributeoffical <span style="font-size: 18px; font-weight: bold;">Telegram</span><br>
-https://etherscan.io/address/your_contract_address <span style="font-size: 18px; font-weight: bold;">Contract</span><br>
+
