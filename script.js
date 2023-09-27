@@ -77,7 +77,7 @@ function adjustForMobile() {
         inputElement.setAttribute("readonly", true);
 
         // Update placeholder text
-        inputElement.placeholder = "Console is disabled for mobile, use buttons";
+        inputElement.placeholder = "Console is disabled for mobile.<br> use buttons";
 
         // Update placeholder font size
         let styleElem = document.createElement('style');
@@ -139,7 +139,7 @@ function executeCommand(command) {
     if (command === "clear") {
         setTimeout(() => {
             document.getElementById("output").innerHTML = ASCII_ART;
-        }, 1000);  // 1500ms is 1.5 seconds
+        }, 800);  // 1500ms is 1.5 seconds
         return;
     }
 
