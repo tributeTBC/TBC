@@ -128,6 +128,12 @@ body {
 #output a:hover {
     color: #007BFF;   /* Darker blue for hover state */
 }
+
+input::placeholder {
+    font-family: 'VT323', monospace;
+    
+    font-style: italic; /* Optionally, you can make the placeholder italic or apply other styles */
+}
 /* Responsive Design */
 @media (max-width: 600px) {
     #console {
