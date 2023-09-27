@@ -138,11 +138,12 @@ function executeCommand(command) {
     const commandsList = ['story', 'contracts', 'buy', 'tokenomics', 'contact', 'clear'];
 
     if (command === "clear") {
-        setTimeout(() => {
-            document.getElementById("output").innerHTML = ASCII_ART;
-        }, 800);  // 1500ms is 1.5 seconds
-        return;
-    }
+    setTimeout(() => {
+        adjustForMobile();
+        document.getElementById("output").innerHTML = ASCII_ART;
+    }, 800);  // 800ms delay
+    return;
+}
 
     if (commandsList.includes(command.toLowerCase())) {
         fetch(`./${command}.txt`).then(response => {
