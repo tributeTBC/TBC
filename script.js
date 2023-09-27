@@ -95,20 +95,25 @@ document.addEventListener('DOMContentLoaded', setupDisplay);
 
 function setupDisplay() {
     const isMobile = window.innerWidth < 768;
-    ASCII_ART = isMobile ? ASCII_ART_MOBILE : ASCII_ART_DESKTOP; // Assign value here
+    ASCII_ART = isMobile ? ASCII_ART_MOBILE : ASCII_ART_DESKTOP; 
 
     const outputElement = document.getElementById("output");
     outputElement.innerHTML = ASCII_ART;
 
+    const asciiElement = outputElement.querySelector('pre');
+    
+    // Explicitly set/reset styles
     if (isMobile) {
-        const asciiElement = outputElement.querySelector('pre');
         asciiElement.style.fontSize = '8px';
+    } else {
+        asciiElement.style.fontSize = '';  // Reset to default or specify a default size if needed
     }
 
     if (window.innerWidth > 600) {
         document.getElementById("input").focus();
     }
 }
+
 
 
 document.getElementById("commands").addEventListener("click", function(event) {
