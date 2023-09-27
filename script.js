@@ -83,7 +83,7 @@ function adjustForMobile() {
         let styleElem = document.createElement('style');
         styleElem.innerHTML = `
             #input::placeholder {
-                font-size: 8px; /* You can adjust this value as needed */
+                font-size: 12px; /* You can adjust this value as needed */
             }
         `;
         document.head.appendChild(styleElem);
