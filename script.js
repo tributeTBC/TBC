@@ -4,6 +4,9 @@ const ASCII_ART_MOBILE = `
 
 
 
+
+
+
 ████████╗██████╗ ██╗██████╗ ██╗   ██╗████████╗███████╗                                          
 ╚══██╔══╝██╔══██╗██║██╔══██╗██║   ██║╚══██╔══╝██╔════╝                                          
    ██║   ██████╔╝██║██████╔╝██║   ██║   ██║   █████╗                                            
@@ -32,14 +35,23 @@ const ASCII_ART_DESKTOP = `
 </pre>
 `;
 
-const ASCII_ART = (window.innerWidth < 768) ? ASCII_ART_MOBILE : ASCII_ART_DESKTOP;
-
 document.addEventListener('DOMContentLoaded', (event) => {
-    document.getElementById("output").innerHTML = ASCII_ART;
+    const isMobile = window.innerWidth < 768;
+    const ASCII_ART = isMobile ? ASCII_ART_MOBILE : ASCII_ART_DESKTOP;
+    const outputElement = document.getElementById("output");
+
+    outputElement.innerHTML = ASCII_ART;
+
+    if (isMobile) {
+        const asciiElement = outputElement.querySelector('pre');
+        asciiElement.style.fontSize = '8px';
+    }
+
     if (window.innerWidth > 600) {
         document.getElementById("input").focus();
     }
 });
+
 
 document.getElementById("commands").addEventListener("click", function(event) {
     if (event.target.tagName === "SPAN" && event.target.hasAttribute("data-command")) {
