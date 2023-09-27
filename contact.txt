@@ -1,8 +1,20 @@
-find me text
-link2:
-https://snowtrace.io/address/0xd0CDB76F0981761481D93D15199E257E205836FF /n
-
-<br> aaaa <br>
-bbbbbbb
-bbbbbbb
-<br>aaa<br>
+<div class="section" id="contact">
+        <div style="max-width: 800px; margin: 0 auto; text-align: center;">
+            <h2 style="font-size: 32px; font-weight: bold; margin-bottom: 40px;">Contact Us</h2>
+            <div style="display: flex; justify-content: center; gap: 20px;">
+                <a href="https://twitter.com/TributeTBC" target="_blank" style="text-decoration: none; color: #ffffff;">
+                    <i class="fab fa-twitter fa-2x"></i>
+                    <span style="font-size: 18px; font-weight: bold;">Twitter</span>
+                </a>
+                <a href="https://t.me/tributeoffical" target="_blank" style="text-decoration: none; color: #ffffff;">
+                    <i class="fab fa-telegram fa-2x"></i>
+                    <span style="font-size: 18px; font-weight: bold;">Telegram</span>
+                </a>
+                <a href="https://etherscan.io/address/your_contract_address" target="_blank"
+                    style="text-decoration: none; color: #ffffff;">
+                    <i class="fa-brands fa-ethereum fa-2x"></i>
+                    <span style="font-size: 18px; font-weight: bold;">Contract</span>
+                </a>
+            </div>
+        </div>
+        <script src="https://kit.fontawesome.com/17381ddf1c.js" crossorigin="anonymous"></script>
