@@ -142,7 +142,7 @@ body {
     /* Styling for read-only input */
     
     #input[readonly] {
-    background-color: #444;  /* Darkening the background for read-only */
+    background-color: #161616;  /* Darkening the background for read-only */
     cursor: not-allowed;     /* Displaying a not-allowed cursor */
     }
     
