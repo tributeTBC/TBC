@@ -1,3 +1,4 @@
+let ASCII_ART; // Declare it at a higher scope level
 const ASCII_ART_MOBILE = `
 <pre>
 
