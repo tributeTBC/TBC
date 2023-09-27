@@ -78,7 +78,7 @@ function adjustForMobile() {
         inputElement.setAttribute("readonly", true);
 
         // Update placeholder text
-        inputElement.placeholder = "Console is disabled for mobile.<br> use buttons";
+        inputElement.placeholder = "<Console is disabled for mobile. Use buttons>";
 
         // Update placeholder font size
         let styleElem = document.createElement('style');
