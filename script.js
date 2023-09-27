@@ -134,7 +134,9 @@ function executeCommand(command) {
     const commandsList = ['story', 'contracts', 'buy', 'tokenomics', 'contact', 'clear'];
 
     if (command === "clear") {
-        document.getElementById("output").innerHTML = ASCII_ART;
+        setTimeout(() => {
+            document.getElementById("output").innerHTML = ASCII_ART;
+        }, 1500);  // 1500ms is 1.5 seconds
         return;
     }
 
