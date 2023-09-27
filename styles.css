@@ -185,6 +185,7 @@ body {
     }
 
     #output {
+        overflow-x: hidden;
         height: 250px;
         font-size: 0.8em;
     }
