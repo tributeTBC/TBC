@@ -184,11 +184,11 @@ body {
     .input-container {
         display: flex;
     align-items: center; /* This ensures vertical alignment */
-        font-size: 0.8em;
+        font-size: 1em;
     }
 
     .prefix, #input {
         width: 100%;
-        font-size: 0.8em;
+        font-size: 1em;
     }
 }
