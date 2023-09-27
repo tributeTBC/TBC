@@ -91,7 +91,9 @@ function adjustForMobile() {
     }
 }
 
-document.addEventListener('DOMContentLoaded', (event) => {
+document.addEventListener('DOMContentLoaded', setupDisplay);
+
+function setupDisplay() {
     const isMobile = window.innerWidth < 768;
     ASCII_ART = isMobile ? ASCII_ART_MOBILE : ASCII_ART_DESKTOP; // Assign value here
 
@@ -106,7 +108,7 @@ document.addEventListener('DOMContentLoaded', (event) => {
     if (window.innerWidth > 600) {
         document.getElementById("input").focus();
     }
-});
+}
 
 
 document.getElementById("commands").addEventListener("click", function(event) {
@@ -139,7 +141,7 @@ function executeCommand(command) {
 
     if (command === "clear") {
     setTimeout(() => {
-        adjustForMobile();
+        setupDisplay();
         document.getElementById("output").innerHTML = ASCII_ART;
     }, 800);  // 800ms delay
     return;
