@@ -75,6 +75,15 @@ function adjustForMobile() {
 
         // Update placeholder text
         inputElement.placeholder = "Console is disabled for mobile, use buttons";
+
+        // Update placeholder font size
+        let styleElem = document.createElement('style');
+        styleElem.innerHTML = `
+            #input::placeholder {
+                font-size: 8px; /* You can adjust this value as needed */
+            }
+        `;
+        document.head.appendChild(styleElem);
     }
 }
 
