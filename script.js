@@ -38,6 +38,9 @@ const ASCII_ART_DESKTOP = `
 document.addEventListener('DOMContentLoaded', (event) => {
     adjustOutputHeight();
 
+    // Adjustments specific to mobile devices
+    adjustForMobile();
+
     // This is just to handle potential edge cases like window resizing.
     window.addEventListener('resize', adjustOutputHeight);
 });
@@ -61,7 +64,18 @@ function adjustOutputHeight() {
     outputElement.style.height = (maxOutputHeight > 600 ? 600 : maxOutputHeight) + "px";
 }
 
+function adjustForMobile() {
+    // Check if device width is less than or equal to 600px
+    if (window.innerWidth <= 600) {
+        let inputElement = document.getElementById("input");
 
+        // Make input read-only
+        inputElement.setAttribute("readonly", true);
+
+        // Update placeholder text
+        inputElement.placeholder = "Console is disabled for mobile, use buttons";
+    }
+}
 
 document.addEventListener('DOMContentLoaded', (event) => {
     const isMobile = window.innerWidth < 768;
