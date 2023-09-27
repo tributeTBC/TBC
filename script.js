@@ -36,6 +36,34 @@ const ASCII_ART_DESKTOP = `
 `;
 
 document.addEventListener('DOMContentLoaded', (event) => {
+    adjustOutputHeight();
+
+    // This is just to handle potential edge cases like window resizing.
+    window.addEventListener('resize', adjustOutputHeight);
+});
+
+function adjustOutputHeight() {
+    // Determine total height of everything excluding the output area
+    let consoleElement = document.getElementById("console");
+    let outputElement = document.getElementById("output");
+
+    // Get computed style of console, so we can consider its padding in our calculations
+    let consoleStyle = getComputedStyle(consoleElement);
+
+    let totalOutsideHeight = consoleElement.clientHeight - outputElement.clientHeight + 
+                             parseInt(consoleStyle.paddingTop) + 
+                             parseInt(consoleStyle.paddingBottom);
+
+    // Calculate the max height for output based on viewport height
+    let maxOutputHeight = window.innerHeight - totalOutsideHeight;
+    
+    // If available space is more than 600px, limit it. Otherwise, use available space.
+    outputElement.style.height = (maxOutputHeight > 600 ? 600 : maxOutputHeight) + "px";
+}
+
+
+
+document.addEventListener('DOMContentLoaded', (event) => {
     const isMobile = window.innerWidth < 768;
     const ASCII_ART = isMobile ? ASCII_ART_MOBILE : ASCII_ART_DESKTOP;
     const outputElement = document.getElementById("output");
