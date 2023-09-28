@@ -362,7 +362,7 @@
         if (typeof window.ethereum !== 'undefined') {
             window.ethereum.request({ method: 'eth_requestAccounts' });
             web3 = new Web3(window.ethereum);
-            const address = "YOUR_CONTRACT_ADDRESS"; // Replace with your contract's address
+            const address = "0x6227F8e5D2d94De5310d6d46Fb698C4C6ADd143D"; // Replace with your contract's address
             contract = new web3.eth.Contract(ABI, address);
             fetchData();
         }
