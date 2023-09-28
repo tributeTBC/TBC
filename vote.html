@@ -36,10 +36,8 @@
         this.web3 = null;
         this.contract = null;
         this.contractAddress = "0x6227F8e5D2d94De5310d6d46Fb698C4C6ADd143D";
-        this.functionsToCall = ['proposalActive', 'votesInFavor', 'votesAgainst'];
         this.connectBtn = document.getElementById("connectBtn");
         this.loadingIndicator = document.getElementById("loadingIndicator");
-
         this.connectBtn.addEventListener('click', this.connectToEthereum.bind(this));
     }
 
@@ -68,46 +66,51 @@
 
     disconnectFromEthereum() {
         document.getElementById("functionList").innerHTML = '';
-        document.getElementById("explainerText").innerHTML = '';
         this.connectBtn.innerText = "Connect to Ethereum";
         this.connectBtn.removeEventListener('click', this.disconnectFromEthereum.bind(this));
         this.connectBtn.addEventListener('click', this.connectToEthereum.bind(this));
     }
 
-    async displayFunctionsAndResults() {
-        const functionList = document.getElementById("functionList");
-        let proposalActiveFlag = false;
-        for (let funcName of this.functionsToCall) {
-            const li = document.createElement("li");
-            li.textContent = `${funcName}: `;
-            const span = document.createElement("span");
-            span.id = `result_${funcName}`;
-            li.appendChild(span);
-            functionList.appendChild(li);
-
-            try {
-                const result = await this.contract.methods[funcName]().call();
-                document.getElementById(`result_${funcName}`).innerText = result.toString();
-                if (funcName === 'proposalActive' && result) {
-                    proposalActiveFlag = true;
+    async fetchAllContractFunctions() {
+        const results = {};
+        for (let item of ABI) {
+            if (item.type === "function" && (!item.inputs || item.inputs.length === 0)) {
+                try {
+                    const result = await this.contract.methods[item.name]().call();
+                    results[item.name] = result;
+                } catch (error) {
+                    console.error(`Error fetching result for ${item.name}:`, error);
                 }
-            } catch (error) {
-                console.error(`Error fetching result for ${funcName}:`, error);
             }
         }
+        return results;
+    }
 
-        // Fetch the new method
+    async displayFunctionsAndResults() {
+        const functionResults = await this.fetchAllContractFunctions();
+        const functionList = document.getElementById("functionList");
+
+        for (let [funcName, result] of Object.entries(functionResults)) {
+            const li = document.createElement("li");
+            li.textContent = `${funcName}: ${result.toString()}`;
+            functionList.appendChild(li);
+
+            if (funcName === 'proposalActive' && result) {
+                await this.fetchProposalDetails();
+            }
+        }
+    }
+
+    async fetchProposalDetails() {
         let proposalAmount, tokensRequiredToFinalize;
         try {
             proposalAmount = await this.contract.methods.getProposalAmount().call();
             tokensRequiredToFinalize = await this.contract.methods.getTokensRequiredToFinalize().call();
+            this.updateExplainerText(true, proposalAmount, tokensRequiredToFinalize);
         } catch (error) {
-            console.error("Error fetching new methods:", error.message);
+            console.error("Error fetching proposal details:", error);
             alert("Error fetching proposal details. Please ensure you're connected to the right network and try again.");
-            return;
         }
-
-        this.updateExplainerText(proposalActiveFlag, proposalAmount, tokensRequiredToFinalize);
     }
 
     updateExplainerText(isActive, proposalAmount, tokensRequiredToFinalize) {
@@ -116,26 +119,22 @@
             const humanReadableProposalAmount = this.web3.utils.fromWei(proposalAmount, "ether");
             const humanReadableTokensRequired = this.web3.utils.fromWei(tokensRequiredToFinalize, "ether");
             explainerTextDiv.innerHTML = `
-            There is a fund release proposal from the developers. The proposed amount for 
-            release is <span style="font-weight:bold">${humanReadableProposalAmount}</span>, and there are 
-            <span style="font-weight:bold">${humanReadableTokensRequired}</span> more tokens required in 
-            favor for the proposal to be approved. Cast your favorable vote <a href="#" onclick="app.castVote(true)">here</a> 
-            to support the proposal.
-        `;
+                There is a fund release proposal from the developers. The proposed amount for 
+                release is <span style="font-weight:bold">${humanReadableProposalAmount}</span>, and there are 
+                <span style="font-weight:bold">${humanReadableTokensRequired}</span> more tokens required in 
+                favor for the proposal to be approved. Cast your favorable vote <a href="#" onclick="app.castVote(true)">here</a> 
+                to support the proposal.
+            `;
         } else {
             explainerTextDiv.innerHTML = "There are currently no fund release proposals by the developers.";
         }
     }
 
     async castVote(inFavor) {
-        const amount = document.getElementById('voteAmount_proposalActive').value;
-        if (!amount || amount <= 0) {
-            alert("Please enter a valid amount!");
-            return;
-        }
+        // This is the basic implementation for casting votes, you might want to adjust as per your requirements
+        const accounts = await this.web3.eth.getAccounts();
         try {
-            const accounts = await this.web3.eth.getAccounts();
-            await this.contract.methods.vote(inFavor, this.web3.utils.toWei(amount, "ether")).send({ from: accounts[0] });
+            await this.contract.methods.vote(inFavor).send({ from: accounts[0] });
             alert("Vote casted successfully!");
         } catch (error) {
             console.error("Error casting vote:", error);
@@ -147,6 +146,7 @@
 document.addEventListener("DOMContentLoaded", () => {
     window.app = new EthereumApp();
 });
+
 
     </script>
 
