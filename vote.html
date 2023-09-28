@@ -9,10 +9,10 @@
 
 <body>
     <h2>Check Active Proposal</h2>
-    <button id="check">Check for Active Proposal</button>
-    <p id="result"></p>
-	<h2>Callable Functions Without Parameters</h2>
-	<ul id="functionList"></ul>
+<button id="connectBtn">Connect to Ethereum</button>
+<span id="loadingIndicator" style="display: none;">Loading...</span>
+<ul id="functionList"></ul>
+<p id="result"></p>
 	<script>
 		const ABI = [
 	{
@@ -291,31 +291,45 @@
     let web3;
     let contract;
     const contractAddress = "0x6227F8e5D2d94De5310d6d46Fb698C4C6ADd143D";
-    
     const functionsToCall = ['proposalActive', 'votesInFavor', 'votesAgainst'];
+    const connectBtn = document.getElementById("connectBtn");
+    const loadingIndicator = document.getElementById("loadingIndicator");
 
-    window.addEventListener('load', async () => {
-        if (window.ethereum) {
+    async function connectToEthereum() {
+        loadingIndicator.style.display = "inline"; // Show loading indicator
+
+        if (typeof window.ethereum !== 'undefined') {
             try {
                 web3 = new Web3(window.ethereum);
                 await window.ethereum.request({ method: 'eth_requestAccounts' });
                 contract = new web3.eth.Contract(ABI, contractAddress);
-                displayFunctionsAndResults();
+                connectBtn.innerText = "Disconnect from Ethereum";
+                connectBtn.removeEventListener('click', connectToEthereum);
+                connectBtn.addEventListener('click', disconnectFromEthereum);
+                await displayFunctionsAndResults();
             } catch (error) {
                 console.error("User denied account access");
+            } finally {
+                loadingIndicator.style.display = "none"; // Hide loading indicator
             }
-        } else if (window.web3) {
-            web3 = new Web3(window.web3.currentProvider);
-            contract = new web3.eth.Contract(ABI, contractAddress);
-            displayFunctionsAndResults();
         } else {
             console.log('Non-Ethereum browser detected. Consider using MetaMask!');
+            loadingIndicator.style.display = "none"; // Hide loading indicator
         }
-    });
+    }
 
-    function displayFunctionsAndResults() {
+    function disconnectFromEthereum() {
+        document.getElementById("functionList").innerHTML = '';
+        connectBtn.innerText = "Connect to Ethereum";
+        connectBtn.removeEventListener('click', disconnectFromEthereum);
+        connectBtn.addEventListener('click', connectToEthereum);
+    }
+
+    connectBtn.addEventListener('click', connectToEthereum);
+
+    async function displayFunctionsAndResults() {
         const functionList = document.getElementById("functionList");
-        functionsToCall.forEach(funcName => {
+        for (let funcName of functionsToCall) {
             const li = document.createElement("li");
             li.textContent = `${funcName}: `;
             const span = document.createElement("span");
@@ -344,12 +358,13 @@
 
             functionList.appendChild(li);
 
-            contract.methods[funcName]().call().then(result => {
+            try {
+                const result = await contract.methods[funcName]().call();
                 document.getElementById(`result_${funcName}`).innerText = result.toString();
-            }).catch(error => {
+            } catch (error) {
                 console.error(`Error fetching result for ${funcName}:`, error);
-            });
-        });
+            }
+        }
     }
 
     async function castVote(inFavor) {
