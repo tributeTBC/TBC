@@ -4,67 +4,323 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MetaMask Connection Example</title>
-    <script src="https://cdn.jsdelivr.net/npm/ethereumjs-util@7.1.0/dist/index.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/ethers@5.5.1/dist/ethers.min.js"></script>
+    <title>Check Active Proposal</title>
 </head>
 
 <body>
+    <h2>Check Active Proposal</h2>
+    <button id="check">Check for Active Proposal</button>
+    <p id="result"></p>
 
-    <h1>MetaMask Connection Example</h1>
-
-    <button id="connectButton">Connect to MetaMask</button>
-    <br><br>
-
-    <label for="addressInput">Enter Ethereum Address:</label>
-    <input type="text" id="addressInput" value="0xYourAddressHere">
-    <button id="fetchDataButton">Fetch Ether Balance</button>
-    <br><br>
-
-    <h3>Ether Balance:</h3>
-    <div id="balanceDisplay">-</div>
-
+    <script src="https://cdn.jsdelivr.net/gh/ethereum/web3.js@1.3.5/dist/web3.min.js"></script>
     <script>
-        let provider;
+        let web3;
+        let contract;
+        const contractAddress = "0x6227F8e5D2d94De5310d6d46Fb698C4C6ADd143D";
+        const ABI = [
+	{
+		"inputs": [
+			{
+				"internalType": "address",
+				"name": "_tokenAddress",
+				"type": "address"
+			}
+		],
+		"stateMutability": "nonpayable",
+		"type": "constructor"
+	},
+	{
+		"anonymous": false,
+		"inputs": [
+			{
+				"indexed": false,
+				"internalType": "bool",
+				"name": "approved",
+				"type": "bool"
+			}
+		],
+		"name": "ProposalFinalized",
+		"type": "event"
+	},
+	{
+		"anonymous": false,
+		"inputs": [
+			{
+				"indexed": true,
+				"internalType": "address",
+				"name": "developer",
+				"type": "address"
+			},
+			{
+				"indexed": false,
+				"internalType": "uint256",
+				"name": "amount",
+				"type": "uint256"
+			}
+		],
+		"name": "ProposalStarted",
+		"type": "event"
+	},
+	{
+		"anonymous": false,
+		"inputs": [
+			{
+				"indexed": true,
+				"internalType": "address",
+				"name": "voter",
+				"type": "address"
+			},
+			{
+				"indexed": false,
+				"internalType": "bool",
+				"name": "inFavor",
+				"type": "bool"
+			},
+			{
+				"indexed": false,
+				"internalType": "uint256",
+				"name": "amount",
+				"type": "uint256"
+			}
+		],
+		"name": "Voted",
+		"type": "event"
+	},
+	{
+		"inputs": [],
+		"name": "PROPOSAL_DURATION",
+		"outputs": [
+			{
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "currentTotalSupply",
+		"outputs": [
+			{
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "developer",
+		"outputs": [
+			{
+				"internalType": "address",
+				"name": "",
+				"type": "address"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "emergencyReset",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "finalizeProposal",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "address",
+				"name": "",
+				"type": "address"
+			}
+		],
+		"name": "lockedTokens",
+		"outputs": [
+			{
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "proposalActive",
+		"outputs": [
+			{
+				"internalType": "bool",
+				"name": "",
+				"type": "bool"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "proposalAmount",
+		"outputs": [
+			{
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "proposalExpiry",
+		"outputs": [
+			{
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "uint256",
+				"name": "amount",
+				"type": "uint256"
+			}
+		],
+		"name": "startProposal",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "token",
+		"outputs": [
+			{
+				"internalType": "contract IToken",
+				"name": "",
+				"type": "address"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "tokensRequiredToFinalize",
+		"outputs": [
+			{
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "unlockTokens",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "bool",
+				"name": "_inFavor",
+				"type": "bool"
+			},
+			{
+				"internalType": "uint256",
+				"name": "_amount",
+				"type": "uint256"
+			}
+		],
+		"name": "vote",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "votesAgainst",
+		"outputs": [
+			{
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "votesInFavor",
+		"outputs": [
+			{
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	}
+];
 
-        async function initialize() {
-            if (typeof ethereum !== 'undefined') {
-                ethereum.on('chainChanged', () => document.location.reload());
-                ethereum.on('accountsChanged', () => document.location.reload());
-            }
-        }
-
-        async function connectMetaMask() {
-            if (typeof ethereum !== 'undefined') {
+        window.addEventListener('load', async () => {
+            if (window.ethereum) {
                 try {
-                    const accounts = await ethereum.request({ method: 'eth_requestAccounts' });
-                    provider = new ethers.providers.Web3Provider(ethereum);
-                    console.log("Connected to:", accounts[0]);
-                } catch (err) {
-                    console.error("User rejected the connection:", err);
+                    web3 = new Web3(window.ethereum);
+                    await window.ethereum.request({ method: 'eth_requestAccounts' }); // Request account access
+                    contract = new web3.eth.Contract(ABI, contractAddress);
+                } catch (error) {
+                    console.error("User denied account access");
                 }
+            } else if (window.web3) {
+                web3 = new Web3(window.web3.currentProvider);
+                contract = new web3.eth.Contract(ABI, contractAddress);
             } else {
-                alert("MetaMask is not installed!");
+                console.log('Non-Ethereum browser detected. Consider using MetaMask!');
             }
-        }
+        });
 
-        async function fetchBalance() {
-            const address = document.getElementById("addressInput").value;
-            if (!ethers.utils.isAddress(address)) {
-                alert("Invalid Ethereum address.");
-                return;
+        document.getElementById("check").addEventListener("click", async () => {
+            try {
+                const isActive = await contract.methods.proposalActive().call();
+                if (isActive) {
+                    document.getElementById("result").innerText = "There's an active proposal!";
+                } else {
+                    document.getElementById("result").innerText = "No active proposal currently.";
+                }
+            } catch (error) {
+                console.error("Error:", error);
+                document.getElementById("result").innerText = "Error occurred. Check console for details.";
             }
+        });
 
-            const balance = await provider.getBalance(address);
-            document.getElementById("balanceDisplay").innerText = ethers.utils.formatEther(balance) + " ETH";
-        }
-
-        document.getElementById("connectButton").addEventListener("click", connectMetaMask);
-        document.getElementById("fetchDataButton").addEventListener("click", fetchBalance);
-
-        window.onload = initialize;
     </script>
-
 </body>
 
 </html>
