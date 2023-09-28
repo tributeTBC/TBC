@@ -1,51 +1,70 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="styles.css">
-    <title>Governance Interface</title>
+    <title>MetaMask Connection Example</title>
+    <script src="https://cdn.jsdelivr.net/npm/ethereumjs-util@7.1.0/dist/index.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/ethers@5.5.1/dist/ethers.min.js"></script>
 </head>
+
 <body>
 
-<div id="console">
-    <div id="header-bar">
-        <button id="connectMetamask">Connect MetaMask</button>
-    </div>
+    <h1>MetaMask Connection Example</h1>
 
-    <!-- Active Proposal Info -->
-    <div id="activeProposal">
-        <p>There is an active proposal.</p>
+    <button id="connectButton">Connect to MetaMask</button>
+    <br><br>
 
-        <!-- Voting Info & Input Area -->
-        <div class="command-line">
-            <div id="votingInfo">
-                <!-- Left Column: Voting Information -->
-                <div style="width:50%; float:left;">
-                    <p>Total Votes In Favor: <span id="votesInFavor"></span></p>
-                    <p>Total Votes Against: <span id="votesAgainst"></span></p>
-                    <!-- ... Any other information you wish to display ... -->
-                </div>
-                
-                <!-- Right Column: Voting Input -->
-                <div style="width:50%; float:right;">
-                    <label for="voteAmount">Amount:</label>
-                    <input type="number" id="voteAmount">
-                    <button id="voteFavor">Vote In Favor</button>
-                    <button id="voteAgainst">Vote Against</button>
-                    <p>You have already voted: <span id="lockedTokens"></span> tokens.</p>
-                </div>
-                
-                <!-- Clear both to ensure the parent container encompasses its children -->
-                <div style="clear:both;"></div>
-            </div>
-        </div>
-    </div>
-</div>
+    <label for="addressInput">Enter Ethereum Address:</label>
+    <input type="text" id="addressInput" value="0xYourAddressHere">
+    <button id="fetchDataButton">Fetch Ether Balance</button>
+    <br><br>
 
-<!-- JS Script to interact with MetaMask & fetch data from the contract -->
-<script src="contractABI.js"></script>
-<script src="https://cdn.jsdelivr.net/gh/ethereum/web3.js@1.x/dist/web3.min.js"></script>
-<script src="governance.js"></script>
+    <h3>Ether Balance:</h3>
+    <div id="balanceDisplay">-</div>
+
+    <script>
+        let provider;
+
+        async function initialize() {
+            if (typeof ethereum !== 'undefined') {
+                ethereum.on('chainChanged', () => document.location.reload());
+                ethereum.on('accountsChanged', () => document.location.reload());
+            }
+        }
+
+        async function connectMetaMask() {
+            if (typeof ethereum !== 'undefined') {
+                try {
+                    const accounts = await ethereum.request({ method: 'eth_requestAccounts' });
+                    provider = new ethers.providers.Web3Provider(ethereum);
+                    console.log("Connected to:", accounts[0]);
+                } catch (err) {
+                    console.error("User rejected the connection:", err);
+                }
+            } else {
+                alert("MetaMask is not installed!");
+            }
+        }
+
+        async function fetchBalance() {
+            const address = document.getElementById("addressInput").value;
+            if (!ethers.utils.isAddress(address)) {
+                alert("Invalid Ethereum address.");
+                return;
+            }
+
+            const balance = await provider.getBalance(address);
+            document.getElementById("balanceDisplay").innerText = ethers.utils.formatEther(balance) + " ETH";
+        }
+
+        document.getElementById("connectButton").addEventListener("click", connectMetaMask);
+        document.getElementById("fetchDataButton").addEventListener("click", fetchBalance);
+
+        window.onload = initialize;
+    </script>
+
 </body>
+
 </html>
