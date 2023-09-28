@@ -9,401 +9,395 @@
     <title>MetaMask Custom Network and Contract Interaction</title>
     <style>
         body {
-    font-family: 'VT323', monospace;
-    color: white; /* Change from #00FF00 to white */
-    margin: 10px;
-    background-color: black;
-    line-height: 1.5; /* Improves readability */
-}
+            font-family: 'VT323', monospace;
+            color: #00FF00;
+            margin: 10px;
+            background-color: black;
+            line-height: 1.5;
+            /* Improves readability */
+        }
 
-/* Button styling */
-button {
-    padding: 10px 20px;
-    border: none;
-    border-radius: 4px;
-    background-color: rgba(0, 255, 0, 0.2); /* Low opacity green */
-    color: white; /* White text color */
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-}
-
-button:hover {
-    background-color: rgba(0, 255, 0, 0.4); /* Slightly darker on hover */
-}
-
-button:disabled {
-    background-color: #ccc;
-    cursor: not-allowed;
-    color: white; /* Making text consistent */
-}
-
-input {
-    font-family: 'VT323', monospace;
-    background-color: #1a1a1a;
-    padding: 10px;
-    color: white; /* Change from #00FF00 to white */
-    width: 100%;
-    margin-top: 10px;
-    margin-bottom: 10px;
-}
         .container {
-    display: flex;
-    justify-content: center;  /* Centering the direct children horizontally */
-    gap: 20px;                /* Creates a gap between columns */
-    max-width: 100%;        /* Setting a max width for the container */
-    margin: 0 auto;           /* Centers the container on the page */
-}
+            display: flex;
+            justify-content: center;
+            /* Centering the direct children horizontally */
+            gap: 20px;
+            /* Creates a gap between columns */
+            max-width: 100%;
+            /* Setting a max width for the container */
+            margin: 0 auto;
+            /* Centers the container on the page */
+        }
 
         h2 {
             padding-bottom: 10px;
-            font-size: 1.5em; /* Makes it stand out more */
-            margin-bottom: 20px; /* Gives it some space from content below */
+            font-size: 1.5em;
+            /* Makes it stand out more */
+            margin-bottom: 20px;
+            /* Gives it some space from content below */
         }
 
         /* Button styling */
+        button {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            background-color: #007BFF;
+            color: white;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
 
-/* Table styling */
-table {
-    width: 100%;
-    border-collapse: collapse;
-}
+        button:hover {
+            background-color: #0056b3;
+        }
 
-table td {
-    padding: 10px;
-    border: 1px solid #ddd;
-}
+        button:disabled {
+            background-color: #ccc;
+            cursor: not-allowed;
+        }
 
-/* Spacing */
-#votingControls {
-    margin-top: 20px;
-}
+        /* Table styling */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
 
-        
+        table td {
+            padding: 10px;
+            border: 1px solid #ddd;
+        }
+
+        /* Spacing */
+        #votingControls {
+            margin-top: 20px;
+        }
+
+        input {
+            font-family: 'VT323', monospace;
+            background-color: #1a1a1a;
+            padding: 10px;
+            color: #00FF00;
+            width: 100%;
+            margin-top: 10px;
+            margin-bottom: 10px;
+        }
 
         .inactive-message {
-            display: none; /* Hidden by default */
-            font-size: 1.2em; 
-            color: #FF5555; /* A red color to indicate inactivity */
+            display: none;
+            /* Hidden by default */
+            font-size: 1.2em;
+            color: #FF5555;
+            /* A red color to indicate inactivity */
         }
     </style>
 </head>
 
 <body>
-<div class="container">
-    <div class="column">
-        <button id="connectButton">Connect to MetaMask</button>
-        <h2>Current Vote Situation:</h2>
-        <div>Vote Active: <span id="voteActive"></span></div>
-        <div class="vote-info">
-            <div>Proposal Amount: <span id="proposalAmount"></span></div>
-            <div>Votes in Favor: <span id="votesInFavor"></span></div>
-            <div>Votes Against: <span id="votesAgainst"></span></div>
-            <div>Locked Tokens: <span id="lockedTokens"></span></div>
-            <div>Tokens Required to Finalize: <span id="tokensRequired"></span></div>
+    <div class="container">
+        <div class="column">
+            <button id="connectButton">Connect to MetaMask</button>
+            <h2>Current Vote Situation:</h2>
+            <div>Vote Active: <span id="voteActive"></span></div>
+            <div class="vote-info">
+                <div>Proposal Amount: <span id="proposalAmount"></span></div>
+                <div>Votes in Favor: <span id="votesInFavor"></span></div>
+                <div>Votes Against: <span id="votesAgainst"></span></div>
+                <div>Locked Tokens: <span id="lockedTokens"></span></div>
+                <div>Tokens Required to Finalize: <span id="tokensRequired"></span></div>
+            </div>
+            <div class="inactive-message">Voting is currently inactive.</div>
         </div>
-        <div class="inactive-message">Voting is currently inactive.</div>
+
+        <div class="column">
+            <h2>Interact to Vote:</h2>
+            <input type="text" id="voteAmount" placeholder="Enter amount to vote with">
+            <button id="voteInFavorButton">Vote in Favor</button>
+            <button id="voteAgainstButton">Vote Against</button>
+        </div>
     </div>
 
-    <div class="column">
-        <h2>Interact to Vote:</h2>
-        <input type="text" id="voteAmount" placeholder="Enter amount to vote with">
-        <button id="voteInFavorButton">Vote in Favor</button>
-        <button id="voteAgainstButton">Vote Against</button>
-    </div>
-</div>
 
 
+    <script src="https://cdn.jsdelivr.net/gh/ethereum/web3.js@1.5.2/dist/web3.min.js"></script>
+    <script>
 
-<script src="https://cdn.jsdelivr.net/gh/ethereum/web3.js@1.5.2/dist/web3.min.js"></script>
-<script>
-	
-    let web3;
-    let contract;
-    const contractAddress = '0x6227F8e5D2d94De5310d6d46Fb698C4C6ADd143D';
-    const ABI = [
-	{
-		"inputs": [
-			{
-				"internalType": "address",
-				"name": "_tokenAddress",
-				"type": "address"
-			}
-		],
-		"stateMutability": "nonpayable",
-		"type": "constructor"
-	},
-	{
-		"anonymous": false,
-		"inputs": [
-			{
-				"indexed": false,
-				"internalType": "bool",
-				"name": "approved",
-				"type": "bool"
-			}
-		],
-		"name": "ProposalFinalized",
-		"type": "event"
-	},
-	{
-		"anonymous": false,
-		"inputs": [
-			{
-				"indexed": true,
-				"internalType": "address",
-				"name": "developer",
-				"type": "address"
-			},
-			{
-				"indexed": false,
-				"internalType": "uint256",
-				"name": "amount",
-				"type": "uint256"
-			}
-		],
-		"name": "ProposalStarted",
-		"type": "event"
-	},
-	{
-		"anonymous": false,
-		"inputs": [
-			{
-				"indexed": true,
-				"internalType": "address",
-				"name": "voter",
-				"type": "address"
-			},
-			{
-				"indexed": false,
-				"internalType": "bool",
-				"name": "inFavor",
-				"type": "bool"
-			},
-			{
-				"indexed": false,
-				"internalType": "uint256",
-				"name": "amount",
-				"type": "uint256"
-			}
-		],
-		"name": "Voted",
-		"type": "event"
-	},
-	{
-		"inputs": [],
-		"name": "PROPOSAL_DURATION",
-		"outputs": [
-			{
-				"internalType": "uint256",
-				"name": "",
-				"type": "uint256"
-			}
-		],
-		"stateMutability": "view",
-		"type": "function"
-	},
-	{
-		"inputs": [],
-		"name": "currentTotalSupply",
-		"outputs": [
-			{
-				"internalType": "uint256",
-				"name": "",
-				"type": "uint256"
-			}
-		],
-		"stateMutability": "view",
-		"type": "function"
-	},
-	{
-		"inputs": [],
-		"name": "developer",
-		"outputs": [
-			{
-				"internalType": "address",
-				"name": "",
-				"type": "address"
-			}
-		],
-		"stateMutability": "view",
-		"type": "function"
-	},
-	{
-		"inputs": [],
-		"name": "emergencyReset",
-		"outputs": [],
-		"stateMutability": "nonpayable",
-		"type": "function"
-	},
-	{
-		"inputs": [],
-		"name": "finalizeProposal",
-		"outputs": [],
-		"stateMutability": "nonpayable",
-		"type": "function"
-	},
-	{
-		"inputs": [
-			{
-				"internalType": "address",
-				"name": "",
-				"type": "address"
-			}
-		],
-		"name": "lockedTokens",
-		"outputs": [
-			{
-				"internalType": "uint256",
-				"name": "",
-				"type": "uint256"
-			}
-		],
-		"stateMutability": "view",
-		"type": "function"
-	},
-	{
-		"inputs": [],
-		"name": "proposalActive",
-		"outputs": [
-			{
-				"internalType": "bool",
-				"name": "",
-				"type": "bool"
-			}
-		],
-		"stateMutability": "view",
-		"type": "function"
-	},
-	{
-		"inputs": [],
-		"name": "proposalAmount",
-		"outputs": [
-			{
-				"internalType": "uint256",
-				"name": "",
-				"type": "uint256"
-			}
-		],
-		"stateMutability": "view",
-		"type": "function"
-	},
-	{
-		"inputs": [],
-		"name": "proposalExpiry",
-		"outputs": [
-			{
-				"internalType": "uint256",
-				"name": "",
-				"type": "uint256"
-			}
-		],
-		"stateMutability": "view",
-		"type": "function"
-	},
-	{
-		"inputs": [
-			{
-				"internalType": "uint256",
-				"name": "amount",
-				"type": "uint256"
-			}
-		],
-		"name": "startProposal",
-		"outputs": [],
-		"stateMutability": "nonpayable",
-		"type": "function"
-	},
-	{
-		"inputs": [],
-		"name": "token",
-		"outputs": [
-			{
-				"internalType": "contract IToken",
-				"name": "",
-				"type": "address"
-			}
-		],
-		"stateMutability": "view",
-		"type": "function"
-	},
-	{
-		"inputs": [],
-		"name": "tokensRequiredToFinalize",
-		"outputs": [
-			{
-				"internalType": "uint256",
-				"name": "",
-				"type": "uint256"
-			}
-		],
-		"stateMutability": "view",
-		"type": "function"
-	},
-	{
-		"inputs": [],
-		"name": "unlockTokens",
-		"outputs": [],
-		"stateMutability": "nonpayable",
-		"type": "function"
-	},
-	{
-		"inputs": [
-			{
-				"internalType": "bool",
-				"name": "_inFavor",
-				"type": "bool"
-			},
-			{
-				"internalType": "uint256",
-				"name": "_amount",
-				"type": "uint256"
-			}
-		],
-		"name": "vote",
-		"outputs": [],
-		"stateMutability": "nonpayable",
-		"type": "function"
-	},
-	{
-		"inputs": [],
-		"name": "votesAgainst",
-		"outputs": [
-			{
-				"internalType": "uint256",
-				"name": "",
-				"type": "uint256"
-			}
-		],
-		"stateMutability": "view",
-		"type": "function"
-	},
-	{
-		"inputs": [],
-		"name": "votesInFavor",
-		"outputs": [
-			{
-				"internalType": "uint256",
-				"name": "",
-				"type": "uint256"
-			}
-		],
-		"stateMutability": "view",
-		"type": "function"
-	}
-]; // Replace with your contract's ABI
-	async function initWeb3() {
-    if (window.ethereum) {
-        web3 = new Web3(window.ethereum);
-        await window.ethereum.enable();
-        contract = new web3.eth.Contract(ABI, contractAddress);
-        fetchContractData();
-    } else {
-        alert("Please install MetaMask to interact with this page.");
-    }
-}
+        let web3;
+        let contract;
+        const contractAddress = '0x6227F8e5D2d94De5310d6d46Fb698C4C6ADd143D';
+        const ABI = [
+            {
+                "inputs": [
+                    {
+                        "internalType": "address",
+                        "name": "_tokenAddress",
+                        "type": "address"
+                    }
+                ],
+                "stateMutability": "nonpayable",
+                "type": "constructor"
+            },
+            {
+                "anonymous": false,
+                "inputs": [
+                    {
+                        "indexed": false,
+                        "internalType": "bool",
+                        "name": "approved",
+                        "type": "bool"
+                    }
+                ],
+                "name": "ProposalFinalized",
+                "type": "event"
+            },
+            {
+                "anonymous": false,
+                "inputs": [
+                    {
+                        "indexed": true,
+                        "internalType": "address",
+                        "name": "developer",
+                        "type": "address"
+                    },
+                    {
+                        "indexed": false,
+                        "internalType": "uint256",
+                        "name": "amount",
+                        "type": "uint256"
+                    }
+                ],
+                "name": "ProposalStarted",
+                "type": "event"
+            },
+            {
+                "anonymous": false,
+                "inputs": [
+                    {
+                        "indexed": true,
+                        "internalType": "address",
+                        "name": "voter",
+                        "type": "address"
+                    },
+                    {
+                        "indexed": false,
+                        "internalType": "bool",
+                        "name": "inFavor",
+                        "type": "bool"
+                    },
+                    {
+                        "indexed": false,
+                        "internalType": "uint256",
+                        "name": "amount",
+                        "type": "uint256"
+                    }
+                ],
+                "name": "Voted",
+                "type": "event"
+            },
+            {
+                "inputs": [],
+                "name": "PROPOSAL_DURATION",
+                "outputs": [
+                    {
+                        "internalType": "uint256",
+                        "name": "",
+                        "type": "uint256"
+                    }
+                ],
+                "stateMutability": "view",
+                "type": "function"
+            },
+            {
+                "inputs": [],
+                "name": "currentTotalSupply",
+                "outputs": [
+                    {
+                        "internalType": "uint256",
+                        "name": "",
+                        "type": "uint256"
+                    }
+                ],
+                "stateMutability": "view",
+                "type": "function"
+            },
+            {
+                "inputs": [],
+                "name": "developer",
+                "outputs": [
+                    {
+                        "internalType": "address",
+                        "name": "",
+                        "type": "address"
+                    }
+                ],
+                "stateMutability": "view",
+                "type": "function"
+            },
+            {
+                "inputs": [],
+                "name": "emergencyReset",
+                "outputs": [],
+                "stateMutability": "nonpayable",
+                "type": "function"
+            },
+            {
+                "inputs": [],
+                "name": "finalizeProposal",
+                "outputs": [],
+                "stateMutability": "nonpayable",
+                "type": "function"
+            },
+            {
+                "inputs": [
+                    {
+                        "internalType": "address",
+                        "name": "",
+                        "type": "address"
+                    }
+                ],
+                "name": "lockedTokens",
+                "outputs": [
+                    {
+                        "internalType": "uint256",
+                        "name": "",
+                        "type": "uint256"
+                    }
+                ],
+                "stateMutability": "view",
+                "type": "function"
+            },
+            {
+                "inputs": [],
+                "name": "proposalActive",
+                "outputs": [
+                    {
+                        "internalType": "bool",
+                        "name": "",
+                        "type": "bool"
+                    }
+                ],
+                "stateMutability": "view",
+                "type": "function"
+            },
+            {
+                "inputs": [],
+                "name": "proposalAmount",
+                "outputs": [
+                    {
+                        "internalType": "uint256",
+                        "name": "",
+                        "type": "uint256"
+                    }
+                ],
+                "stateMutability": "view",
+                "type": "function"
+            },
+            {
+                "inputs": [],
+                "name": "proposalExpiry",
+                "outputs": [
+                    {
+                        "internalType": "uint256",
+                        "name": "",
+                        "type": "uint256"
+                    }
+                ],
+                "stateMutability": "view",
+                "type": "function"
+            },
+            {
+                "inputs": [
+                    {
+                        "internalType": "uint256",
+                        "name": "amount",
+                        "type": "uint256"
+                    }
+                ],
+                "name": "startProposal",
+                "outputs": [],
+                "stateMutability": "nonpayable",
+                "type": "function"
+            },
+            {
+                "inputs": [],
+                "name": "token",
+                "outputs": [
+                    {
+                        "internalType": "contract IToken",
+                        "name": "",
+                        "type": "address"
+                    }
+                ],
+                "stateMutability": "view",
+                "type": "function"
+            },
+            {
+                "inputs": [],
+                "name": "tokensRequiredToFinalize",
+                "outputs": [
+                    {
+                        "internalType": "uint256",
+                        "name": "",
+                        "type": "uint256"
+                    }
+                ],
+                "stateMutability": "view",
+                "type": "function"
+            },
+            {
+                "inputs": [],
+                "name": "unlockTokens",
+                "outputs": [],
+                "stateMutability": "nonpayable",
+                "type": "function"
+            },
+            {
+                "inputs": [
+                    {
+                        "internalType": "bool",
+                        "name": "_inFavor",
+                        "type": "bool"
+                    },
+                    {
+                        "internalType": "uint256",
+                        "name": "_amount",
+                        "type": "uint256"
+                    }
+                ],
+                "name": "vote",
+                "outputs": [],
+                "stateMutability": "nonpayable",
+                "type": "function"
+            },
+            {
+                "inputs": [],
+                "name": "votesAgainst",
+                "outputs": [
+                    {
+                        "internalType": "uint256",
+                        "name": "",
+                        "type": "uint256"
+                    }
+                ],
+                "stateMutability": "view",
+                "type": "function"
+            },
+            {
+                "inputs": [],
+                "name": "votesInFavor",
+                "outputs": [
+                    {
+                        "internalType": "uint256",
+                        "name": "",
+                        "type": "uint256"
+                    }
+                ],
+                "stateMutability": "view",
+                "type": "function"
+            }
+        ]; // Replace with your contract's ABI
+        document.getElementById('voteActive').textContent = "Inactive";
 
-	document.getElementById('voteActive').textContent = "Inactive";
-        
         // Hiding the voting info labels
         document.getElementById('proposalAmountLabel').style.display = 'none';
         document.getElementById('votesInFavorLabel').style.display = 'none';
@@ -424,30 +418,30 @@ table td {
     }
 }
 
-async function vote(inFavor) {
-    const amount = document.getElementById('voteAmount').value;
-    if (amount && Number(amount) > 0) {
-        try {
-            if (inFavor) {
-                await contract.methods.vote(true, web3.utils.toWei(amount, 'ether')).send({ from: web3.currentProvider.selectedAddress });
+        async function vote(inFavor) {
+            const amount = document.getElementById('voteAmount').value;
+            if (amount && Number(amount) > 0) {
+                try {
+                    if (inFavor) {
+                        await contract.methods.vote(true, web3.utils.toWei(amount, 'ether')).send({ from: web3.currentProvider.selectedAddress });
+                    } else {
+                        await contract.methods.vote(false, web3.utils.toWei(amount, 'ether')).send({ from: web3.currentProvider.selectedAddress });
+                    }
+                    fetchContractData();
+                } catch (error) {
+                    console.error("Error occurred while voting:", error);
+                }
             } else {
-                await contract.methods.vote(false, web3.utils.toWei(amount, 'ether')).send({ from: web3.currentProvider.selectedAddress });
+                alert("Please enter a valid amount to vote with.");
             }
-            fetchContractData();
-        } catch (error) {
-            console.error("Error occurred while voting:", error);
         }
-    } else {
-        alert("Please enter a valid amount to vote with.");
-    }
-}
 
-document.getElementById('connectButton').addEventListener('click', initWeb3);
-document.getElementById('voteInFavorButton').addEventListener('click', () => vote(true));
-document.getElementById('voteAgainstButton').addEventListener('click', () => vote(false));
+        document.getElementById('connectButton').addEventListener('click', initWeb3);
+        document.getElementById('voteInFavorButton').addEventListener('click', () => vote(true));
+        document.getElementById('voteAgainstButton').addEventListener('click', () => vote(false));
 
 
-</script>
+    </script>
 
 </body>
 
