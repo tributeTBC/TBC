@@ -9,381 +9,384 @@
 
 <body>
     <h2>Check Active Proposal</h2>
-<button id="connectBtn">Connect to Ethereum</button>
-<span id="loadingIndicator" style="display: none;">Loading...</span>
-<ul id="functionList"></ul>
-<p id="result"></p>
-	<script>
-		const ABI = [
-	{
-		"inputs": [
-			{
-				"internalType": "address",
-				"name": "_tokenAddress",
-				"type": "address"
-			}
-		],
-		"stateMutability": "nonpayable",
-		"type": "constructor"
-	},
-	{
-		"anonymous": false,
-		"inputs": [
-			{
-				"indexed": false,
-				"internalType": "bool",
-				"name": "approved",
-				"type": "bool"
-			}
-		],
-		"name": "ProposalFinalized",
-		"type": "event"
-	},
-	{
-		"anonymous": false,
-		"inputs": [
-			{
-				"indexed": true,
-				"internalType": "address",
-				"name": "developer",
-				"type": "address"
-			},
-			{
-				"indexed": false,
-				"internalType": "uint256",
-				"name": "amount",
-				"type": "uint256"
-			}
-		],
-		"name": "ProposalStarted",
-		"type": "event"
-	},
-	{
-		"anonymous": false,
-		"inputs": [
-			{
-				"indexed": true,
-				"internalType": "address",
-				"name": "voter",
-				"type": "address"
-			},
-			{
-				"indexed": false,
-				"internalType": "bool",
-				"name": "inFavor",
-				"type": "bool"
-			},
-			{
-				"indexed": false,
-				"internalType": "uint256",
-				"name": "amount",
-				"type": "uint256"
-			}
-		],
-		"name": "Voted",
-		"type": "event"
-	},
-	{
-		"inputs": [],
-		"name": "PROPOSAL_DURATION",
-		"outputs": [
-			{
-				"internalType": "uint256",
-				"name": "",
-				"type": "uint256"
-			}
-		],
-		"stateMutability": "view",
-		"type": "function"
-	},
-	{
-		"inputs": [],
-		"name": "currentTotalSupply",
-		"outputs": [
-			{
-				"internalType": "uint256",
-				"name": "",
-				"type": "uint256"
-			}
-		],
-		"stateMutability": "view",
-		"type": "function"
-	},
-	{
-		"inputs": [],
-		"name": "developer",
-		"outputs": [
-			{
-				"internalType": "address",
-				"name": "",
-				"type": "address"
-			}
-		],
-		"stateMutability": "view",
-		"type": "function"
-	},
-	{
-		"inputs": [],
-		"name": "emergencyReset",
-		"outputs": [],
-		"stateMutability": "nonpayable",
-		"type": "function"
-	},
-	{
-		"inputs": [],
-		"name": "finalizeProposal",
-		"outputs": [],
-		"stateMutability": "nonpayable",
-		"type": "function"
-	},
-	{
-		"inputs": [
-			{
-				"internalType": "address",
-				"name": "",
-				"type": "address"
-			}
-		],
-		"name": "lockedTokens",
-		"outputs": [
-			{
-				"internalType": "uint256",
-				"name": "",
-				"type": "uint256"
-			}
-		],
-		"stateMutability": "view",
-		"type": "function"
-	},
-	{
-		"inputs": [],
-		"name": "proposalActive",
-		"outputs": [
-			{
-				"internalType": "bool",
-				"name": "",
-				"type": "bool"
-			}
-		],
-		"stateMutability": "view",
-		"type": "function"
-	},
-	{
-		"inputs": [],
-		"name": "proposalAmount",
-		"outputs": [
-			{
-				"internalType": "uint256",
-				"name": "",
-				"type": "uint256"
-			}
-		],
-		"stateMutability": "view",
-		"type": "function"
-	},
-	{
-		"inputs": [],
-		"name": "proposalExpiry",
-		"outputs": [
-			{
-				"internalType": "uint256",
-				"name": "",
-				"type": "uint256"
-			}
-		],
-		"stateMutability": "view",
-		"type": "function"
-	},
-	{
-		"inputs": [
-			{
-				"internalType": "uint256",
-				"name": "amount",
-				"type": "uint256"
-			}
-		],
-		"name": "startProposal",
-		"outputs": [],
-		"stateMutability": "nonpayable",
-		"type": "function"
-	},
-	{
-		"inputs": [],
-		"name": "token",
-		"outputs": [
-			{
-				"internalType": "contract IToken",
-				"name": "",
-				"type": "address"
-			}
-		],
-		"stateMutability": "view",
-		"type": "function"
-	},
-	{
-		"inputs": [],
-		"name": "tokensRequiredToFinalize",
-		"outputs": [
-			{
-				"internalType": "uint256",
-				"name": "",
-				"type": "uint256"
-			}
-		],
-		"stateMutability": "view",
-		"type": "function"
-	},
-	{
-		"inputs": [],
-		"name": "unlockTokens",
-		"outputs": [],
-		"stateMutability": "nonpayable",
-		"type": "function"
-	},
-	{
-		"inputs": [
-			{
-				"internalType": "bool",
-				"name": "_inFavor",
-				"type": "bool"
-			},
-			{
-				"internalType": "uint256",
-				"name": "_amount",
-				"type": "uint256"
-			}
-		],
-		"name": "vote",
-		"outputs": [],
-		"stateMutability": "nonpayable",
-		"type": "function"
-	},
-	{
-		"inputs": [],
-		"name": "votesAgainst",
-		"outputs": [
-			{
-				"internalType": "uint256",
-				"name": "",
-				"type": "uint256"
-			}
-		],
-		"stateMutability": "view",
-		"type": "function"
-	},
-	{
-		"inputs": [],
-		"name": "votesInFavor",
-		"outputs": [
-			{
-				"internalType": "uint256",
-				"name": "",
-				"type": "uint256"
-			}
-		],
-		"stateMutability": "view",
-		"type": "function"
-	}
-];
-	</script>
-   <script src="https://cdn.jsdelivr.net/gh/ethereum/web3.js@1.3.5/dist/web3.min.js"></script>
-<script>
-    let web3;
-    let contract;
-    const contractAddress = "0x6227F8e5D2d94De5310d6d46Fb698C4C6ADd143D";
-    const functionsToCall = ['proposalActive', 'votesInFavor', 'votesAgainst'];
-    const connectBtn = document.getElementById("connectBtn");
-    const loadingIndicator = document.getElementById("loadingIndicator");
+    <button id="connectBtn">Connect to Ethereum</button>
+    <span id="loadingIndicator" style="display: none;">Loading...</span>
+    <ul id="functionList"></ul>
+    <p id="result"></p>
+    <script>
+        const ABI = [
+            {
+                "inputs": [
+                    {
+                        "internalType": "address",
+                        "name": "_tokenAddress",
+                        "type": "address"
+                    }
+                ],
+                "stateMutability": "nonpayable",
+                "type": "constructor"
+            },
+            {
+                "anonymous": false,
+                "inputs": [
+                    {
+                        "indexed": false,
+                        "internalType": "bool",
+                        "name": "approved",
+                        "type": "bool"
+                    }
+                ],
+                "name": "ProposalFinalized",
+                "type": "event"
+            },
+            {
+                "anonymous": false,
+                "inputs": [
+                    {
+                        "indexed": true,
+                        "internalType": "address",
+                        "name": "developer",
+                        "type": "address"
+                    },
+                    {
+                        "indexed": false,
+                        "internalType": "uint256",
+                        "name": "amount",
+                        "type": "uint256"
+                    }
+                ],
+                "name": "ProposalStarted",
+                "type": "event"
+            },
+            {
+                "anonymous": false,
+                "inputs": [
+                    {
+                        "indexed": true,
+                        "internalType": "address",
+                        "name": "voter",
+                        "type": "address"
+                    },
+                    {
+                        "indexed": false,
+                        "internalType": "bool",
+                        "name": "inFavor",
+                        "type": "bool"
+                    },
+                    {
+                        "indexed": false,
+                        "internalType": "uint256",
+                        "name": "amount",
+                        "type": "uint256"
+                    }
+                ],
+                "name": "Voted",
+                "type": "event"
+            },
+            {
+                "inputs": [],
+                "name": "PROPOSAL_DURATION",
+                "outputs": [
+                    {
+                        "internalType": "uint256",
+                        "name": "",
+                        "type": "uint256"
+                    }
+                ],
+                "stateMutability": "view",
+                "type": "function"
+            },
+            {
+                "inputs": [],
+                "name": "currentTotalSupply",
+                "outputs": [
+                    {
+                        "internalType": "uint256",
+                        "name": "",
+                        "type": "uint256"
+                    }
+                ],
+                "stateMutability": "view",
+                "type": "function"
+            },
+            {
+                "inputs": [],
+                "name": "developer",
+                "outputs": [
+                    {
+                        "internalType": "address",
+                        "name": "",
+                        "type": "address"
+                    }
+                ],
+                "stateMutability": "view",
+                "type": "function"
+            },
+            {
+                "inputs": [],
+                "name": "emergencyReset",
+                "outputs": [],
+                "stateMutability": "nonpayable",
+                "type": "function"
+            },
+            {
+                "inputs": [],
+                "name": "finalizeProposal",
+                "outputs": [],
+                "stateMutability": "nonpayable",
+                "type": "function"
+            },
+            {
+                "inputs": [
+                    {
+                        "internalType": "address",
+                        "name": "",
+                        "type": "address"
+                    }
+                ],
+                "name": "lockedTokens",
+                "outputs": [
+                    {
+                        "internalType": "uint256",
+                        "name": "",
+                        "type": "uint256"
+                    }
+                ],
+                "stateMutability": "view",
+                "type": "function"
+            },
+            {
+                "inputs": [],
+                "name": "proposalActive",
+                "outputs": [
+                    {
+                        "internalType": "bool",
+                        "name": "",
+                        "type": "bool"
+                    }
+                ],
+                "stateMutability": "view",
+                "type": "function"
+            },
+            {
+                "inputs": [],
+                "name": "proposalAmount",
+                "outputs": [
+                    {
+                        "internalType": "uint256",
+                        "name": "",
+                        "type": "uint256"
+                    }
+                ],
+                "stateMutability": "view",
+                "type": "function"
+            },
+            {
+                "inputs": [],
+                "name": "proposalExpiry",
+                "outputs": [
+                    {
+                        "internalType": "uint256",
+                        "name": "",
+                        "type": "uint256"
+                    }
+                ],
+                "stateMutability": "view",
+                "type": "function"
+            },
+            {
+                "inputs": [
+                    {
+                        "internalType": "uint256",
+                        "name": "amount",
+                        "type": "uint256"
+                    }
+                ],
+                "name": "startProposal",
+                "outputs": [],
+                "stateMutability": "nonpayable",
+                "type": "function"
+            },
+            {
+                "inputs": [],
+                "name": "token",
+                "outputs": [
+                    {
+                        "internalType": "contract IToken",
+                        "name": "",
+                        "type": "address"
+                    }
+                ],
+                "stateMutability": "view",
+                "type": "function"
+            },
+            {
+                "inputs": [],
+                "name": "tokensRequiredToFinalize",
+                "outputs": [
+                    {
+                        "internalType": "uint256",
+                        "name": "",
+                        "type": "uint256"
+                    }
+                ],
+                "stateMutability": "view",
+                "type": "function"
+            },
+            {
+                "inputs": [],
+                "name": "unlockTokens",
+                "outputs": [],
+                "stateMutability": "nonpayable",
+                "type": "function"
+            },
+            {
+                "inputs": [
+                    {
+                        "internalType": "bool",
+                        "name": "_inFavor",
+                        "type": "bool"
+                    },
+                    {
+                        "internalType": "uint256",
+                        "name": "_amount",
+                        "type": "uint256"
+                    }
+                ],
+                "name": "vote",
+                "outputs": [],
+                "stateMutability": "nonpayable",
+                "type": "function"
+            },
+            {
+                "inputs": [],
+                "name": "votesAgainst",
+                "outputs": [
+                    {
+                        "internalType": "uint256",
+                        "name": "",
+                        "type": "uint256"
+                    }
+                ],
+                "stateMutability": "view",
+                "type": "function"
+            },
+            {
+                "inputs": [],
+                "name": "votesInFavor",
+                "outputs": [
+                    {
+                        "internalType": "uint256",
+                        "name": "",
+                        "type": "uint256"
+                    }
+                ],
+                "stateMutability": "view",
+                "type": "function"
+            }
+        ];
+    </script>
+    <script src="https://cdn.jsdelivr.net/gh/ethereum/web3.js@1.3.5/dist/web3.min.js"></script>
+    <script>
+        let web3;
+        let contract;
+        const contractAddress = "0x6227F8e5D2d94De5310d6d46Fb698C4C6ADd143D";
+        const functionsToCall = ['proposalActive', 'votesInFavor', 'votesAgainst'];
+        const connectBtn = document.getElementById("connectBtn");
+        const loadingIndicator = document.getElementById("loadingIndicator");
 
-    async function connectToEthereum() {
-        loadingIndicator.style.display = "inline"; // Show loading indicator
+        async function connectToEthereum() {
+            loadingIndicator.style.display = "inline"; // Show loading indicator
 
-        if (typeof window.ethereum !== 'undefined') {
-            try {
-                web3 = new Web3(window.ethereum);
-                await window.ethereum.request({ method: 'eth_requestAccounts' });
-                contract = new web3.eth.Contract(ABI, contractAddress);
-                connectBtn.innerText = "Disconnect from Ethereum";
-                connectBtn.removeEventListener('click', connectToEthereum);
-                connectBtn.addEventListener('click', disconnectFromEthereum);
-                await displayFunctionsAndResults();
-            } catch (error) {
-                console.error("User denied account access");
-            } finally {
+            if (typeof window.ethereum !== 'undefined') {
+                try {
+                    web3 = new Web3(window.ethereum);
+                    await window.ethereum.request({ method: 'eth_requestAccounts' });
+                    contract = new web3.eth.Contract(ABI, contractAddress);
+                    connectBtn.innerText = "Disconnect from Ethereum";
+                    connectBtn.removeEventListener('click', connectToEthereum);
+                    connectBtn.addEventListener('click', disconnectFromEthereum);
+                    await displayFunctionsAndResults();
+                } catch (error) {
+                    console.error("User denied account access");
+                } finally {
+                    loadingIndicator.style.display = "none"; // Hide loading indicator
+                }
+            } else {
+                console.log('Non-Ethereum browser detected. Consider using MetaMask!');
                 loadingIndicator.style.display = "none"; // Hide loading indicator
             }
-        } else {
-            console.log('Non-Ethereum browser detected. Consider using MetaMask!');
-            loadingIndicator.style.display = "none"; // Hide loading indicator
         }
-    }
 
-    function disconnectFromEthereum() {
-        document.getElementById("functionList").innerHTML = '';
-        connectBtn.innerText = "Connect to Ethereum";
-        connectBtn.removeEventListener('click', disconnectFromEthereum);
+        function disconnectFromEthereum() {
+            document.getElementById("functionList").innerHTML = '';
+            connectBtn.innerText = "Connect to Ethereum";
+            connectBtn.removeEventListener('click', disconnectFromEthereum);
+            connectBtn.addEventListener('click', connectToEthereum);
+        }
+
         connectBtn.addEventListener('click', connectToEthereum);
-    }
 
-    connectBtn.addEventListener('click', connectToEthereum);
+        async function displayFunctionsAndResults() {
+            const functionList = document.getElementById("functionList");
+            for (let funcName of functionsToCall) {
+                const li = document.createElement("li");
+                li.textContent = `${funcName}: `;
+                const span = document.createElement("span");
+                span.id = `result_${funcName}`;
+                li.appendChild(span);
 
-    async function displayFunctionsAndResults() {
-        const functionList = document.getElementById("functionList");
-        for (let funcName of functionsToCall) {
-            const li = document.createElement("li");
-            li.textContent = `${funcName}: `;
-            const span = document.createElement("span");
-            span.id = `result_${funcName}`;
-            li.appendChild(span);
+                functionList.appendChild(li);
 
-            if (funcName === 'proposalActive') {
-                // Vote section
-                const voteDiv = document.createElement("div");
-                const favorBtn = document.createElement("button");
-                favorBtn.textContent = "Vote Favor";
-                favorBtn.onclick = () => castVote(true);
-                const againstBtn = document.createElement("button");
-                againstBtn.textContent = "Vote Against";
-                againstBtn.onclick = () => castVote(false);
-                const input = document.createElement("input");
-                input.type = "number";
-                input.id = `voteAmount_${funcName}`;
-                input.placeholder = "Amount to vote";
+                try {
+                    const result = await contract.methods[funcName]().call();
+                    document.getElementById(`result_${funcName}`).innerText = result.toString();
 
-                voteDiv.appendChild(favorBtn);
-                voteDiv.appendChild(againstBtn);
-                voteDiv.appendChild(input);
-                li.appendChild(voteDiv);
+                    if (funcName === 'proposalActive' && result) {
+                        appendVotingSection(li);
+                    }
+                } catch (error) {
+                    console.error(`Error fetching result for ${funcName}:`, error);
+                }
             }
+        }
 
-            functionList.appendChild(li);
+        function appendVotingSection(parentElement) {
+            // Vote section
+            const voteDiv = document.createElement("div");
+            const favorBtn = document.createElement("button");
+            favorBtn.textContent = "Vote Favor";
+            favorBtn.onclick = () => castVote(true);
+            const againstBtn = document.createElement("button");
+            againstBtn.textContent = "Vote Against";
+            againstBtn.onclick = () => castVote(false);
+            const input = document.createElement("input");
+            input.type = "number";
+            input.id = `voteAmount_proposalActive`;
+            input.placeholder = "Amount to vote";
 
+            voteDiv.appendChild(favorBtn);
+            voteDiv.appendChild(againstBtn);
+            voteDiv.appendChild(input);
+            parentElement.appendChild(voteDiv); // Append to the end of the li
+        }
+
+        async function castVote(inFavor) {
+            const amount = document.getElementById('voteAmount_proposalActive').value;
+            if (!amount || amount <= 0) {
+                alert("Please enter a valid amount!");
+                return;
+            }
             try {
-                const result = await contract.methods[funcName]().call();
-                document.getElementById(`result_${funcName}`).innerText = result.toString();
+                const accounts = await web3.eth.getAccounts();
+                await contract.methods.vote(inFavor, web3.utils.toWei(amount, "ether")).send({ from: accounts[0] });
+                alert("Vote casted successfully!");
             } catch (error) {
-                console.error(`Error fetching result for ${funcName}:`, error);
+                console.error("Error casting vote:", error);
+                alert("Error casting vote. Check console for details.");
             }
         }
-    }
-
-    async function castVote(inFavor) {
-        const amount = document.getElementById('voteAmount_proposalActive').value;
-        if (!amount || amount <= 0) {
-            alert("Please enter a valid amount!");
-            return;
-        }
-        try {
-            const accounts = await web3.eth.getAccounts();
-            await contract.methods.vote(inFavor, web3.utils.toWei(amount, "ether")).send({ from: accounts[0] });
-            alert("Vote casted successfully!");
-        } catch (error) {
-            console.error("Error casting vote:", error);
-            alert("Error casting vote. Check console for details.");
-        }
-    }
-</script>
-
+    </script>
 
 </body>
 
