@@ -1,9 +1,7 @@
-// governance.js
-const contractAddress = "0x6227F8e5D2d94De5310d6d46Fb698C4C6ADd143D";
-// contractabi.js
-export const ABI = [...];
 
-// governance.js
+const contractAddress = "0x6227F8e5D2d94De5310d6d46Fb698C4C6ADd143D";
+
+
 import { ABI } from './contractABI.js';
 let web3;
 let contract;
