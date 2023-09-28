@@ -1,4 +1,75 @@
-will be updated soon <////////////////// 
-will be updated soon <//////////////////
-will be updated soon <//////////////////
-will be updated soon <//////////////////
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tribute Tokenomics</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            padding: 40px;
+        }
+        .tokenomics {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        h1, h2 {
+            color: #333;
+        }
+        p {
+            color: #555;
+        }
+        ul {
+            list-style-type: none;
+        }
+        li {
+            margin-bottom: 10px;
+            color: #444;
+        }
+        .highlight {
+            color: #e74c3c;
+        }
+    </style>
+</head>
+<body>
+
+<div class="tokenomics">
+    <h1>Tribute Tokenomics</h1>
+    
+    <h2>Total Supply</h2>
+    <p><span class="highlight">42 Billion TBC</span> tokens at genesis</p>
+
+    <h2>Transfer Taxation</h2>
+    <p>Tax is applied on transfers, which diminishes over time based on user interactions. A portion of the tax is burned and the rest is saved for rewards.</p>
+    
+    <h2>Top Interactors</h2>
+    <ul>
+        <li>Users accumulate points based on their interactions.</li>
+        <li>The more tokens they transfer, the more points they get.</li>
+        <li>Top interactors receive a portion of the accumulated rewards from the tax.</li>
+    </ul>
+    
+    <h2>Whitelist Features</h2>
+    <ul>
+        <li>Whitelisted addresses do not get taxed.</li>
+        <li>Interactions from whitelisted addresses don't count towards top interactors.</li>
+        <li>Only the developer can add/remove addresses to/from the whitelist.</li>
+    </ul>
+    
+    <h2>Reward Distribution</h2>
+    <ul>
+        <li>Rewards are distributed amongst the top 10 interactors.</li>
+        <li>If the transaction initiator is not whitelisted, they receive an additional incentive reward.</li>
+    </ul>
+    
+    <h2>Deflationary Mechanism</h2>
+    <p>Half of the tax amount is burned, creating a deflationary effect, reducing the overall supply over time.</p>
+</div>
+
+</body>
+</html>
