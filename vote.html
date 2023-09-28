@@ -90,6 +90,7 @@
                 document.getElementById(`result_${funcName}`).innerText = result.toString();
                 if (funcName === 'proposalActive' && result) {
                     proposalActiveFlag = true;
+                    console.log("Proposal active:", proposalActiveFlag);
                 }
             } catch (error) {
                 console.error(`Error fetching result for ${funcName}:`, error);
@@ -117,6 +118,7 @@
         const humanReadableTotalSupply = this.web3.utils.fromWei(currentTotalSupply, "ether");
         const humanReadableProposalAmount = this.web3.utils.fromWei(proposalAmount, "ether");
         const humanReadableTokensRequired = this.web3.utils.fromWei(tokensRequiredToFinalize, "ether");
+        console.log("Updating explainer text with proposal status:", isActive);
         explainerTextPara.innerHTML = `
             There is a fund release proposal from the developers. The current total supply stands at 
             <span style="font-weight:bold">${humanReadableTotalSupply}</span>. The proposed amount for 
