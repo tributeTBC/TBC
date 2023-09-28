@@ -4,47 +4,18 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ethereum Connector</title>
+    <title>Vote Interface</title>
     <link href="https://fonts.googleapis.com/css2?family=VT323&display=swap" rel="stylesheet">
     <style>
         body {
             font-family: 'VT323', monospace;
             font-size: 20px;
-            min-width: 80vw;
             background-color: #000;
             color: #f3f3f3;
             margin: 0;
             padding: 0;
             height: 100vh;
             overflow: hidden;
-        }
-
-        #console {
-            max-width: 1000px;
-            min-width: 80%;
-            margin: 5% auto;
-            border-radius: 5px;
-            background-color: #222;
-            padding: 20px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
-        }
-
-        #header-bar {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            border-bottom: 1px solid #444;
-            padding-bottom: 10px;
-            margin-bottom: 10px;
-        }
-
-        #brand-text h1 {
-            margin: 0;
-            font-size: 1.5em;
-        }
-
-        #brand-text span {
-            color: #888;
         }
 
         #output {
@@ -91,7 +62,7 @@
             font-style: italic;
         }
 
-        #console button {
+        button {
             font-family: 'VT323', monospace;
             background-color: #444;
             color: #f3f3f3;
@@ -102,11 +73,11 @@
             transition: background-color 0.3s;
         }
 
-        #console button:hover {
+        button:hover {
             background-color: #555;
         }
 
-        #console ul {
+        ul {
             list-style-type: none;
             padding: 0;
         }
@@ -124,7 +95,7 @@
             gap: 10px;
         }
 
-        #console input {
+        input {
             font-family: 'VT323', monospace;
             background-color: #222;
             color: #f3f3f3;
@@ -136,30 +107,22 @@
             margin-top: 5px;
         }
 
-        #console input[type="number"] {
+        input[type="number"] {
             width: 100px;
         }
     </style>
 </head>
 
 <body>
-    <div id="console">
-        <div id="header-bar">
-            <div id="brand-text">
-                <h1>Ethereum Connector</h1>
-                <span>Connect and interact with Ethereum</span>
-            </div>
-        </div>
-        <div id="output">
-            <h2>Check Active Proposal</h2>
-            <button id="connectBtn" class="command-line">Connect to Ethereum</button>
-            <span id="loadingIndicator" style="display: none;" class="command-line">Loading...</span>
-            <ul id="functionList"></ul>
-        </div>
-        <div class="input-container">
-            <span class="prefix">$</span>
-            <input type="text" id="input" placeholder="Type command...">
-        </div>
+    <div id="output">
+        <h2>Check Active Proposal</h2>
+        <button id="connectBtn">Connect to Ethereum</button>
+        <span id="loadingIndicator" style="display: none;">Loading...</span>
+        <ul id="functionList"></ul>
+    </div>
+    <div class="input-container">
+        <span class="prefix">$</span>
+        <input type="text" id="input" placeholder="Type command...">
     </div>
 
     <script>
