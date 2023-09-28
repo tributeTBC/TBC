@@ -20,105 +20,125 @@
 
     <script src="abi.js"></script>
     <script src="https://cdn.jsdelivr.net/gh/ethereum/web3.js@1.3.5/dist/web3.min.js"></script>
+    
     <script>
-        let web3;
-        let contract;
-        const contractAddress = "0x6227F8e5D2d94De5310d6d46Fb698C4C6ADd143D";
-        const functionsToCall = ['proposalActive', 'votesInFavor', 'votesAgainst'];
-        const connectBtn = document.getElementById("connectBtn");
-        const loadingIndicator = document.getElementById("loadingIndicator");
+       class EthereumApp {
+    constructor() {
+        this.web3 = null;
+        this.contract = null;
+        this.contractAddress = "0x6227F8e5D2d94De5310d6d46Fb698C4C6ADd143D";
+        this.functionsToCall = ['proposalActive', 'votesInFavor', 'votesAgainst'];
+        this.connectBtn = document.getElementById("connectBtn");
+        this.loadingIndicator = document.getElementById("loadingIndicator");
+        
+        this.connectBtn.addEventListener('click', this.connectToEthereum.bind(this));
+    }
 
-        async function connectToEthereum() {
-            loadingIndicator.style.display = "inline"; // Show loading indicator
+    async connectToEthereum() {
+        this.loadingIndicator.style.display = "inline";
 
-            if (typeof window.ethereum !== 'undefined') {
-                try {
-                    web3 = new Web3(window.ethereum);
-                    await window.ethereum.request({ method: 'eth_requestAccounts' });
-                    contract = new web3.eth.Contract(ABI, contractAddress);
-                    connectBtn.innerText = "Disconnect from Ethereum";
-                    connectBtn.removeEventListener('click', connectToEthereum);
-                    connectBtn.addEventListener('click', disconnectFromEthereum);
-                    await displayFunctionsAndResults();
-                } catch (error) {
-                    console.error("User denied account access");
-                } finally {
-                    loadingIndicator.style.display = "none"; // Hide loading indicator
-                }
-            } else {
-                console.log('Non-Ethereum browser detected. Consider using MetaMask!');
-                loadingIndicator.style.display = "none"; // Hide loading indicator
-            }
-        }
-
-        function disconnectFromEthereum() {
-            document.getElementById("functionList").innerHTML = '';
-            connectBtn.innerText = "Connect to Ethereum";
-            connectBtn.removeEventListener('click', disconnectFromEthereum);
-            connectBtn.addEventListener('click', connectToEthereum);
-        }
-
-        connectBtn.addEventListener('click', connectToEthereum);
-
-        async function displayFunctionsAndResults() {
-            const functionList = document.getElementById("functionList");
-            for (let funcName of functionsToCall) {
-                const li = document.createElement("li");
-                li.textContent = `${funcName}: `;
-                const span = document.createElement("span");
-                span.id = `result_${funcName}`;
-                li.appendChild(span);
-
-                functionList.appendChild(li);
-
-                try {
-                    const result = await contract.methods[funcName]().call();
-                    document.getElementById(`result_${funcName}`).innerText = result.toString();
-
-                    if (funcName === 'proposalActive' && result) {
-                        appendVotingSection(li);
-                    }
-                } catch (error) {
-                    console.error(`Error fetching result for ${funcName}:`, error);
-                }
-            }
-        }
-
-        function appendVotingSection(parentElement) {
-            // Vote section
-            const voteDiv = document.createElement("div");
-            const favorBtn = document.createElement("button");
-            favorBtn.textContent = "Vote Favor";
-            favorBtn.onclick = () => castVote(true);
-            const againstBtn = document.createElement("button");
-            againstBtn.textContent = "Vote Against";
-            againstBtn.onclick = () => castVote(false);
-            const input = document.createElement("input");
-            input.type = "number";
-            input.id = `voteAmount_proposalActive`;
-            input.placeholder = "Amount to vote";
-
-            voteDiv.appendChild(favorBtn);
-            voteDiv.appendChild(againstBtn);
-            voteDiv.appendChild(input);
-            parentElement.appendChild(voteDiv); // Append to the end of the li
-        }
-
-        async function castVote(inFavor) {
-            const amount = document.getElementById('voteAmount_proposalActive').value;
-            if (!amount || amount <= 0) {
-                alert("Please enter a valid amount!");
-                return;
-            }
+        if (typeof window.ethereum !== 'undefined') {
             try {
-                const accounts = await web3.eth.getAccounts();
-                await contract.methods.vote(inFavor, web3.utils.toWei(amount, "ether")).send({ from: accounts[0] });
-                alert("Vote casted successfully!");
+                this.web3 = new Web3(window.ethereum);
+                await window.ethereum.request({ method: 'eth_requestAccounts' });
+                this.contract = new this.web3.eth.Contract(ABI, this.contractAddress);
+                this.connectBtn.innerText = "Disconnect from Ethereum";
+                this.connectBtn.removeEventListener('click', this.connectToEthereum.bind(this));
+                this.connectBtn.addEventListener('click', this.disconnectFromEthereum.bind(this));
+                await this.displayFunctionsAndResults();
             } catch (error) {
-                console.error("Error casting vote:", error);
-                alert("Error casting vote. Check console for details.");
+                console.error("User denied account access");
+            } finally {
+                this.loadingIndicator.style.display = "none";
+            }
+        } else {
+            console.log('Non-Ethereum browser detected. Consider using MetaMask!');
+            this.loadingIndicator.style.display = "none";
+        }
+    }
+
+    disconnectFromEthereum() {
+        document.getElementById("functionList").innerHTML = '';
+        this.connectBtn.innerText = "Connect to Ethereum";
+        this.connectBtn.removeEventListener('click', this.disconnectFromEthereum.bind(this));
+        this.connectBtn.addEventListener('click', this.connectToEthereum.bind(this));
+    }
+
+    async displayFunctionsAndResults() {
+        const functionList = document.getElementById("functionList");
+        let proposalActiveFlag = false;
+        for (let funcName of this.functionsToCall) {
+            const li = document.createElement("li");
+            li.textContent = `${funcName}: `;
+            const span = document.createElement("span");
+            span.id = `result_${funcName}`;
+            li.appendChild(span);
+            functionList.appendChild(li);
+
+            try {
+                const result = await this.contract.methods[funcName]().call();
+                document.getElementById(`result_${funcName}`).innerText = result.toString();
+                if (funcName === 'proposalActive' && result) {
+                    proposalActiveFlag = true;
+                }
+            } catch (error) {
+                console.error(`Error fetching result for ${funcName}:`, error);
             }
         }
+
+        // Fetch the new methods
+        let currentTotalSupply, proposalAmount, tokensRequiredToFinalize;
+        try {
+            currentTotalSupply = await this.contract.methods.getCurrentTotalSupply().call();
+            proposalAmount = await this.contract.methods.getProposalAmount().call();
+            tokensRequiredToFinalize = await this.contract.methods.getTokensRequiredToFinalize().call();
+        } catch (error) {
+            console.error("Error fetching new methods:", error);
+        }
+
+        this.updateExplainerText(proposalActiveFlag, currentTotalSupply, proposalAmount, tokensRequiredToFinalize);
+    }
+
+    updateExplainerText(isActive, currentTotalSupply, proposalAmount, tokensRequiredToFinalize) {
+        const explainerTextDiv = document.getElementById("explainerText");
+        if (isActive) {
+            const humanReadableTotalSupply = this.web3.utils.fromWei(currentTotalSupply, "ether");
+            const humanReadableProposalAmount = this.web3.utils.fromWei(proposalAmount, "ether");
+            const humanReadableTokensRequired = this.web3.utils.fromWei(tokensRequiredToFinalize, "ether");
+            explainerTextDiv.innerHTML = `
+                There is a fund release proposal from the developers. The current total supply stands at 
+                <span style="font-weight:bold">${humanReadableTotalSupply}</span>. The proposed amount for 
+                release is <span style="font-weight:bold">${humanReadableProposalAmount}</span>, and there are 
+                <span style="font-weight:bold">${humanReadableTokensRequired}</span> more tokens required in 
+                favor for the proposal to be approved. Cast your favorable vote <a href="#" onclick="app.castVote(true)">here</a> 
+                to support the proposal.
+            `;
+        } else {
+            explainerTextDiv.innerHTML = "There are currently no fund release proposals by the developers.";
+        }
+    }
+
+    async castVote(inFavor) {
+        const amount = document.getElementById('voteAmount_proposalActive').value;
+        if (!amount || amount <= 0) {
+            alert("Please enter a valid amount!");
+            return;
+        }
+        try {
+            const accounts = await this.web3.eth.getAccounts();
+            await this.contract.methods.vote(inFavor, this.web3.utils.toWei(amount, "ether")).send({ from: accounts[0] });
+            alert("Vote casted successfully!");
+        } catch (error) {
+            console.error("Error casting vote:", error);
+            alert("Error casting vote. Check console for details.");
+        }
+    }
+}
+
+document.addEventListener("DOMContentLoaded", () => {
+    window.app = new EthereumApp();
+});
+
     </script>
 
 </body>
