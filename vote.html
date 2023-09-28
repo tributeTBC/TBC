@@ -14,9 +14,7 @@
 
     <script src="https://cdn.jsdelivr.net/gh/ethereum/web3.js@1.3.5/dist/web3.min.js"></script>
     <script>
-        let web3;
-        let contract;
-        const contractAddress = "0x6227F8e5D2d94De5310d6d46Fb698C4C6ADd143D";
+        
         const ABI = [
 	{
 		"inputs": [
@@ -289,18 +287,33 @@
 	}
 ];
 
+        
+        // Extracting and displaying functions from the ABI without parameters
+        const functionList = document.getElementById("functionList");
+        contractABI.forEach(item => {
+            if (item.type === "function" && (!item.inputs || item.inputs.length === 0)) {
+                const li = document.createElement("li");
+                li.textContent = item.name;
+                functionList.appendChild(li);
+            }
+        });
+	let web3;
+        let contract;
+        const contractAddress = "0x6227F8e5D2d94De5310d6d46Fb698C4C6ADd143D";
+       
+
         window.addEventListener('load', async () => {
             if (window.ethereum) {
                 try {
                     web3 = new Web3(window.ethereum);
                     await window.ethereum.request({ method: 'eth_requestAccounts' }); // Request account access
-                    contract = new web3.eth.Contract(ABI, contractAddress);
+                    contract = new web3.eth.Contract(contractABI, contractAddress);
                 } catch (error) {
                     console.error("User denied account access");
                 }
             } else if (window.web3) {
                 web3 = new Web3(window.web3.currentProvider);
-                contract = new web3.eth.Contract(ABI, contractAddress);
+                contract = new web3.eth.Contract(contractABI, contractAddress);
             } else {
                 console.log('Non-Ethereum browser detected. Consider using MetaMask!');
             }
