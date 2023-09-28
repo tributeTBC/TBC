@@ -1,45 +1,28 @@
-<div style="color: #333; line-height: 1.6; display: flex; justify-content: space-between;">
+<div style="line-height: 1.4; display: flex; justify-content: space-between;">
     <div style="flex: 1; padding-right: 15px;">
-        <h1 style="font-size: 2.2em; margin-bottom: 10px; border-bottom: 3px solid #e74c3c; display: inline-block;">Tribute Tokenomics</h1>
+        <h1 style="font-size: 2em; margin-bottom: 8px; border-bottom: 2px solid #e74c3c; display: inline-block;">Tribute Tokenomics</h1>
 
-        <h2 style="font-size: 1.1em; margin-top: 15px;">Total Supply</h2>
-        <p style="font-size: 0.9em; margin-bottom: 10px;"><span style="color: #e74c3c;">42 Billion TBC</span> tokens at genesis.</p>
-
-        <h2 style="font-size: 1.1em; margin-top: 15px;">Liquidity</h2>
-        <p style="font-size: 0.9em; margin-bottom: 10px;">1 billion TBC used for liquidity at the start.</p>
-
-        <h2 style="font-size: 1.1em; margin-top: 15px;">Dev Allocation</h2>
-        <p style="font-size: 0.9em; margin-bottom: 10px;">7 billion TBC allocated for Dev team.</p>
-
-        <h2 style="font-size: 1.1em; margin-top: 15px;">Community Allocation</h2>
-        <p style="font-size: 0.9em; margin-bottom: 10px;">34 billion TBC will be decided by the community regarding its utilization.</p>
+        <p style="font-size: 0.9em; margin: 6px 0;"><strong>Total Supply:</strong> 42 Billion TBC tokens at genesis.</p>
+        <p style="font-size: 0.9em; margin: 6px 0;"><strong>Liquidity:</strong> 1 billion TBC used for liquidity at the start.</p>
+        <p style="font-size: 0.9em; margin: 6px 0;"><strong>Dev Allocation:</strong> 7 billion TBC allocated for Dev team.</p>
+        <p style="font-size: 0.9em; margin: 6px 0;"><strong>Community Allocation:</strong> 34 billion TBC will be decided by the community.</p>
     </div>
 
     <div style="flex: 1; padding-left: 15px;">
-        <h2 style="font-size: 1.1em; margin-top: 15px;">Transfer Taxation</h2>
-        <p style="font-size: 0.9em; margin-bottom: 10px;">Tax is applied on transfers, which diminishes over time based on user interactions. A portion of the tax is burned, and the rest is saved for rewards.</p>
-
-        <h2 style="font-size: 1.1em; margin-top: 15px;">Top Interactors</h2>
-        <ul style="font-size: 0.9em; margin-bottom: 10px; list-style-type: none; padding-left: 0;">
-            <li style="margin-bottom: 10px;">Users accumulate points based on their interactions.</li>
-            <li style="margin-bottom: 10px;">The more tokens they transfer, the more points they get.</li>
-            <li style="margin-bottom: 10px;">Top interactors receive a portion of the accumulated rewards from the tax.</li>
+        <p style="font-size: 0.9em; margin: 6px 0;">Tax diminishes over time based on user interactions. A portion is burned, the rest is for rewards.</p>
+        <ul style="font-size: 0.9em; margin-top: 6px; list-style-type: none; padding-left: 0;">
+            <li style="margin: 6px 0;">Users earn points for interactions.</li>
+            <li style="margin: 6px 0;">More tokens transferred = more points.</li>
+            <li style="margin: 6px 0;">Top interactors get rewards from tax.</li>
         </ul>
-
-        <h2 style="font-size: 1.1em; margin-top: 15px;">Whitelist Features</h2>
-        <ul style="font-size: 0.9em; margin-bottom: 10px; list-style-type: none; padding-left: 0;">
-            <li style="margin-bottom: 10px;">Whitelisted addresses do not get taxed.</li>
-            <li style="margin-bottom: 10px;">Interactions from whitelisted addresses don't count towards top interactors.</li>
-            <li style="margin-bottom: 10px;">Only the developer can add/remove addresses to/from the whitelist.</li>
+        <ul style="font-size: 0.9em; list-style-type: none; padding-left: 0;">
+            <li style="margin: 6px 0;">Whitelisted addresses aren't taxed.</li>
+            <li style="margin: 6px 0;">Only devs can modify whitelist.</li>
         </ul>
-
-        <h2 style="font-size: 1.1em; margin-top: 15px;">Reward Distribution</h2>
-        <ul style="font-size: 0.9em; margin-bottom: 10px; list-style-type: none; padding-left: 0;">
-            <li style="margin-bottom: 10px;">Rewards are distributed amongst the top 10 interactors.</li>
-            <li style="margin-bottom: 10px;">If the transaction initiator is not whitelisted, they receive an additional incentive reward.</li>
+        <ul style="font-size: 0.9em; list-style-type: none; padding-left: 0;">
+            <li style="margin: 6px 0;">Top 10 interactors get rewards.</li>
+            <li style="margin: 6px 0;">Non-whitelisted initiators get extra rewards.</li>
         </ul>
-
-        <h2 style="font-size: 1.1em; margin-top: 15px;">Deflationary Mechanism</h2>
-        <p style="font-size: 0.9em; margin-bottom: 10px;">Half of the tax amount is burned, creating a deflationary effect and reducing the overall supply over time.</p>
+        <p style="font-size: 0.9em; margin: 6px 0;">Half the tax is burned, reducing overall supply.</p>
     </div>
 </div>
