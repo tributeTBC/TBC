@@ -20,7 +20,7 @@
             <li style="margin: 6px 0;">Only devs can modify whitelist.</li>
         </ul>
         <ul style="font-size: 0.9em; list-style-type: none; padding-left: 0;">
-            <li style="margin: 6px 0;">Top 10 interactors get rewards.</li>
+            <li style="margin: 6px 0;">Every 42 hours Top 10 interactors get rewards.</li>
             <li style="margin: 6px 0;">Non-whitelisted initiators get extra rewards.</li>
         </ul>
         <p style="font-size: 0.9em; margin: 6px 0;">Half the tax is burned, reducing overall supply.</p>
