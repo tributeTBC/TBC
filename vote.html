@@ -308,7 +308,7 @@ ABI.forEach(item => {   // Change from 'contractABI' to 'ABI'
                 try {
                     web3 = new Web3(window.ethereum);
                     await window.ethereum.request({ method: 'eth_requestAccounts' }); // Request account access
-                    contract = new web3.eth.Contract(contractABI, contractAddress);
+                    contract = new web3.eth.Contract(ABI, contractAddress);
                 } catch (error) {
                     console.error("User denied account access");
                 }
