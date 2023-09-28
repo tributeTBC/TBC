@@ -9,9 +9,9 @@
     <title>MetaMask Custom Network and Contract Interaction</title>
    <style>
     body {
-        
-        
-        margin: 20px;
+        font-family: 'VT323', monospace;
+        color: #00FF00;
+        margin: 10px;
     }
     
     .container {
@@ -64,7 +64,7 @@
 
 <div class="container">
     <div class="column">
-        <h2>Contract Data:</h2>
+        <h2>Current Situation:</h2>
         <div>Vote Active: <span id="voteActive"></span></div>
         <div>Proposal Amount: <span id="proposalAmount"></span></div>
         <div>Votes in Favor: <span id="votesInFavor"></span></div>
@@ -76,7 +76,6 @@
     <div class="column">
         <h2>Interact:</h2>
         <button id="connectButton">Connect to MetaMask</button>
-        <button id="addCustomNetworkButton">Add Custom Network</button>
         <h3>Vote:</h3>
         <input type="text" id="voteAmount" placeholder="Enter amount to vote with">
         <button id="voteInFavorButton">Vote in Favor</button>
