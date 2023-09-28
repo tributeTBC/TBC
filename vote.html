@@ -31,6 +31,9 @@
     <script src="https://cdn.jsdelivr.net/gh/ethereum/web3.js@1.3.5/dist/web3.min.js"></script>
     <script>
         const contractAddress = "0x6227F8e5D2d94De5310d6d46Fb698C4C6ADd143D";
+        const web3 = new Web3(
+  new Web3.providers.HttpProvider("https://opbnb-testnet-rpc.bnbchain.org")
+);
         class EthereumApp {
             constructor(web3, contractAddress) {
                 this.web3 = web3;
