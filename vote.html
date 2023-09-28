@@ -4,15 +4,164 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Check Active Proposal</title>
+    <title>Ethereum Connector</title>
+    <link href="https://fonts.googleapis.com/css2?family=VT323&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'VT323', monospace;
+            font-size: 20px;
+            min-width: 80vw;
+            background-color: #000;
+            color: #f3f3f3;
+            margin: 0;
+            padding: 0;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        #console {
+            max-width: 1000px;
+            min-width: 80%;
+            margin: 5% auto;
+            border-radius: 5px;
+            background-color: #222;
+            padding: 20px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+        }
+
+        #header-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid #444;
+            padding-bottom: 10px;
+            margin-bottom: 10px;
+        }
+
+        #brand-text h1 {
+            margin: 0;
+            font-size: 1.5em;
+        }
+
+        #brand-text span {
+            color: #888;
+        }
+
+        #output {
+            height: 600px;
+            overflow-y: auto;
+            word-wrap: break-word;
+            padding: 10px;
+            background-color: #000;
+            color: #f3f3f3;
+            font-size: 1.2em;
+        }
+
+        .input-container {
+            display: flex;
+            font-family: 'VT323', monospace;
+            background-color: #000;
+            padding: 10px;
+            align-items: center;
+        }
+
+        .prefix {
+            margin-right: 5px;
+            font-size: 1.2em;
+            color: #f3f3f3;
+            line-height: 24px;
+        }
+
+        #input {
+            font-family: 'VT323', monospace;
+            width: 100%;
+            padding: 5px 5px;
+            background-color: #000;
+            color: #f3f3f3;
+            border: none;
+            border-radius: 8px;
+            outline: none;
+            line-height: 24px;
+            font-size: 1.2em;
+        }
+
+        #input::placeholder {
+            color: #888;
+            font-family: 'VT323', monospace;
+            font-style: italic;
+        }
+
+        #console button {
+            font-family: 'VT323', monospace;
+            background-color: #444;
+            color: #f3f3f3;
+            padding: 5px 10px;
+            border: none;
+            border-radius: 3px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        #console button:hover {
+            background-color: #555;
+        }
+
+        #console ul {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        #functionList li {
+            background-color: #444;
+            padding: 5px;
+            border-radius: 3px;
+            margin-bottom: 5px;
+        }
+
+        #functionList div {
+            margin-top: 5px;
+            display: flex;
+            gap: 10px;
+        }
+
+        #console input {
+            font-family: 'VT323', monospace;
+            background-color: #222;
+            color: #f3f3f3;
+            border: 1px solid #444;
+            border-radius: 3px;
+            padding: 5px 10px;
+            outline: none;
+            width: auto;
+            margin-top: 5px;
+        }
+
+        #console input[type="number"] {
+            width: 100px;
+        }
+    </style>
 </head>
 
 <body>
-    <h2>Check Active Proposal</h2>
-    <button id="connectBtn">Connect to Ethereum</button>
-    <span id="loadingIndicator" style="display: none;">Loading...</span>
-    <ul id="functionList"></ul>
-    <p id="result"></p>
+    <div id="console">
+        <div id="header-bar">
+            <div id="brand-text">
+                <h1>Ethereum Connector</h1>
+                <span>Connect and interact with Ethereum</span>
+            </div>
+        </div>
+        <div id="output">
+            <h2>Check Active Proposal</h2>
+            <button id="connectBtn" class="command-line">Connect to Ethereum</button>
+            <span id="loadingIndicator" style="display: none;" class="command-line">Loading...</span>
+            <ul id="functionList"></ul>
+        </div>
+        <div class="input-container">
+            <span class="prefix">$</span>
+            <input type="text" id="input" placeholder="Type command...">
+        </div>
+    </div>
+
     <script>
         const ABI = [
             {
