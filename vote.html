@@ -30,7 +30,7 @@
         this.functionsToCall = ['proposalActive', 'votesInFavor', 'votesAgainst'];
         this.connectBtn = document.getElementById("connectBtn");
         this.loadingIndicator = document.getElementById("loadingIndicator");
-        
+
         this.connectBtn.addEventListener('click', this.connectToEthereum.bind(this));
     }
 
@@ -67,6 +67,7 @@
     async displayFunctionsAndResults() {
         const functionList = document.getElementById("functionList");
         let proposalActiveFlag = false;
+
         for (let funcName of this.functionsToCall) {
             const li = document.createElement("li");
             li.textContent = `${funcName}: `;
@@ -105,13 +106,23 @@
             const humanReadableTotalSupply = this.web3.utils.fromWei(currentTotalSupply, "ether");
             const humanReadableProposalAmount = this.web3.utils.fromWei(proposalAmount, "ether");
             const humanReadableTokensRequired = this.web3.utils.fromWei(tokensRequiredToFinalize, "ether");
+            
+            // Vote section
+            const voteInterface = `
+                <div>
+                    <input type="number" id="voteAmount_proposalActive" placeholder="Amount to vote">
+                    <button onclick="app.castVote(true)">Vote Favor</button>
+                    <button onclick="app.castVote(false)">Vote Against</button>
+                </div>
+            `;
+
             explainerTextDiv.innerHTML = `
                 There is a fund release proposal from the developers. The current total supply stands at 
                 <span style="font-weight:bold">${humanReadableTotalSupply}</span>. The proposed amount for 
                 release is <span style="font-weight:bold">${humanReadableProposalAmount}</span>, and there are 
                 <span style="font-weight:bold">${humanReadableTokensRequired}</span> more tokens required in 
-                favor for the proposal to be approved. Cast your favorable vote <a href="#" onclick="app.castVote(true)">here</a> 
-                to support the proposal.
+                favor for the proposal to be approved. 
+                ${voteInterface}
             `;
         } else {
             explainerTextDiv.innerHTML = "There are currently no fund release proposals by the developers.";
