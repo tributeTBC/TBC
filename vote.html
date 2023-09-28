@@ -68,6 +68,7 @@
 
     disconnectFromEthereum() {
         document.getElementById("functionList").innerHTML = '';
+        document.getElementById("explainerText").innerHTML = '';
         this.connectBtn.innerText = "Connect to Ethereum";
         this.connectBtn.removeEventListener('click', this.disconnectFromEthereum.bind(this));
         this.connectBtn.addEventListener('click', this.connectToEthereum.bind(this));
@@ -76,7 +77,6 @@
     async displayFunctionsAndResults() {
         const functionList = document.getElementById("functionList");
         let proposalActiveFlag = false;
-
         for (let funcName of this.functionsToCall) {
             const li = document.createElement("li");
             li.textContent = `${funcName}: `;
@@ -90,50 +90,42 @@
                 document.getElementById(`result_${funcName}`).innerText = result.toString();
                 if (funcName === 'proposalActive' && result) {
                     proposalActiveFlag = true;
-                    console.log("Proposal active:", proposalActiveFlag);
                 }
             } catch (error) {
                 console.error(`Error fetching result for ${funcName}:`, error);
             }
         }
 
-        // Fetch the new methods
-        let currentTotalSupply, proposalAmount, tokensRequiredToFinalize;
+        // Fetch the new method
+        let proposalAmount, tokensRequiredToFinalize;
         try {
-            currentTotalSupply = await this.contract.methods.getCurrentTotalSupply().call();
             proposalAmount = await this.contract.methods.getProposalAmount().call();
             tokensRequiredToFinalize = await this.contract.methods.getTokensRequiredToFinalize().call();
         } catch (error) {
-            console.error("Error fetching new methods:", error);
+            console.error("Error fetching new methods:", error.message);
+            alert("Error fetching proposal details. Please ensure you're connected to the right network and try again.");
+            return;
         }
 
-        this.updateExplainerText(proposalActiveFlag, currentTotalSupply, proposalAmount, tokensRequiredToFinalize);
+        this.updateExplainerText(proposalActiveFlag, proposalAmount, tokensRequiredToFinalize);
     }
 
-    updateExplainerText(isActive, currentTotalSupply, proposalAmount, tokensRequiredToFinalize) {
-    const explainerTextPara = document.getElementById("explainerText");
-    const voteInterfaceDiv = document.getElementById("voteInterface");
-    
-    if (isActive) {
-        const humanReadableTotalSupply = this.web3.utils.fromWei(currentTotalSupply, "ether");
-        const humanReadableProposalAmount = this.web3.utils.fromWei(proposalAmount, "ether");
-        const humanReadableTokensRequired = this.web3.utils.fromWei(tokensRequiredToFinalize, "ether");
-        console.log("Updating explainer text with proposal status:", isActive);
-        explainerTextPara.innerHTML = `
-            There is a fund release proposal from the developers. The current total supply stands at 
-            <span style="font-weight:bold">${humanReadableTotalSupply}</span>. The proposed amount for 
+    updateExplainerText(isActive, proposalAmount, tokensRequiredToFinalize) {
+        const explainerTextDiv = document.getElementById("explainerText");
+        if (isActive) {
+            const humanReadableProposalAmount = this.web3.utils.fromWei(proposalAmount, "ether");
+            const humanReadableTokensRequired = this.web3.utils.fromWei(tokensRequiredToFinalize, "ether");
+            explainerTextDiv.innerHTML = `
+            There is a fund release proposal from the developers. The proposed amount for 
             release is <span style="font-weight:bold">${humanReadableProposalAmount}</span>, and there are 
             <span style="font-weight:bold">${humanReadableTokensRequired}</span> more tokens required in 
-            favor for the proposal to be approved.
+            favor for the proposal to be approved. Cast your favorable vote <a href="#" onclick="app.castVote(true)">here</a> 
+            to support the proposal.
         `;
-        voteInterfaceDiv.style.display = "block";  // Show the voting interface
-    } else {
-        explainerTextPara.innerHTML = "There are currently no fund release proposals by the developers.";
-        voteInterfaceDiv.style.display = "none";  // Hide the voting interface
+        } else {
+            explainerTextDiv.innerHTML = "There are currently no fund release proposals by the developers.";
+        }
     }
-}
-
-
 
     async castVote(inFavor) {
         const amount = document.getElementById('voteAmount_proposalActive').value;
