@@ -11,7 +11,8 @@
     <h2>Check Active Proposal</h2>
     <button id="check">Check for Active Proposal</button>
     <p id="result"></p>
-
+	<h2>Callable Functions Without Parameters</h2>
+	<ul id="functionList"></ul>
     <script src="https://cdn.jsdelivr.net/gh/ethereum/web3.js@1.3.5/dist/web3.min.js"></script>
     <script>
         
@@ -290,13 +291,13 @@
         
         // Extracting and displaying functions from the ABI without parameters
         const functionList = document.getElementById("functionList");
-        contractABI.forEach(item => {
-            if (item.type === "function" && (!item.inputs || item.inputs.length === 0)) {
-                const li = document.createElement("li");
-                li.textContent = item.name;
-                functionList.appendChild(li);
-            }
-        });
+ABI.forEach(item => {   // Change from 'contractABI' to 'ABI'
+    if (item.type === "function" && (!item.inputs || item.inputs.length === 0)) {
+        const li = document.createElement("li");
+        li.textContent = item.name;
+        functionList.appendChild(li);
+    }
+});
 	let web3;
         let contract;
         const contractAddress = "0x6227F8e5D2d94De5310d6d46Fb698C4C6ADd143D";
