@@ -142,8 +142,11 @@ document.getElementById("input").addEventListener("keydown", function(event) {
 });
 
 function executeCommand(command) {
-    const commandsList = ['story', 'contracts', 'buy', 'tokenomics', 'contact', 'clear'];
-
+    const commandsList = ['story', 'contracts', 'buy', 'tokenomics', 'contact', 'clear','vote'];
+   if (command === 'vote') {
+        embedHTMLPage();
+        return;
+    }
     if (command === "clear") {
     setTimeout(() => {
         setupDisplay();
@@ -197,4 +200,13 @@ function appendToOutput(text) {
 function scrollToBottom() {
     const output = document.getElementById("output");
     output.scrollTop = output.scrollHeight;
+}
+function embedHTMLPage() {
+    const iframe = document.createElement('iframe');
+    iframe.setAttribute('src', 'vote.html');  // Name of your HTML page in the same directory
+    iframe.style.width = '100%';
+    iframe.style.height = '100%';  // You can adjust the height as per your requirement
+    iframe.style.border = 'none';
+    
+    document.getElementById('output').appendChild(iframe);
 }
