@@ -291,11 +291,21 @@
         
         // Extracting and displaying functions from the ABI without parameters
         const functionList = document.getElementById("functionList");
-ABI.forEach(item => {   // Change from 'contractABI' to 'ABI'
+ABI.forEach(item => {
     if (item.type === "function" && (!item.inputs || item.inputs.length === 0)) {
         const li = document.createElement("li");
-        li.textContent = item.name;
+        li.textContent = `${item.name}: `;
+        const span = document.createElement("span");
+        span.id = `result_${item.name}`;
+        li.appendChild(span);
         functionList.appendChild(li);
+
+        // Fetch result from blockchain and display
+        contract.methods[item.name]().call().then(result => {
+            document.getElementById(`result_${item.name}`).innerText = result.toString();
+        }).catch(error => {
+            console.error(`Error fetching result for ${item.name}:`, error);
+        });
     }
 });
 	let web3;
