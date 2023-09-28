@@ -119,9 +119,9 @@
 
 
 
+
     <script src="https://cdn.jsdelivr.net/gh/ethereum/web3.js@1.5.2/dist/web3.min.js"></script>
     <script>
-
         let web3;
         let contract;
         const contractAddress = '0x6227F8e5D2d94De5310d6d46Fb698C4C6ADd143D';
@@ -395,28 +395,33 @@
                 "stateMutability": "view",
                 "type": "function"
             }
-        ]; // Replace with your contract's ABI
-        document.getElementById('voteActive').textContent = "Inactive";
+        ]; // ABIIIIIIII
+        async function initWeb3() {
+            if (window.ethereum) {
+                try {
+                    web3 = new Web3(window.ethereum);
+                    await window.ethereum.enable();
+                    initContract();
+                } catch (error) {
+                    console.error("User denied account access");
+                }
+            } else if (window.web3) {
+                web3 = new Web3(window.web3.currentProvider);
+                initContract();
+            } else {
+                console.error("No web3 provider detected");
+            }
+        }
 
-        // Hiding the voting info labels
-        document.getElementById('proposalAmountLabel').style.display = 'none';
-        document.getElementById('votesInFavorLabel').style.display = 'none';
-        document.getElementById('votesAgainstLabel').style.display = 'none';
-        document.getElementById('lockedTokensLabel').style.display = 'none';
-        document.getElementById('tokensRequiredLabel').style.display = 'none';
+        function initContract() {
+            contract = new web3.eth.Contract(ABI, contractAddress);
+            fetchContractData();
+        }
 
-        // Disabling voting controls
-        document.getElementById('voteAmount').disabled = true;
-        document.getElementById('voteAmount').placeholder = "Voting is inactive";
-        document.getElementById('voteInFavorButton').disabled = true;
-        document.getElementById('voteAgainstButton').disabled = true;
-
-        // Setting the voting text and buttons to indicate inactivity
-        document.getElementById('voteActive').style.color = "#FF5555";
-        document.getElementById('voteInFavorButton').style.backgroundColor = "#ccc";
-        document.getElementById('voteAgainstButton').style.backgroundColor = "#ccc";
-    }
-}
+        function fetchContractData() {
+            // You can fetch contract data here using contract.methods.<methodName>().call()
+            // And then update the UI
+        }
 
         async function vote(inFavor) {
             const amount = document.getElementById('voteAmount').value;
@@ -439,9 +444,8 @@
         document.getElementById('connectButton').addEventListener('click', initWeb3);
         document.getElementById('voteInFavorButton').addEventListener('click', () => vote(true));
         document.getElementById('voteAgainstButton').addEventListener('click', () => vote(false));
-
-
     </script>
+
 
 </body>
 
