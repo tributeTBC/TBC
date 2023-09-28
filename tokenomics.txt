@@ -3,6 +3,15 @@
     
     <h2 style="font-size: 1.1em; margin-top: 15px;">Total Supply</h2>
     <p style="font-size: 0.9em; margin-bottom: 10px;"><span style="color: #e74c3c;">42 Billion TBC</span> tokens at genesis.</p>
+    
+    <h2 style="font-size: 1.1em; margin-top: 15px;">Liquidity</h2>
+    <p style="font-size: 0.9em; margin-bottom: 10px;">1 billion TBC used for liquidity at the start.</p>
+    
+    <h2 style="font-size: 1.1em; margin-top: 15px;">Dev Allocation</h2>
+    <p style="font-size: 0.9em; margin-bottom: 10px;">7 billion TBC allocated for Dev team.</p>
+    
+    <h2 style="font-size: 1.1em; margin-top: 15px;">Community Allocation</h2>
+    <p style="font-size: 0.9em; margin-bottom: 10px;">34 billion TBC will be decided by the community regarding its utilization.</p>
 
     <h2 style="font-size: 1.1em; margin-top: 15px;">Transfer Taxation</h2>
     <p style="font-size: 0.9em; margin-bottom: 10px;">Tax is applied on transfers, which diminishes over time based on user interactions. A portion of the tax is burned, and the rest is saved for rewards.</p>
