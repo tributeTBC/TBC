@@ -28,19 +28,41 @@
             margin-bottom: 20px; /* Gives it some space from content below */
         }
 
-        button {
-            font-size: 0.9em; 
-            margin-top: 20px;
-            padding: 10px 20px; 
-            background-color: black; 
-            color: #00FF00; 
-            cursor: pointer;
-            border-radius: 3px;
-        }
+        /* Button styling */
+button {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 4px;
+    background-color: #007BFF;
+    color: white;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
 
-        button:hover {
-            background-color: #1a1a1a;
-        }
+button:hover {
+    background-color: #0056b3;
+}
+
+button:disabled {
+    background-color: #ccc;
+    cursor: not-allowed;
+}
+
+/* Table styling */
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+table td {
+    padding: 10px;
+    border: 1px solid #ddd;
+}
+
+/* Spacing */
+#votingControls {
+    margin-top: 20px;
+}
 
         input {
             font-family: 'VT323', monospace;
@@ -364,8 +386,12 @@
 		"type": "function"
 	}
 ]; // Replace with your contract's ABI
+function showVotingInfo(show) {
+    const displayValue = show ? 'block' : 'none';
+    document.getElementById('votingInfo').style.display = displayValue;
+}
 
-    async function initWeb3() {
+async function initWeb3() {
     if (typeof window.ethereum !== 'undefined') {
         web3 = new Web3(window.ethereum);
         try {
@@ -388,44 +414,53 @@ async function fetchContractData() {
     const voteActive = await contract.methods.proposalActive().call();
 
     if (voteActive) {
-        document.getElementById('voteActive').textContent = voteActive;
+        document.getElementById('voteActive').textContent = "Active";
 
         const proposalAmt = await contract.methods.proposalAmount().call();
+        document.getElementById('proposalAmountLabel').style.display = 'block';
         document.getElementById('proposalAmount').textContent = proposalAmt;
 
         const votesFavor = await contract.methods.votesInFavor().call();
+        document.getElementById('votesInFavorLabel').style.display = 'block';
         document.getElementById('votesInFavor').textContent = votesFavor;
 
         const votesAgst = await contract.methods.votesAgainst().call();
+        document.getElementById('votesAgainstLabel').style.display = 'block';
         document.getElementById('votesAgainst').textContent = votesAgst;
 
         const lockedTokensForUser = await contract.methods.lockedTokens(web3.currentProvider.selectedAddress).call();
+        document.getElementById('lockedTokensLabel').style.display = 'block';
         document.getElementById('lockedTokens').textContent = lockedTokensForUser;
 
         const tokensReq = await contract.methods.tokensRequiredToFinalize().call();
+        document.getElementById('tokensRequiredLabel').style.display = 'block';
         document.getElementById('tokensRequired').textContent = tokensReq;
 
         // Making voting controls available
         document.getElementById('voteAmount').disabled = false;
         document.getElementById('voteInFavorButton').disabled = false;
         document.getElementById('voteAgainstButton').disabled = false;
+
+        showVotingInfo(true);
     } else {
         // Voting is not active
         document.getElementById('voteActive').textContent = "No active proposals";
 
-        // Clearing other fields
-        document.getElementById('proposalAmount').textContent = "";
-        document.getElementById('votesInFavor').textContent = "";
-        document.getElementById('votesAgainst').textContent = "";
-        document.getElementById('lockedTokens').textContent = "";
-        document.getElementById('tokensRequired').textContent = "";
+        // Clearing other fields and hiding labels
+        ['proposalAmount', 'votesInFavor', 'votesAgainst', 'lockedTokens', 'tokensRequired'].forEach(id => {
+            document.getElementById(id).textContent = "";
+            document.getElementById(id + 'Label').style.display = 'none';
+        });
 
         // Disabling voting controls
         document.getElementById('voteAmount').disabled = true;
         document.getElementById('voteInFavorButton').disabled = true;
         document.getElementById('voteAgainstButton').disabled = true;
+
+        showVotingInfo(false);
     }
 }
+
 
 async function vote(inFavor) {
     const amount = web3.utils.toWei(document.getElementById('voteAmount').value, "ether");
@@ -442,7 +477,6 @@ async function vote(inFavor) {
 document.getElementById('connectButton').addEventListener('click', initWeb3);
 document.getElementById('voteInFavorButton').addEventListener('click', () => vote(true));
 document.getElementById('voteAgainstButton').addEventListener('click', () => vote(false));
-
 
 </script>
 
