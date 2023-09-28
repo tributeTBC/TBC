@@ -1,90 +1,127 @@
-class EthereumApp {
-  constructor() {
-    this.web3 = null;
-    this.contract = null;
-    this.abi = [
-      /* your ABI here */
-    ];
-    this.contractAddress = "0x6227F8e5D2d94De5310d6d46Fb698C4C6ADd143D"; // Replace with your contract's address
-  }
+<!DOCTYPE html>
+<html lang="en">
 
-  async loadWeb3() {
-    if (window.ethereum) {
-      window.web3 = new Web3(window.ethereum);
-      await window.ethereum.enable();
-      this.web3 = window.web3;
-    } else if (window.web3) {
-      window.web3 = new Web3(window.web3.currentProvider);
-      this.web3 = window.web3;
-    } else {
-      alert("Non-Ethereum browser detected. Consider trying MetaMask!");
-      return;
-    }
-  }
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vote Interface</title>
+    <link href="https://fonts.googleapis.com/css2?family=VT323&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="vstyle.css">
+</head>
 
-  async connectToEthereum() {
-    await this.loadWeb3();
-    this.contract = new this.web3.eth.Contract(this.abi, this.contractAddress);
-    await this.displayFunctionsAndResults();
-  }
+<body>
+    <div id="output">
+        <h2>Check Active Proposal</h2>
+        <button id="connectBtn">Connect to Ethereum</button>
+        <button id="disconnectBtn" style="display:none;">Disconnect</button>
+        <span id="loadingIndicator" style="display: none;">Loading...</span>
+        <ul id="functionList"></ul>
+    </div>
+    <div id="explainerTextContainer">
+        <p id="explainerText"></p>
+        <div id="voteInterface" style="display: none;">
+            <label for="voteAmount_proposalActive">Amount:</label>
+            <input type="number" id="voteAmount_proposalActive" placeholder="Enter amount in Ether">
+            <button onclick="app.castVote(true)">Vote In Favor</button>
+            <button onclick="app.castVote(false)">Vote Against</button>
+        </div>
+    </div>
 
-  async displayFunctionsAndResults() {
-    try {
-      const methodsToCall = [
-        "PROPOSAL_DURATION",
-        "developer",
-        "lockedTokens",
-        "proposalActive",
-        "proposalAmount",
-        "proposalExpiry",
-        "token",
-        "tokensRequiredToFinalize",
-        "votesAgainst",
-        "votesInFavor",
-      ];
+    <script src="abi.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/ethereum/web3.js@1.3.5/dist/web3.min.js"></script>
+    <script>
+        class EthereumApp {
+            constructor() {
+                this.web3 = null;
+                this.contract = null;
+                
+                this.contractAddress = "0x6227F8e5D2d94De5310d6d46Fb698C4C6ADd143D";
+            }
 
-      for (let method of methodsToCall) {
-        let result = await this.contract.methods[method]().call();
-        console.log(method, result);
-      }
+            async loadWeb3() {
+                if (window.ethereum) {
+                    window.web3 = new Web3(window.ethereum);
+                    await window.ethereum.enable();
+                    this.web3 = window.web3;
+                } else if (window.web3) {
+                    window.web3 = new Web3(window.web3.currentProvider);
+                    this.web3 = window.web3;
+                } else {
+                    alert("Non-Ethereum browser detected. Consider trying MetaMask!");
+                    return;
+                }
+            }
 
-      const isActive = await this.contract.methods.proposalActive().call();
-      if (isActive) {
-        document.getElementById("explainerText").textContent =
-          "There is an active proposal. You can vote for or against it using the interface below.";
-      } else {
-        document.getElementById("explainerText").textContent =
-          "There is currently no active proposal.";
-      }
-    } catch (error) {
-      console.error("Error fetching proposal details:", error.message);
-      document.getElementById("explainerText").textContent =
-        "Error fetching proposal details. Please ensure you're connected to the right network and try again.";
-    }
-  }
+            async connectToEthereum() {
+                await this.loadWeb3();
+                this.contract = new this.web3.eth.Contract(ABI, this.contractAddress);
+                await this.displayFunctionsAndResults();
+            }
 
-  async disconnect() {
-    if (window.ethereum) {
-      try {
-        await window.ethereum.request({ method: "eth_accounts" });
-        console.log("Disconnected");
-      } catch (error) {
-        console.error("Error disconnecting:", error.message);
-      }
-    } else {
-      alert("Ethereum provider not detected.");
-    }
-  }
-}
+            async displayFunctionsAndResults() {
+                try {
+                    const methodsToCall = [
+                        "PROPOSAL_DURATION",
+                        "developer",
+                        "lockedTokens",
+                        "proposalActive",
+                        "proposalAmount",
+                        "proposalExpiry",
+                        "token",
+                        "tokensRequiredToFinalize",
+                        "votesAgainst",
+                        "votesInFavor"
+                    ];
 
-const app = new EthereumApp();
+                    for (let method of methodsToCall) {
+                        let result = await this.contract.methods[method]().call();
+                        console.log(method, result);
+                    }
 
-document.getElementById("connectButton").addEventListener("click", async () => {
-  await app.connectToEthereum();
-});
+                    const isActive = await this.contract.methods.proposalActive().call();
+                    if (isActive) {
+                        document.getElementById("explainerText").textContent = "There is an active proposal. You can vote for or against it using the interface below.";
+                        document.getElementById("disconnectBtn").style.display = "inline";
+                    } else {
+                        document.getElementById("explainerText").textContent = "There is currently no active proposal.";
+                    }
 
-document
-  .getElementById("disconnectButton")
-  .addEventListener("click", async () => {
-    await app.disconnect();
-  });
+                } catch (error) {
+                    console.error("Error fetching proposal details:", error.message);
+                    document.getElementById("explainerText").textContent = "Error fetching proposal details. Please ensure you're connected to the right network and try again.";
+                }
+            }
+
+            async disconnect() {
+                if (window.ethereum) {
+                    try {
+                        console.log("Disconnected. Reloading the page.");
+                        location.reload();
+                    } catch (error) {
+                        console.error("Error disconnecting:", error.message);
+                    }
+                } else {
+                    alert("Ethereum provider not detected.");
+                }
+            }
+
+            async castVote(inFavor) {
+                // Placeholder for casting votes.
+                alert(inFavor ? "Voting in favor" : "Voting against");
+            }
+        }
+
+        const app = new EthereumApp();
+
+        document.getElementById("connectBtn").addEventListener("click", async () => {
+            await app.connectToEthereum();
+        });
+
+        document.getElementById("disconnectBtn").addEventListener("click", async () => {
+            await app.disconnect();
+        });
+    </script>
+
+</body>
+
+</html>
