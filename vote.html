@@ -1,28 +1,79 @@
-<!DOCTYPE html>
+<<!DOCTYPE html>
 <html lang="en">
 
 <head>
     <meta charset="UTF-8">
     <title>MetaMask Custom Network and Contract Interaction</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        
+        .container {
+            display: flex;
+            justify-content: space-between;
+        }
+        
+        .column {
+            flex: 1;
+            padding: 20px;
+            border: 1px solid #d4d4d4;
+            border-radius: 5px;
+        }
+        
+        h2 {
+            border-bottom: 1px solid #d4d4d4;
+            padding-bottom: 10px;
+        }
+        
+        button {
+            margin-top: 20px;
+            padding: 10px 20px;
+            border: none;
+            background-color: #3498db;
+            color: white;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+        
+        button:hover {
+            background-color: #2980b9;
+        }
+        
+        input {
+            padding: 10px;
+            border: 1px solid #d4d4d4;
+            border-radius: 5px;
+            width: 100%;
+            margin-top: 10px;
+        }
+    </style>
 </head>
 
 <body>
 
-<button id="connectButton">Connect to MetaMask</button>
-<button id="addCustomNetworkButton">Add Custom Network</button>
+<div class="container">
+    <div class="column">
+        <h2>Contract Data:</h2>
+        <div>Vote Active: <span id="voteActive"></span></div>
+        <div>Proposal Amount: <span id="proposalAmount"></span></div>
+        <div>Votes in Favor: <span id="votesInFavor"></span></div>
+        <div>Votes Against: <span id="votesAgainst"></span></div>
+        <div>Locked Tokens: <span id="lockedTokens"></span></div>
+        <div>Tokens Required to Finalize: <span id="tokensRequired"></span></div>
+    </div>
 
-<h2>Contract Data:</h2>
-<div>Vote Active: <span id="voteActive"></span></div>
-<div>Proposal Amount: <span id="proposalAmount"></span></div>
-<div>Votes in Favor: <span id="votesInFavor"></span></div>
-<div>Votes Against: <span id="votesAgainst"></span></div>
-<div>Locked Tokens: <span id="lockedTokens"></span></div>
-<div>Tokens Required to Finalize: <span id="tokensRequired"></span></div>
-
-<h2>Vote:</h2>
-<input type="text" id="voteAmount" placeholder="Enter amount to vote with">
-<button id="voteInFavorButton">Vote in Favor</button>
-<button id="voteAgainstButton">Vote Against</button>
+    <div class="column">
+        <h2>Interact:</h2>
+        <button id="connectButton">Connect to MetaMask</button>
+        <button id="addCustomNetworkButton">Add Custom Network</button>
+        <h3>Vote:</h3>
+        <input type="text" id="voteAmount" placeholder="Enter amount to vote with">
+        <button id="voteInFavorButton">Vote in Favor</button>
+        <button id="voteAgainstButton">Vote Against</button>
+    </div>
+</div>
 
 <script src="https://cdn.jsdelivr.net/gh/ethereum/web3.js@1.5.2/dist/web3.min.js"></script>
 <script>
