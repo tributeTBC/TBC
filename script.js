@@ -162,7 +162,7 @@ function executeCommand(command) {
             }
             return response.text();
         }).then(content => {
-            //content = content.replace(/(http:\/\/[^\s]+|https:\/\/[^\s]+)/g, '<a href="$1" target="_blank">$1</a>');
+            content = content.replace(/(http:\/\/[^\s]+|https:\/\/[^\s]+)/g, '<a href="$1" target="_blank">$1</a>');
             appendToOutput(content);
             scrollToBottom();
         }).catch(err => {
