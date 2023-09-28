@@ -9,13 +9,43 @@
     <title>MetaMask Custom Network and Contract Interaction</title>
     <style>
         body {
-            font-family: 'VT323', monospace;
-            color: #00FF00;
-            margin: 10px;
-            background-color: black;
-            line-height: 1.5; /* Improves readability */
-        }
+    font-family: 'VT323', monospace;
+    color: white; /* Change from #00FF00 to white */
+    margin: 10px;
+    background-color: black;
+    line-height: 1.5; /* Improves readability */
+}
 
+/* Button styling */
+button {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 4px;
+    background-color: rgba(0, 255, 0, 0.2); /* Low opacity green */
+    color: white; /* White text color */
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+button:hover {
+    background-color: rgba(0, 255, 0, 0.4); /* Slightly darker on hover */
+}
+
+button:disabled {
+    background-color: #ccc;
+    cursor: not-allowed;
+    color: white; /* Making text consistent */
+}
+
+input {
+    font-family: 'VT323', monospace;
+    background-color: #1a1a1a;
+    padding: 10px;
+    color: white; /* Change from #00FF00 to white */
+    width: 100%;
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
         .container {
     display: flex;
     justify-content: center;  /* Centering the direct children horizontally */
@@ -31,24 +61,6 @@
         }
 
         /* Button styling */
-button {
-    padding: 10px 20px;
-    border: none;
-    border-radius: 4px;
-    background-color: #007BFF;
-    color: white;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-}
-
-button:hover {
-    background-color: #0056b3;
-}
-
-button:disabled {
-    background-color: #ccc;
-    cursor: not-allowed;
-}
 
 /* Table styling */
 table {
@@ -66,15 +78,7 @@ table td {
     margin-top: 20px;
 }
 
-        input {
-            font-family: 'VT323', monospace;
-            background-color: #1a1a1a; 
-            padding: 10px;
-            color: #00FF00;
-            width: 100%;
-            margin-top: 10px;
-            margin-bottom: 10px;
-        }
+        
 
         .inactive-message {
             display: none; /* Hidden by default */
@@ -387,6 +391,17 @@ table td {
 		"type": "function"
 	}
 ]; // Replace with your contract's ABI
+	async function initWeb3() {
+    if (window.ethereum) {
+        web3 = new Web3(window.ethereum);
+        await window.ethereum.enable();
+        contract = new web3.eth.Contract(ABI, contractAddress);
+        fetchContractData();
+    } else {
+        alert("Please install MetaMask to interact with this page.");
+    }
+}
+
 	document.getElementById('voteActive').textContent = "Inactive";
         
         // Hiding the voting info labels
