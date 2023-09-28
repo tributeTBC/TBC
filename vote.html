@@ -291,25 +291,23 @@
     let web3;
     let contract;
     const contractAddress = "0x6227F8e5D2d94De5310d6d46Fb698C4C6ADd143D";
+    
+    // Specify functions to call
+    const functionsToCall = ['proposalActive', 'votesInFavor', 'votesAgainst','proposalAmount','tokensRequiredToFinalize'];
 
     window.addEventListener('load', async () => {
         if (window.ethereum) {
             try {
                 web3 = new Web3(window.ethereum);
-                await window.ethereum.request({ method: 'eth_requestAccounts' }); // Request account access
+                await window.ethereum.request({ method: 'eth_requestAccounts' });
                 contract = new web3.eth.Contract(ABI, contractAddress);
-                
-                // Display functions and their results only after the contract has been initialized
                 displayFunctionsAndResults();
-
             } catch (error) {
                 console.error("User denied account access");
             }
         } else if (window.web3) {
             web3 = new Web3(window.web3.currentProvider);
             contract = new web3.eth.Contract(ABI, contractAddress);
-            
-            // Display functions and their results only after the contract has been initialized
             displayFunctionsAndResults();
         } else {
             console.log('Non-Ethereum browser detected. Consider using MetaMask!');
@@ -318,39 +316,56 @@
 
     function displayFunctionsAndResults() {
         const functionList = document.getElementById("functionList");
-        ABI.forEach(item => {
-            if (item.type === "function" && (!item.inputs || item.inputs.length === 0)) {
-                const li = document.createElement("li");
-                li.textContent = `${item.name}: `;
-                const span = document.createElement("span");
-                span.id = `result_${item.name}`;
-                li.appendChild(span);
-                functionList.appendChild(li);
+        functionsToCall.forEach(funcName => {
+            const li = document.createElement("li");
+            li.textContent = `${funcName}: `;
+            const span = document.createElement("span");
+            span.id = `result_${funcName}`;
+            li.appendChild(span);
 
-                // Fetch result from blockchain and display
-                contract.methods[item.name]().call().then(result => {
-                    document.getElementById(`result_${item.name}`).innerText = result.toString();
-                }).catch(error => {
-                    console.error(`Error fetching result for ${item.name}:`, error);
-                });
-            }
+            // Vote section
+            const voteDiv = document.createElement("div");
+            const favorBtn = document.createElement("button");
+            favorBtn.textContent = "Vote Favor";
+            favorBtn.onclick = () => castVote(funcName, true);
+            const againstBtn = document.createElement("button");
+            againstBtn.textContent = "Vote Against";
+            againstBtn.onclick = () => castVote(funcName, false);
+            const input = document.createElement("input");
+            input.type = "number";
+            input.id = `voteAmount_${funcName}`;
+            input.placeholder = "Amount to vote";
+
+            voteDiv.appendChild(favorBtn);
+            voteDiv.appendChild(againstBtn);
+            voteDiv.appendChild(input);
+            li.appendChild(voteDiv);
+
+            functionList.appendChild(li);
+
+            contract.methods[funcName]().call().then(result => {
+                document.getElementById(`result_${funcName}`).innerText = result.toString();
+            }).catch(error => {
+                console.error(`Error fetching result for ${funcName}:`, error);
+            });
         });
     }
 
-    document.getElementById("check").addEventListener("click", async () => {
-        try {
-            const isActive = await contract.methods.proposalActive().call();
-            if (isActive) {
-                document.getElementById("result").innerText = "There's an active proposal!";
-            } else {
-                document.getElementById("result").innerText = "No active proposal currently.";
-            }
-        } catch (error) {
-            console.error("Error:", error);
-            document.getElementById("result").innerText = "Error occurred. Check console for details.";
+    async function castVote(funcName, inFavor) {
+        const amount = document.getElementById(`voteAmount_${funcName}`).value;
+        if (!amount || amount <= 0) {
+            alert("Please enter a valid amount!");
+            return;
         }
-    });
-
+        try {
+            const accounts = await web3.eth.getAccounts();
+            await contract.methods.vote(inFavor, web3.utils.toWei(amount, "ether")).send({ from: accounts[0] });
+            alert("Vote casted successfully!");
+        } catch (error) {
+            console.error("Error casting vote:", error);
+            alert("Error casting vote. Check console for details.");
+        }
+    }
 </script>
 
 </body>
