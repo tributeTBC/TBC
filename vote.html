@@ -292,8 +292,7 @@
     let contract;
     const contractAddress = "0x6227F8e5D2d94De5310d6d46Fb698C4C6ADd143D";
     
-    // Specify functions to call
-    const functionsToCall = ['proposalActive', 'votesInFavor', 'votesAgainst','proposalAmount','tokensRequiredToFinalize'];
+    const functionsToCall = ['proposalActive', 'votesInFavor', 'votesAgainst'];
 
     window.addEventListener('load', async () => {
         if (window.ethereum) {
@@ -323,23 +322,25 @@
             span.id = `result_${funcName}`;
             li.appendChild(span);
 
-            // Vote section
-            const voteDiv = document.createElement("div");
-            const favorBtn = document.createElement("button");
-            favorBtn.textContent = "Vote Favor";
-            favorBtn.onclick = () => castVote(funcName, true);
-            const againstBtn = document.createElement("button");
-            againstBtn.textContent = "Vote Against";
-            againstBtn.onclick = () => castVote(funcName, false);
-            const input = document.createElement("input");
-            input.type = "number";
-            input.id = `voteAmount_${funcName}`;
-            input.placeholder = "Amount to vote";
+            if (funcName === 'proposalActive') {
+                // Vote section
+                const voteDiv = document.createElement("div");
+                const favorBtn = document.createElement("button");
+                favorBtn.textContent = "Vote Favor";
+                favorBtn.onclick = () => castVote(true);
+                const againstBtn = document.createElement("button");
+                againstBtn.textContent = "Vote Against";
+                againstBtn.onclick = () => castVote(false);
+                const input = document.createElement("input");
+                input.type = "number";
+                input.id = `voteAmount_${funcName}`;
+                input.placeholder = "Amount to vote";
 
-            voteDiv.appendChild(favorBtn);
-            voteDiv.appendChild(againstBtn);
-            voteDiv.appendChild(input);
-            li.appendChild(voteDiv);
+                voteDiv.appendChild(favorBtn);
+                voteDiv.appendChild(againstBtn);
+                voteDiv.appendChild(input);
+                li.appendChild(voteDiv);
+            }
 
             functionList.appendChild(li);
 
@@ -351,8 +352,8 @@
         });
     }
 
-    async function castVote(funcName, inFavor) {
-        const amount = document.getElementById(`voteAmount_${funcName}`).value;
+    async function castVote(inFavor) {
+        const amount = document.getElementById('voteAmount_proposalActive').value;
         if (!amount || amount <= 0) {
             alert("Please enter a valid amount!");
             return;
@@ -367,6 +368,7 @@
         }
     }
 </script>
+
 
 </body>
 
