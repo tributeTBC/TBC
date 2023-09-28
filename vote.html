@@ -100,7 +100,6 @@ table td {
 
     <div class="column">
         <h2>Interact to Vote:</h2>
-        <h3>Vote:</h3>
         <input type="text" id="voteAmount" placeholder="Enter amount to vote with">
         <button id="voteInFavorButton">Vote in Favor</button>
         <button id="voteAgainstButton">Vote Against</button>
@@ -438,10 +437,15 @@ async function fetchContractData() {
 
         // Making voting controls available
         document.getElementById('voteAmount').disabled = false;
+        document.getElementById('voteAmount').placeholder = "Enter amount to vote";
         document.getElementById('voteInFavorButton').disabled = false;
         document.getElementById('voteAgainstButton').disabled = false;
 
-        showVotingInfo(true);
+        // Setting the voting text and buttons to default colors
+        document.getElementById('voteActive').style.color = "black";
+        document.getElementById('voteInFavorButton').style.backgroundColor = "green";
+        document.getElementById('voteAgainstButton').style.backgroundColor = "red";
+
     } else {
         // Voting is not active
         document.getElementById('voteActive').textContent = "No active proposals";
@@ -454,12 +458,18 @@ async function fetchContractData() {
 
         // Disabling voting controls
         document.getElementById('voteAmount').disabled = true;
+        document.getElementById('voteAmount').placeholder = "No active votes";
         document.getElementById('voteInFavorButton').disabled = true;
         document.getElementById('voteAgainstButton').disabled = true;
 
-        showVotingInfo(false);
+        // Setting the voting text and buttons to a greyish-green color to indicate inactivity
+        const inactiveColor = "#6b8e75";  // greyish-green
+        document.getElementById('voteActive').style.color = inactiveColor;
+        document.getElementById('voteInFavorButton').style.backgroundColor = inactiveColor;
+        document.getElementById('voteAgainstButton').style.backgroundColor = inactiveColor;
     }
 }
+
 
 
 async function vote(inFavor) {
