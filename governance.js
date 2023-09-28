@@ -29,6 +29,7 @@ async function connectMetaMask() {
 async function checkProposalStatus() {
     try {
         const proposalStatus = await contract.methods.proposalActive().call();
+        console.log("Proposal Status:", proposalStatus);
         if (proposalStatus) {
             document.getElementById('activeProposal').style.display = 'block';
 
