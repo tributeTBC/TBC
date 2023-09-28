@@ -16,7 +16,16 @@
         <span id="loadingIndicator" style="display: none;">Loading...</span>
         <ul id="functionList"></ul>
     </div>
-    <div id="explainerText"></div>
+    <div id="explainerTextContainer">
+    <p id="explainerText"></p> <!-- Only for the explainer text -->
+    <!-- Voting UI Elements -->
+    <div id="voteInterface" style="display: none;">
+        <label for="voteAmount_proposalActive">Amount:</label>
+        <input type="number" id="voteAmount_proposalActive" placeholder="Enter amount in Ether">
+        <button onclick="app.castVote(true)">Vote In Favor</button>
+        <button onclick="app.castVote(false)">Vote Against</button>
+    </div>
+</div>
 
     <script src="abi.js"></script>
     <script src="https://cdn.jsdelivr.net/gh/ethereum/web3.js@1.3.5/dist/web3.min.js"></script>
@@ -101,33 +110,28 @@
     }
 
     updateExplainerText(isActive, currentTotalSupply, proposalAmount, tokensRequiredToFinalize) {
-        const explainerTextDiv = document.getElementById("explainerText");
-        if (isActive) {
-            const humanReadableTotalSupply = this.web3.utils.fromWei(currentTotalSupply, "ether");
-            const humanReadableProposalAmount = this.web3.utils.fromWei(proposalAmount, "ether");
-            const humanReadableTokensRequired = this.web3.utils.fromWei(tokensRequiredToFinalize, "ether");
-            
-            // Vote section
-            const voteInterface = `
-                <div>
-                    <input type="number" id="voteAmount_proposalActive" placeholder="Amount to vote">
-                    <button onclick="app.castVote(true)">Vote Favor</button>
-                    <button onclick="app.castVote(false)">Vote Against</button>
-                </div>
-            `;
-
-            explainerTextDiv.innerHTML = `
-                There is a fund release proposal from the developers. The current total supply stands at 
-                <span style="font-weight:bold">${humanReadableTotalSupply}</span>. The proposed amount for 
-                release is <span style="font-weight:bold">${humanReadableProposalAmount}</span>, and there are 
-                <span style="font-weight:bold">${humanReadableTokensRequired}</span> more tokens required in 
-                favor for the proposal to be approved. 
-                ${voteInterface}
-            `;
-        } else {
-            explainerTextDiv.innerHTML = "There are currently no fund release proposals by the developers.";
-        }
+    const explainerTextPara = document.getElementById("explainerText");
+    const voteInterfaceDiv = document.getElementById("voteInterface");
+    
+    if (isActive) {
+        const humanReadableTotalSupply = this.web3.utils.fromWei(currentTotalSupply, "ether");
+        const humanReadableProposalAmount = this.web3.utils.fromWei(proposalAmount, "ether");
+        const humanReadableTokensRequired = this.web3.utils.fromWei(tokensRequiredToFinalize, "ether");
+        explainerTextPara.innerHTML = `
+            There is a fund release proposal from the developers. The current total supply stands at 
+            <span style="font-weight:bold">${humanReadableTotalSupply}</span>. The proposed amount for 
+            release is <span style="font-weight:bold">${humanReadableProposalAmount}</span>, and there are 
+            <span style="font-weight:bold">${humanReadableTokensRequired}</span> more tokens required in 
+            favor for the proposal to be approved.
+        `;
+        voteInterfaceDiv.style.display = "block";  // Show the voting interface
+    } else {
+        explainerTextPara.innerHTML = "There are currently no fund release proposals by the developers.";
+        voteInterfaceDiv.style.display = "none";  // Hide the voting interface
     }
+}
+
+
 
     async castVote(inFavor) {
         const amount = document.getElementById('voteAmount_proposalActive').value;
