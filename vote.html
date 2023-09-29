@@ -14,13 +14,11 @@
         <h2>Check Active Proposal</h2>
         <button id="connectBtn">Connect</button>
         <button id="disconnectBtn" style="display:none;">Disconnect</button>
-
         <span id="loadingStatus" style="display: none;">Loading...</span>
-
         <ul id="functionList"></ul>
     </div>
     <div id="explainerTextContainer">
-        <p id="status"></p>
+        <p id="explainerText"></p>
         <div id="voteInterface" style="display: none;">
             <label for="voteAmount_proposalActive">Amount:</label>
             <input type="number" id="voteAmount_proposalActive" placeholder="Enter amount in Ether">
@@ -48,50 +46,53 @@
             async checkProposalStatus() {
                 const proposalActive = await this.contract.methods.proposalActive().call();
                 if (!proposalActive) {
-                    document.getElementById("voteInterface").style.display = "none";
                     return "No active proposal at the moment.";
                 } else {
-                    const proposalAmountBigInt = await this.contract.methods.proposalAmount().call();
+                    const proposalAmountWei = await this.contract.methods.proposalAmount().call();
+                    const proposalAmount = this.web3.utils.fromWei(proposalAmountWei, 'ether');
+
                     const proposalDescription = await this.contract.methods.proposalDescription().call();
                     const proposalExpiryBigInt = await this.contract.methods.proposalExpiry().call();
-                    const proposalAmount = proposalAmountBigInt.toString();
-                    const proposalExpiry = new Date(Number(proposalExpiryBigInt * BigInt(1000))).toLocaleString();
+                    const proposalExpiry = new Date(Number(proposalExpiryBigInt) * 1000).toLocaleString();
 
-                    document.getElementById("voteInterface").style.display = "block";
-                    return `There is an active proposal by the developers requesting the release of ${proposalAmount} tokens. The reason provided for this proposal is: "${proposalDescription}". The proposal will expire on ${proposalExpiry}.`;
+                    return `There is an active proposal by the developers requesting the release of ${proposalAmount} tokens.<br>
+                            The reason provided for this proposal is: "${proposalDescription}".<br>
+                            The proposal will expire on ${proposalExpiry}.`;
                 }
-            }
-
-            disconnect() {
-                if (typeof window.ethereum !== 'undefined') {
-                    window.ethereum.removeAllListeners();
-                }
-                this.currentAccount = null;
             }
         }
 
         const app = new EthereumApp();
 
         async function main() {
-            const connectBtn = document.getElementById("connectBtn");
+            const btn = document.getElementById("connectBtn");
             const disconnectBtn = document.getElementById("disconnectBtn");
-            const statusElement = document.getElementById("status");
+            const explainerText = document.getElementById("explainerText");
+            const voteInterface = document.getElementById("voteInterface");
 
-            connectBtn.onclick = async function () {
-                connectBtn.innerText = "Connecting...";
+            btn.onclick = async function () {
+                btn.innerText = "Connecting...";
                 await app.connect();
                 const status = await app.checkProposalStatus();
-                statusElement.innerText = status;
-                connectBtn.style.display = "none";
+                explainerText.innerHTML = status;
+
+                const proposalActive = await app.contract.methods.proposalActive().call();
+                if (proposalActive) {
+                    voteInterface.style.display = "block";
+                } else {
+                    voteInterface.style.display = "none";
+                }
+
+                btn.style.display = "none";
                 disconnectBtn.style.display = "block";
             }
 
             disconnectBtn.onclick = function () {
-                app.disconnect();
-                statusElement.innerText = "";
-                document.getElementById("voteInterface").style.display = "none";
+                explainerText.innerHTML = "";
+                voteInterface.style.display = "none";
                 disconnectBtn.style.display = "none";
-                connectBtn.style.display = "block";
+                btn.innerText = "Connect";
+                btn.style.display = "block";
             }
         }
 
