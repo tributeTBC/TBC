@@ -7,6 +7,9 @@
     <title>Vote Interface</title>
     <link href="https://fonts.googleapis.com/css2?family=VT323&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="vstyle.css">
+    <link rel="stylesheet" href="@sweetalert2/theme-dark/dark.css">
+
+    <script src="sweetalert2/dist/sweetalert2.min.js"></script>
 </head>
 
 <body>
@@ -43,6 +46,7 @@
 
             </div>
         </div>
+
     </div>
 
 
@@ -77,17 +81,56 @@
                 console.log(`Expected Chain ID from file: ${networkDetails.chainId}`);
 
                 if (`0x${currentChainId.toString(16)}` !== networkDetails.chainId) {
-                    const userConfirmed = confirm("You're connected to the wrong Ethereum network. Would you like to switch?");
+                    let userConfirmed = false;
+
+                    await Swal.fire({
+                        title: 'Network Mismatch',
+                        text: "You're connected to the wrong network. Would you like to switch?",
+                        icon: 'warning',
+                        showCancelButton: true,
+                        confirmButtonColor: '#3085d6',
+                        cancelButtonColor: '#d33',
+                        confirmButtonText: 'Yes, switch!',
+                        cancelButtonText: 'No, thanks'
+                    }).then((result) => {
+                        userConfirmed = result.isConfirmed;
+                    });
+
                     if (userConfirmed) {
                         try {
-                            await ethereum.request({
-                                method: 'wallet_addEthereumChain',
-                                params: [networkDetails],
+                            // First, try switching to the chain
+                            await window.ethereum.request({
+                                method: 'wallet_switchEthereumChain',
+                                params: [{ chainId: networkDetails.chainId }],
                             });
                             return true;
-                        } catch (addError) {
-                            alert('Failed to switch network. Please switch manually.');
-                            return false;
+                        } catch (switchError) {
+                            console.error("Error switching chains:", switchError);
+
+                            // If the error code indicates the chain is not added, then try adding it
+                            if (switchError.code === 4902) {
+                                try {
+                                    await window.ethereum.request({
+                                        method: 'wallet_addEthereumChain',
+                                        params: [networkDetails],
+                                    });
+                                    return true;
+                                } catch (addError) {
+                                    await Swal.fire({
+                                        title: 'Error',
+                                        text: 'Failed to add or switch to the network. Please switch manually.',
+                                        icon: 'error'
+                                    });
+                                    return false;
+                                }
+                            } else {
+                                await Swal.fire({
+                                    title: 'Error',
+                                    text: 'Failed to switch network. Please switch manually.',
+                                    icon: 'error'
+                                });
+                                return false;
+                            }
                         }
                     } else {
                         return false;
@@ -95,6 +138,8 @@
                 }
                 return true;
             }
+
+
 
             async checkProposalStatus() {
                 const proposalActive = await this.contract.methods.proposalActive().call();
@@ -108,14 +153,22 @@
 
                     const proposalDescription = await this.contract.methods.proposalDescription().call();
                     const proposalExpiryBigInt = await this.contract.methods.proposalExpiry().call();
-                    const proposalExpiry = new Date(Number(proposalExpiryBigInt) * 1000).toLocaleString();
+                    const proposalExpiryDate = new Date(Number(proposalExpiryBigInt) * 1000);
+                    const proposalExpiry = `${proposalExpiryDate.toLocaleDateString('de-DE')} ${proposalExpiryDate.toLocaleTimeString('de-DE', { hour: '2-digit', minute: '2-digit' })}`;
+
+
+                    // Assuming you have a method called getLockedTokens in your contract
+                    const lockedTokensWei = await this.contract.methods.lockedTokens(this.currentAccount).call();
+                    const lockedTokens = this.web3.utils.fromWei(lockedTokensWei, 'ether');
 
                     explainerText = `There is an active proposal by the developers requesting the release of 
 <span style="color:red">${proposalAmount}</span> tokens.<br><br>
 The reason provided for this proposal is: 
 "<span style="color:red">${proposalDescription}</span>".<br><br>
 The proposal will expire on 
-<span style="color:red">${proposalExpiry}</span>.`;
+<span style="color:red">${proposalExpiry}</span>.<br><br>
+You have already locked 
+<span style="color:red">${lockedTokens}</span> tokens in contract.`;
                 }
 
                 const explainerBox = document.getElementById("explainerBox");
@@ -129,6 +182,7 @@ The proposal will expire on
                     explainerBox.style.display = "none";
                 }
             }
+
             async vote(isInFavor, voteAmount) {
                 const voteAmountWei = this.web3.utils.toWei(voteAmount, 'ether');
 
@@ -137,16 +191,31 @@ The proposal will expire on
                         try {
                             await this.connect();
                         } catch (error) {
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Connection Error',
+                                text: 'Error connecting to MetaMask!'
+                            });
                             console.error("Error connecting to MetaMask:", error);
                             return;
                         }
                     }
                     const transaction = await this.contract.methods.vote(isInFavor, voteAmountWei).send({ from: this.currentAccount });
-                    console.log("Vote Transaction Hash:", transaction.transactionHash);
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Vote Successful',
+                        text: `Vote Transaction Hash: ${transaction.transactionHash}`
+                    });
                 } catch (error) {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Transaction Error',
+                        text: 'Vote Transaction Failed!'
+                    });
                     console.error("Vote Transaction Error:", error);
                 }
             }
+
 
 
 

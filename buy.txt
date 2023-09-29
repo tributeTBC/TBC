@@ -1,1 +1,363 @@
-will be updated soon
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>MetaMask Custom Network and Contract Interaction</title>
+</head>
+
+<body>
+
+<button id="connectButton">Connect to MetaMask</button>
+<button id="addCustomNetworkButton">Add Custom Network</button>
+
+<h2>Contract Data:</h2>
+<div>Vote Active: <span id="voteActive"></span></div>
+<div>Proposal Amount: <span id="proposalAmount"></span></div>
+<div>Votes in Favor: <span id="votesInFavor"></span></div>
+<div>Votes Against: <span id="votesAgainst"></span></div>
+<div>Locked Tokens: <span id="lockedTokens"></span></div>
+<div>Tokens Required to Finalize: <span id="tokensRequired"></span></div>
+
+<h2>Vote:</h2>
+<input type="text" id="voteAmount" placeholder="Enter amount to vote with">
+<button id="voteInFavorButton">Vote in Favor</button>
+<button id="voteAgainstButton">Vote Against</button>
+
+<script src="https://cdn.jsdelivr.net/gh/ethereum/web3.js@1.5.2/dist/web3.min.js"></script>
+<script>
+    let web3;
+    let contract;
+    const contractAddress = '0x6227F8e5D2d94De5310d6d46Fb698C4C6ADd143D';
+    const ABI = [
+	{
+		"inputs": [
+			{
+				"internalType": "address",
+				"name": "_tokenAddress",
+				"type": "address"
+			}
+		],
+		"stateMutability": "nonpayable",
+		"type": "constructor"
+	},
+	{
+		"anonymous": false,
+		"inputs": [
+			{
+				"indexed": false,
+				"internalType": "bool",
+				"name": "approved",
+				"type": "bool"
+			}
+		],
+		"name": "ProposalFinalized",
+		"type": "event"
+	},
+	{
+		"anonymous": false,
+		"inputs": [
+			{
+				"indexed": true,
+				"internalType": "address",
+				"name": "developer",
+				"type": "address"
+			},
+			{
+				"indexed": false,
+				"internalType": "uint256",
+				"name": "amount",
+				"type": "uint256"
+			}
+		],
+		"name": "ProposalStarted",
+		"type": "event"
+	},
+	{
+		"anonymous": false,
+		"inputs": [
+			{
+				"indexed": true,
+				"internalType": "address",
+				"name": "voter",
+				"type": "address"
+			},
+			{
+				"indexed": false,
+				"internalType": "bool",
+				"name": "inFavor",
+				"type": "bool"
+			},
+			{
+				"indexed": false,
+				"internalType": "uint256",
+				"name": "amount",
+				"type": "uint256"
+			}
+		],
+		"name": "Voted",
+		"type": "event"
+	},
+	{
+		"inputs": [],
+		"name": "PROPOSAL_DURATION",
+		"outputs": [
+			{
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "currentTotalSupply",
+		"outputs": [
+			{
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "developer",
+		"outputs": [
+			{
+				"internalType": "address",
+				"name": "",
+				"type": "address"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "emergencyReset",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "finalizeProposal",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "address",
+				"name": "",
+				"type": "address"
+			}
+		],
+		"name": "lockedTokens",
+		"outputs": [
+			{
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "proposalActive",
+		"outputs": [
+			{
+				"internalType": "bool",
+				"name": "",
+				"type": "bool"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "proposalAmount",
+		"outputs": [
+			{
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "proposalExpiry",
+		"outputs": [
+			{
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "uint256",
+				"name": "amount",
+				"type": "uint256"
+			}
+		],
+		"name": "startProposal",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "token",
+		"outputs": [
+			{
+				"internalType": "contract IToken",
+				"name": "",
+				"type": "address"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "tokensRequiredToFinalize",
+		"outputs": [
+			{
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "unlockTokens",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "bool",
+				"name": "_inFavor",
+				"type": "bool"
+			},
+			{
+				"internalType": "uint256",
+				"name": "_amount",
+				"type": "uint256"
+			}
+		],
+		"name": "vote",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "votesAgainst",
+		"outputs": [
+			{
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "votesInFavor",
+		"outputs": [
+			{
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	}
+]; // Replace with your contract's ABI
+
+    async function initWeb3() {
+        if (typeof window.ethereum !== 'undefined') {
+            web3 = new Web3(window.ethereum);
+            try {
+                const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
+                setupContract();
+                fetchContractData();
+            } catch (error) {
+                console.error("User denied account access");
+            }
+        } else {
+            console.log('No Ethereum browser detected. You should consider trying MetaMask!');
+        }
+    }
+
+    function setupContract() {
+        contract = new web3.eth.Contract(ABI, contractAddress);
+    }
+
+    async function fetchContractData() {
+        const voteActive = await contract.methods.proposalActive().call();
+        document.getElementById('voteActive').textContent = voteActive;
+
+        const proposalAmt = await contract.methods.proposalAmount().call();
+        document.getElementById('proposalAmount').textContent = proposalAmt;
+
+        const votesFavor = await contract.methods.votesInFavor().call();
+        document.getElementById('votesInFavor').textContent = votesFavor;
+
+        const votesAgst = await contract.methods.votesAgainst().call();
+        document.getElementById('votesAgainst').textContent = votesAgst;
+
+        const lockedTokensForUser = await contract.methods.lockedTokens(web3.currentProvider.selectedAddress).call();
+        document.getElementById('lockedTokens').textContent = lockedTokensForUser;
+
+        const tokensReq = await contract.methods.tokensRequiredToFinalize().call();
+        document.getElementById('tokensRequired').textContent = tokensReq;
+    }
+
+    async function vote(inFavor) {
+        const amount = web3.utils.toWei(document.getElementById('voteAmount').value, "ether"); // Assuming user is entering amount in Ether units, convert to Wei
+        const accounts = await web3.eth.getAccounts();
+        try {
+            await contract.methods.vote(inFavor, amount).send({ from: accounts[0] });
+            alert('Vote successful!');
+            fetchContractData();  // Refresh data after voting
+        } catch (error) {
+            alert('Error voting: ' + error.message);
+        }
+    }
+
+    document.getElementById('connectButton').addEventListener('click', initWeb3);
+    document.getElementById('voteInFavorButton').addEventListener('click', () => vote(true));
+    document.getElementById('voteAgainstButton').addEventListener('click', () => vote(false));
+
+</script>
+
+</body>
+
+</html>

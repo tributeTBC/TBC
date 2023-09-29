@@ -7,6 +7,7 @@
       "symbol": "bnb",
       "decimals": 18
     },
-    "rpcUrls": ["https://bsc-dataseed.binance.org/"]
+    "rpcUrls": ["https://bsc-dataseed.binance.org/"],
+    "blockExplorerUrls": ["https://testnet.opbnbscan.com/"]
   }
 }

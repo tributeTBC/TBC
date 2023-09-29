@@ -1,0 +1,4 @@
+governance tokens required 0 olunca revert yerine 0 desin
+
+userin mevcut proposaldaki tokeni , toplam tokeni ayrı hesaplansın
+
