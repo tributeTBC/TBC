@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -9,6 +10,7 @@
     <title>Tribute Console</title>
     <link rel="stylesheet" href="styles.css">
 </head>
+
 <body>
     <div id="console">
         <div id="header-bar">
@@ -22,11 +24,19 @@
             <div class="commands-wrapper">
                 <span class="type-to-console">Type to console or use:</span>
                 <div id="commands">
-                    <span data-command="story" data-display-command="showstory -f Tribute" onclick="handleCommand(event)">Story</span>
-                    <span data-command="contracts" data-display-command="showcontracts -a Tribute" onclick="handleCommand(event)">Contracts</span>
-                    <span data-command="buy" data-display-command="buy -thebestcoinintheworld" onclick="handleCommand(event)">Buy</span>
-                    <span data-command="tokenomics" data-display-command="showtokenomics Tribute" onclick="handleCommand(event)">Tokenomics</span>
-                    <span data-command="contact" data-display-command="how to follow the satoshi" onclick="handleCommand(event)">Contact</span>
+                    <span data-command="story" data-display-command="showstory -f Tribute"
+                        onclick="handleCommand(event)">Story</span>
+                    <span data-command="contracts" data-display-command="showcontracts -a Tribute"
+                        onclick="handleCommand(event)">Contracts</span>
+                    <span data-command="buy" data-display-command="buy -thebestcoinintheworld"
+                        onclick="handleCommand(event)">Buy</span>
+                    <span class="vote-button" data-command="vote" data-display-command="vote -something"
+                        onclick="handleCommand(event)">Vote</span>
+
+                    <span data-command="tokenomics" data-display-command="showtokenomics Tribute"
+                        onclick="handleCommand(event)">Tokenomics</span>
+                    <span data-command="contact" data-display-command="how to follow the satoshi"
+                        onclick="handleCommand(event)">Contact</span>
                     <span data-command="clear" data-display-command="clear" onclick="handleCommand(event)">Clear</span>
 
                 </div>
@@ -34,11 +44,12 @@
         </div>
         <div id="output" class="scroll-box"></div>
         <div class="input-container">
-    <span class="prefix">root@tribute:~#</span>
-    <input type="text" id="input" placeholder="Type a command..." autofocus>
-</div>
+            <span class="prefix">root@tribute:~#</span>
+            <input type="text" id="input" placeholder="Type a command..." autofocus>
+        </div>
 
     </div>
     <script src="script.js"></script>
 </body>
+
 </html>

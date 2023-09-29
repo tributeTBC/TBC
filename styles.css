@@ -1,201 +1,211 @@
 body {
-    /*font-family: 'Courier New', Courier, monospace;*/
-    font-family: 'VT323', monospace;
-    font-size: 20px;
-    min-width: 80vw;
-    background-color: #000; /* Setting terminal black background */
-    color: #f3f3f3;
-    margin: 0;
-    padding: 0;
-    height: 100vh;
-    overflow: hidden;
+  /*font-family: 'Courier New', Courier, monospace;*/
+  font-family: "VT323", monospace;
+  font-size: 20px;
+  min-width: 80vw;
+  background-color: #000; /* Setting terminal black background */
+  color: #f3f3f3;
+  margin: 0;
+  padding: 0;
+  height: 100vh;
+  overflow: hidden;
 }
 
 #console {
-    max-width: 1000px;
-    min-width: 80%;
-    margin: 5% auto;
-    border-radius: 5px;
-    background-color: #222;
-    padding: 20px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+  max-width: 1000px;
+  min-width: 80%;
+  margin: 5% auto;
+  border-radius: 5px;
+  background-color: #222;
+  padding: 20px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
 }
 
 #header-bar {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    border-bottom: 1px solid #444;
-    padding-bottom: 10px;
-    margin-bottom: 10px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid #444;
+  padding-bottom: 10px;
+  margin-bottom: 10px;
 }
 
 #branding {
-    display: flex;
-    align-items: center;
+  display: flex;
+  align-items: center;
 }
 
 #logo {
-    max-height: 50px;
-    margin-right: 15px;
+  max-height: 50px;
+  margin-right: 15px;
 }
 
 #brand-text h1 {
-    margin: 0;
-    font-size: 1.5em;
+  margin: 0;
+  font-size: 1.5em;
 }
 
 #brand-text span {
-    color: #888;
+  color: #888;
 }
 
 .type-to-console {
-    margin-right: 5px;
-    color: #888;
-    font-size: 0.8em;
+  margin-right: 5px;
+  color: #888;
+  font-size: 0.8em;
 }
 
 #commands {
-    display: flex;
-    gap: 10px;
+  display: flex;
+  gap: 10px;
 }
 
 #commands span {
-    cursor: pointer;
-    padding: 5px 8px;
-    background-color: #444;
-    border-radius: 4px;
-    transition: background-color 0.3s;
+  cursor: pointer;
+  padding: 5px 8px;
+  background-color: #444;
+  border-radius: 4px;
+  transition: background-color 0.3s;
 }
 
 #commands span:hover {
-    background-color: #555;
+  background-color: #555;
 }
 
 .command-line {
-    display: block;
-    background-color: #444;
-    padding: 2px 5px;
-    border-radius: 3px;
-    margin-bottom: 5px;
+  display: block;
+  background-color: #444;
+  padding: 2px 5px;
+  border-radius: 3px;
+  margin-bottom: 5px;
 }
 
 #output {
-    height: 600px;
-    overflow-y: auto;
-    word-wrap: break-word; /* This will ensure words wrap onto the next line if they are too long */
-    padding: 10px;
-    background-color: #000; /* Black background for the output */
-    color: #f3f3f3;
-    font-size: 1.2em;
-    
+  height: 600px;
+  overflow-y: auto;
+  word-wrap: break-word; /* This will ensure words wrap onto the next line if they are too long */
+  padding: 10px;
+  background-color: #000; /* Black background for the output */
+  color: #f3f3f3;
+  font-size: 1.2em;
 }
 
 .input-container {
-    display: flex;
-    font-family: 'VT323', monospace;
-    background-color: #000; /* Black background for the console typing area */
-    padding: 10px;
-    align-items: center; /* Vertically center the contents of the flex container */  
-    
+  display: flex;
+  font-family: "VT323", monospace;
+  background-color: #000; /* Black background for the console typing area */
+  padding: 10px;
+  align-items: center; /* Vertically center the contents of the flex container */
 }
 
 .prefix {
-    margin-right: 5px;
-    font-size: 1.2em;
-    color: #f3f3f3;
-    line-height: 24px; /* Add a line-height to align with the input text */
+  margin-right: 5px;
+  font-size: 1.2em;
+  color: #f3f3f3;
+  line-height: 24px; /* Add a line-height to align with the input text */
 }
 
 #input {
-    font-family: 'VT323', monospace;
-    width: 100%;
-    padding: 5px 5px; /* Adjust padding for vertical alignment */
-    background-color: #000;
-    color: #f3f3f3;
-    border: none;
-    border-radius: 8px;
-    outline: none;
-    line-height: 24px; /* Add a line-height to align with the prefix */
-    font-size: 1.2em;
+  font-family: "VT323", monospace;
+  width: 100%;
+  padding: 5px 5px; /* Adjust padding for vertical alignment */
+  background-color: #000;
+  color: #f3f3f3;
+  border: none;
+  border-radius: 8px;
+  outline: none;
+  line-height: 24px; /* Add a line-height to align with the prefix */
+  font-size: 1.2em;
 }
 
 #input::placeholder {
-    color: #888;
-    font-family: 'VT323', monospace;
-    font-style: italic; /* Optionally, you can make the placeholder italic or apply other styles */
+  color: #888;
+  font-family: "VT323", monospace;
+  font-style: italic; /* Optionally, you can make the placeholder italic or apply other styles */
 }
 
 #output a {
-    color: #00BFFF;   /* SkyBlue color for links */
-    text-decoration: none; /* Remove the underlines */
-    transition: color 0.3s ease; /* Smooth color transition */
+  color: #00bfff; /* SkyBlue color for links */
+  text-decoration: none; /* Remove the underlines */
+  transition: color 0.3s ease; /* Smooth color transition */
 }
 
 #output a:hover {
-    color: #007BFF;   /* Darker blue for hover state */
+  color: #007bff; /* Darker blue for hover state */
+}
+#commands span.vote-button {
+  background-color: rgba(0, 128, 0, 0.7); /* matte green with opacity */
+  padding: 5px 10px; /* padding for button-like appearance */
+  border-radius: 5px; /* rounded corners */
+  cursor: pointer; /* hand cursor on hover */
+  margin: 0 5px; /* some margin to separate from adjacent items */
+  transition: background-color 0.3s; /* smooth transition for hover effect */
 }
 
-
+#commands span.vote-button:hover {
+  background-color: rgba(0, 128, 0, 0.9); /* slightly darker green on hover */
+}
+#output iframe {
+  width: 100%; /* take full width */
+  height: fit-content; /* adjust this value based on your needs */
+  border: none; /* optional, to remove any default borders */
+}
 /* Responsive Design */
 @media (max-width: 600px) {
-    /* Styling for read-only input */
-    
-    #input[readonly] {
-    background-color: #161616;  /* Darkening the background for read-only */
-    cursor: not-allowed;     /* Displaying a not-allowed cursor */
-    }
-    
-    #console {
-        margin: 2% auto;
-        padding: 10px;
-    }
+  /* Styling for read-only input */
 
-    #header-bar {
-        flex-direction: column;
-        align-items: flex-start;
-    }
+  #input[readonly] {
+    background-color: #161616; /* Darkening the background for read-only */
+    cursor: not-allowed; /* Displaying a not-allowed cursor */
+  }
 
-    #branding {
-        margin-bottom: 10px;
-    }
+  #console {
+    margin: 2% auto;
+    padding: 10px;
+  }
 
-    #brand-text h1 {
-        font-size: 1.2em;
-    }
+  #header-bar {
+    flex-direction: column;
+    align-items: flex-start;
+  }
 
-    .commands-wrapper {
-        display: flex;
-        flex-direction: column;
-        align-items: flex-start;
-    }
+  #branding {
+    margin-bottom: 10px;
+  }
 
-    .type-to-console {
-        display: none; /* Hide the "Type to console or use:" text on small screens */
-    }
+  #brand-text h1 {
+    font-size: 1.2em;
+  }
 
-    #commands {
-        flex-wrap: wrap;
-        gap: 5px;
-    }
+  .commands-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+  }
 
-    #commands span {
-        padding: 3px 6px;
-        font-size: 0.8em;
-    }
+  .type-to-console {
+    display: none; /* Hide the "Type to console or use:" text on small screens */
+  }
 
-    #output {
-        overflow-x: hidden;
-        height: 250px;
-        font-size: 0.8em;
-    }
+  #commands {
+    flex-wrap: wrap;
+    gap: 5px;
+  }
 
-    .input-container {
-        
-        display: flex;
-        align-items: center; /* This ensures vertical alignment */
-        font-size: 1em;
-    }
+  #commands span {
+    padding: 3px 6px;
+    font-size: 0.8em;
+  }
 
-    
+  #output {
+    overflow-x: hidden;
+    height: 250px;
+    font-size: 0.8em;
+  }
+
+  .input-container {
+    display: flex;
+    align-items: center; /* This ensures vertical alignment */
+    font-size: 1em;
+  }
 }

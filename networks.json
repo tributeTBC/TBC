@@ -1,0 +1,12 @@
+{
+  "desiredNetwork": {
+    "chainId": "0x15eb",
+    "chainName": "Binance Smart Chain",
+    "nativeCurrency": {
+      "name": "BNB",
+      "symbol": "bnb",
+      "decimals": 18
+    },
+    "rpcUrls": ["https://bsc-dataseed.binance.org/"]
+  }
+}

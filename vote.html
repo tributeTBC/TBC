@@ -10,43 +10,90 @@
 </head>
 
 <body>
-    <div id="output">
+    <div id="output" style="align-items: center;">
         <h2>Check Active Proposal</h2>
         <button id="connectBtn">Connect</button>
         <button id="disconnectBtn" style="display:none;">Disconnect</button>
         <span id="loadingStatus" style="display: none;">Loading...</span>
         <ul id="functionList"></ul>
     </div>
-    <div id="explainerTextContainer">
+    <div id="explainerTextContainer" style="margin-bottom:20px;">
         <div id="explainerBox">
-            <p id="explainerText"></p>
+            <p id="explainerText"></p><br>
+            <br>
+            <span id="connectedAccount"></span>
+
         </div>
         <div id="voteInterface" style="display: none;">
-            <label for="voteAmount_proposalActive"><strong>Vote Amount:</strong></label>
+
+
+            <label for="voteAmount_proposalActive">
+                <div><strong>Please Vote - we need your support:</strong></div>
+            </label>
             <input type="number" id="voteAmount_proposalActive"
                 placeholder="Enter amount tokens you would vote with (they will be locked)">
             <div>
-                <button class="voteButton" onclick="app.vote(true)">Vote In Favor</button>
-                <button class="voteButton" onclick="app.vote(false)">Vote Against</button>
+                <button class="voteButton"
+                    onclick="app.vote(true, document.getElementById('voteAmount_proposalActive').value)">Vote In
+                    Favor</button>
+
+                <button class="voteButton voteAgainst"
+                    onclick="app.vote(false, document.getElementById('voteAmount_proposalActive').value)">Vote
+                    Against</button>
+
             </div>
         </div>
     </div>
 
 
-    <script src="https://cdn.jsdelivr.net/npm/web3@4.1.2/dist/web3.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/web3@1.5.2/dist/web3.min.js"></script>
     <script src="abi.js"></script>
     <script>
         class EthereumApp {
             constructor() {
-                this.web3 = new Web3(new Web3.providers.HttpProvider("https://opbnb-testnet-rpc.bnbchain.org"));
+                this.web3 = new Web3(window.ethereum);
                 this.contract = new this.web3.eth.Contract(ABI, contractAddress);
                 this.currentAccount = null;
             }
 
             async connect() {
+                const isCorrectNetwork = await this.checkNetwork();
+                if (!isCorrectNetwork) {
+                    return;
+                }
+
                 const accounts = await ethereum.request({ method: 'eth_requestAccounts' });
                 this.currentAccount = accounts[0];
+
+                const connectedAccountSpan = document.getElementById("connectedAccount");
+
                 return this.currentAccount;
+            }
+
+            async checkNetwork() {
+                const networkDetails = await getNetworkDetails();
+                const currentChainId = await this.web3.eth.getChainId();
+                console.log(`Current Chain ID: 0x${currentChainId.toString(16)}`);
+                console.log(`Expected Chain ID from file: ${networkDetails.chainId}`);
+
+                if (`0x${currentChainId.toString(16)}` !== networkDetails.chainId) {
+                    const userConfirmed = confirm("You're connected to the wrong Ethereum network. Would you like to switch?");
+                    if (userConfirmed) {
+                        try {
+                            await ethereum.request({
+                                method: 'wallet_addEthereumChain',
+                                params: [networkDetails],
+                            });
+                            return true;
+                        } catch (addError) {
+                            alert('Failed to switch network. Please switch manually.');
+                            return false;
+                        }
+                    } else {
+                        return false;
+                    }
+                }
+                return true;
             }
 
             async checkProposalStatus() {
@@ -63,9 +110,12 @@
                     const proposalExpiryBigInt = await this.contract.methods.proposalExpiry().call();
                     const proposalExpiry = new Date(Number(proposalExpiryBigInt) * 1000).toLocaleString();
 
-                    explainerText = `There is an active proposal by the developers requesting the release of ${proposalAmount} tokens.<br>
-                        The reason provided for this proposal is: "${proposalDescription}".<br>
-                        The proposal will expire on ${proposalExpiry}.`;
+                    explainerText = `There is an active proposal by the developers requesting the release of 
+<span style="color:red">${proposalAmount}</span> tokens.<br><br>
+The reason provided for this proposal is: 
+"<span style="color:red">${proposalDescription}</span>".<br><br>
+The proposal will expire on 
+<span style="color:red">${proposalExpiry}</span>.`;
                 }
 
                 const explainerBox = document.getElementById("explainerBox");
@@ -79,7 +129,34 @@
                     explainerBox.style.display = "none";
                 }
             }
+            async vote(isInFavor, voteAmount) {
+                const voteAmountWei = this.web3.utils.toWei(voteAmount, 'ether');
 
+                try {
+                    if (!this.currentAccount) {
+                        try {
+                            await this.connect();
+                        } catch (error) {
+                            console.error("Error connecting to MetaMask:", error);
+                            return;
+                        }
+                    }
+                    const transaction = await this.contract.methods.vote(isInFavor, voteAmountWei).send({ from: this.currentAccount });
+                    console.log("Vote Transaction Hash:", transaction.transactionHash);
+                } catch (error) {
+                    console.error("Vote Transaction Error:", error);
+                }
+            }
+
+
+
+
+
+        }
+        async function getNetworkDetails() {
+            const response = await fetch('networks.json');
+            const data = await response.json();
+            return data.desiredNetwork;
         }
 
         const app = new EthereumApp();
@@ -103,9 +180,10 @@
                 } else {
                     voteInterface.style.display = "none";
                 }
-
+                const explainerContainer = document.getElementById("explainerTextContainer");
+                explainerContainer.style.display = "block";
                 btn.style.display = "none";
-                disconnectBtn.style.display = "block";
+                disconnectBtn.style.display = "inline-block";
             }
 
             disconnectBtn.onclick = function () {
@@ -113,8 +191,13 @@
                 voteInterface.style.display = "none";
                 disconnectBtn.style.display = "none";
                 btn.innerText = "Connect";
-                btn.style.display = "block";
+                btn.style.display = "inline-block";
+
+                // Hide the border of explainerTextContainer
+                const explainerContainer = document.getElementById("explainerTextContainer");
+                explainerContainer.style.display = "none";
             }
+
         }
 
         main();
