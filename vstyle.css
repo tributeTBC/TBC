@@ -10,6 +10,8 @@ body {
 }
 
 #output {
+  align-items: center;
+  text-align: center;
   height: auto;
   overflow-y: auto;
   word-wrap: break-word;
@@ -51,6 +53,81 @@ body {
   color: #888;
   font-family: "VT323", monospace;
   font-style: italic;
+}
+#voteInterface {
+  border: 2px solid #4caf50;
+  padding: 20px;
+  border-radius: 5px;
+  background-color: #000; /* Black background */
+  margin-top: 20px;
+  width: 50%;
+  margin-left: auto;
+  margin-right: auto;
+  font-family: "VT323", monospace; /* Monospace font */
+  color: #4caf50; /* Green font color */
+}
+
+#voteAmount_proposalActive {
+  width: 75%;
+  padding: 10px;
+  margin: 20px 0;
+  font-size: 18px;
+  background-color: #000; /* Black background */
+  color: #4caf50; /* Green font color */
+  border: 1px solid #4caf50;
+  font-family: "VT323", monospace; /* Monospace font */
+}
+
+button.voteButton {
+  width: 45%;
+  padding: 15px;
+  margin: 5px;
+  font-size: 18px;
+  cursor: pointer;
+  background-color: #4caf50;
+  border: none;
+  color: #000;
+  border-radius: 5px;
+  transition: background-color 0.3s;
+  font-family: "VT323", monospace; /* Monospace font */
+}
+
+button.voteButton:hover {
+  background-color: #45a049;
+  color: #fff; /* White font color on hover */
+}
+#explainerBox {
+  border: 2px solid #4caf50;
+  padding: 20px;
+  border-radius: 5px;
+  background-color: #000; /* Black background */
+  margin-top: 20px;
+  width: 50%;
+  margin-left: auto;
+  margin-right: auto;
+  font-family: "VT323", monospace; /* Monospace font */
+  color: #4caf50; /* Green font color */
+  display: none;
+}
+#connectionInterface {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+#connectBtn,
+#disconnectBtn {
+  font-size: 1.5rem;
+  padding: 10px 20px;
+  margin: 10px;
+  display: inline-block; /* Add this to ensure it doesn't take the full width */
+  text-align: center; /* This ensures the button text is centered */
+}
+
+#explainerText {
+  font-family: "VT323", monospace;
+  color: #4caf50;
+  margin-bottom: 20px; /* Spacing between text and the voting interface */
 }
 
 button {

@@ -18,14 +18,20 @@
         <ul id="functionList"></ul>
     </div>
     <div id="explainerTextContainer">
-        <p id="explainerText"></p>
+        <div id="explainerBox">
+            <p id="explainerText"></p>
+        </div>
         <div id="voteInterface" style="display: none;">
-            <label for="voteAmount_proposalActive">Amount:</label>
-            <input type="number" id="voteAmount_proposalActive" placeholder="Enter amount in Ether">
-            <button onclick="app.vote(true)">Vote In Favor</button>
-            <button onclick="app.vote(false)">Vote Against</button>
+            <label for="voteAmount_proposalActive"><strong>Vote Amount:</strong></label>
+            <input type="number" id="voteAmount_proposalActive"
+                placeholder="Enter amount tokens you would vote with (they will be locked)">
+            <div>
+                <button class="voteButton" onclick="app.vote(true)">Vote In Favor</button>
+                <button class="voteButton" onclick="app.vote(false)">Vote Against</button>
+            </div>
         </div>
     </div>
+
 
     <script src="https://cdn.jsdelivr.net/npm/web3@4.1.2/dist/web3.min.js"></script>
     <script src="abi.js"></script>
@@ -45,8 +51,10 @@
 
             async checkProposalStatus() {
                 const proposalActive = await this.contract.methods.proposalActive().call();
+                let explainerText = "";
+
                 if (!proposalActive) {
-                    return "No active proposal at the moment.";
+                    explainerText = "No active proposal at the moment.";
                 } else {
                     const proposalAmountWei = await this.contract.methods.proposalAmount().call();
                     const proposalAmount = this.web3.utils.fromWei(proposalAmountWei, 'ether');
@@ -55,11 +63,23 @@
                     const proposalExpiryBigInt = await this.contract.methods.proposalExpiry().call();
                     const proposalExpiry = new Date(Number(proposalExpiryBigInt) * 1000).toLocaleString();
 
-                    return `There is an active proposal by the developers requesting the release of ${proposalAmount} tokens.<br>
-                            The reason provided for this proposal is: "${proposalDescription}".<br>
-                            The proposal will expire on ${proposalExpiry}.`;
+                    explainerText = `There is an active proposal by the developers requesting the release of ${proposalAmount} tokens.<br>
+                        The reason provided for this proposal is: "${proposalDescription}".<br>
+                        The proposal will expire on ${proposalExpiry}.`;
+                }
+
+                const explainerBox = document.getElementById("explainerBox");
+                const explainerTextElement = document.getElementById("explainerText");
+
+                explainerTextElement.innerHTML = explainerText;
+
+                if (explainerText) {
+                    explainerBox.style.display = "block";
+                } else {
+                    explainerBox.style.display = "none";
                 }
             }
+
         }
 
         const app = new EthereumApp();
@@ -73,8 +93,9 @@
             btn.onclick = async function () {
                 btn.innerText = "Connecting...";
                 await app.connect();
-                const status = await app.checkProposalStatus();
-                explainerText.innerHTML = status;
+
+                // Directly call checkProposalStatus, it will now set the explainer text inside itself
+                await app.checkProposalStatus();
 
                 const proposalActive = await app.contract.methods.proposalActive().call();
                 if (proposalActive) {
@@ -97,6 +118,7 @@
         }
 
         main();
+
     </script>
 
 </body>
