@@ -69,8 +69,10 @@
                 console.log("No web3? Trying WalletConnect instead.");
                 const WalletConnectProvider = window.WalletConnectProvider.default;
                 const provider = new WalletConnectProvider({
-                    infuraId: "YOUR_INFURA_PROJECT_ID"
-                });
+                    rpc: {
+                        // Use 1 for Ethereum Mainnet. If it's another chain, use its chainId
+                        1: "https://bsc-dataseed.binance.org/"
+                    });
                 await provider.enable();
                 window.web3 = new Web3(provider);
                 return true;
