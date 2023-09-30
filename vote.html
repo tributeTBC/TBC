@@ -7,9 +7,10 @@
     <title>Vote Interface</title>
     <link href="https://fonts.googleapis.com/css2?family=VT323&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="vstyle.css">
-    <link rel="stylesheet" href="@sweetalert2/theme-dark/dark.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <link rel="stylesheet" href="dark.css">
 
-    <script src="sweetalert2/dist/sweetalert2.min.js"></script>
+
 </head>
 
 <body>
@@ -51,6 +52,9 @@
 
 
     <script src="https://cdn.jsdelivr.net/npm/web3@4.1.2/dist/web3.min.js"></script>
+    <script type="text/javascript"
+        src="https://unpkg.com/@walletconnect/web3-provider@1.2.1/dist/umd/index.min.js"></script>
+
     <script src="abi.js"></script>
     <script>
         const ethEnabled = async () => {
@@ -58,13 +62,26 @@
                 await window.ethereum.request({ method: 'eth_requestAccounts' });
                 window.web3 = new Web3(window.ethereum);
                 return true;
+            } else if (window.web3) {
+                window.web3 = new Web3(window.web3.currentProvider);
+                return true;
+            } else {
+                console.log("No web3? Trying WalletConnect instead.");
+                const WalletConnectProvider = window.WalletConnectProvider.default;
+                const provider = new WalletConnectProvider({
+                    infuraId: "YOUR_INFURA_PROJECT_ID"
+                });
+                await provider.enable();
+                window.web3 = new Web3(provider);
+                return true;
             }
             return false;
         };
+
         class EthereumApp {
             constructor() {
-                this.web3 = window.web3 ? new Web3(window.web3.currentProvider) : null; // Use existing web3 instance if it exists
-                this.contract = this.web3 ? new this.web3.eth.Contract(ABI, contractAddress) : null; // Initialize contract if web3 exists
+                this.web3 = window.web3 ? new Web3(window.web3.currentProvider) : null;
+                this.contract = this.web3 ? new this.web3.eth.Contract(ABI, contractAddress) : null;
                 this.currentAccount = null;
             }
 
@@ -272,6 +289,9 @@ You have already locked
             }
 
             disconnectBtn.onclick = function () {
+                if (window.web3 && window.web3.currentProvider && window.web3.currentProvider.close) {
+                    window.web3.currentProvider.close();  // Disconnect WalletConnect
+                }
                 explainerText.innerHTML = "";
                 voteInterface.style.display = "none";
                 disconnectBtn.style.display = "none";
