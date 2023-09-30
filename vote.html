@@ -70,8 +70,8 @@
                 const WalletConnectProvider = window.WalletConnectProvider.default;
                 const provider = new WalletConnectProvider({
                     rpc: {
-                        // Use 1 for Ethereum Mainnet. If it's another chain, use its chainId
-                        1: "https://bsc-dataseed.binance.org/"
+
+                        5611: "https://bsc-dataseed.binance.org/"
                     });
                 await provider.enable();
                 window.web3 = new Web3(provider);
