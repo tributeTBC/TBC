@@ -53,10 +53,18 @@
     <script src="https://cdn.jsdelivr.net/npm/web3@4.1.2/dist/web3.min.js"></script>
     <script src="abi.js"></script>
     <script>
+        const ethEnabled = async () => {
+            if (window.ethereum) {
+                await window.ethereum.request({ method: 'eth_requestAccounts' });
+                window.web3 = new Web3(window.ethereum);
+                return true;
+            }
+            return false;
+        };
         class EthereumApp {
             constructor() {
-                this.web3 = new Web3(window.ethereum);
-                this.contract = new this.web3.eth.Contract(ABI, contractAddress);
+                this.web3 = window.web3 ? new Web3(window.web3.currentProvider) : null; // Use existing web3 instance if it exists
+                this.contract = this.web3 ? new this.web3.eth.Contract(ABI, contractAddress) : null; // Initialize contract if web3 exists
                 this.currentAccount = null;
             }
 
@@ -231,6 +239,14 @@ You have already locked
         const app = new EthereumApp();
 
         async function main() {
+            if (!await ethEnabled()) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Ethereum Not Detected',
+                    text: 'Please install MetaMask or another Ethereum-compatible browser extension to use this app.'
+                });
+                return; // Exit from main function
+            }
             const btn = document.getElementById("connectBtn");
             const disconnectBtn = document.getElementById("disconnectBtn");
             const explainerText = document.getElementById("explainerText");
