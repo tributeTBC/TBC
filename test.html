@@ -4,67 +4,420 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>WalletConnect Example</title>
+    <title>Web3 & WalletConnect Example</title>
     <script type="text/javascript"
         src="https://unpkg.com/@walletconnect/web3-provider@1.2.1/dist/umd/index.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/web3/4.1.2/web3.min.js"
+        integrity="sha512-SY8ZHHpr1VtCWQ3a+YWBORQfRmBCZeSWgR5YJ7gW3XyhylLfIjPjva9fPc9xrjgFxFA95+7+ch7i15ykPiVcLQ=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@metamask/detect-provider"></script>
+
+
+    <script src="abi.js"></script>
 </head>
 
 <body>
 
     <button onclick="connectWallet()">Connect to Wallet</button>
-    <button onclick="fetchContractData()">Fetch Contract Data</button>
-    <div id="output"></div>
+    <button onclick="callDeveloperMethod()">Call Developer Method</button>
+
 
     <script>
-        let provider;
 
         async function connectWallet() {
-            // Connect directly using WalletConnectProvider
-            const WalletConnectProvider = window.WalletConnectProvider.default;
-            provider = new WalletConnectProvider({
-                infuraId: "YOUR_INFURA_PROJECT_ID"
-            });
+            let provider;
 
-            // Enable connection to the provider
-            await provider.enable();
-        }
-
-        async function fetchContractData() {
-            if (!provider) {
-                console.error("Please connect the wallet first!");
-                return;
-            }
-
-            const contractAddress = "0xbEd89dDCD4aDd270701af3e91a963dAaFf6149a7";
-            const methods = ["totalSupply", "proposalActive", "developer"];
-
-            for (let method of methods) {
+            // Check for web3 injection
+            if (window.ethereum) {
+                provider = window.ethereum;
                 try {
-                    // Formulate the JSON RPC payload
-                    const payload = {
-                        jsonrpc: "2.0",
-                        id: Date.now(),
-                        method: "eth_call",
-                        params: [
-                            {
-                                to: contractAddress,
-                                data: provider.encodeFunction(method, [])  // Assuming WalletConnectProvider has such utility
-                            },
-                            "latest"
-                        ]
-                    };
-
-                    // Send the JSON RPC payload
-                    const result = await provider.send(payload);
-                    
-                    const outputElem = document.getElementById("output");
-                    outputElem.innerHTML += `<p><strong>${method}:</strong> ${result}</p>`;
+                    // Request account access if needed
+                    await window.ethereum.request({ method: 'eth_requestAccounts' });
                 } catch (error) {
-                    console.error(`Failed to fetch data for method ${method}: `, error);
+                    console.error("User denied account access");
+                    return;
                 }
+            } else if (window.web3) {
+                // Legacy dapp browsers...
+                provider = window.web3.currentProvider;
+            } else {
+                console.log("No web3? Using WalletConnect instead.");
+                const WalletConnectProvider = window.WalletConnectProvider.default;
+                provider = new WalletConnectProvider({
+                    infuraId: "YOUR_INFURA_PROJECT_ID"
+                });
+                await provider.enable();
+            }
+            window.provider = provider;
+            console.log("Provider set!");
+            // You can now use the provider...
+        }
+
+        async function callDeveloperMethod() {
+            const web3 = new Web3(window.provider);
+
+            const contractABI = [
+                {
+                    inputs: [],
+                    name: "emergencyReset",
+                    outputs: [],
+                    stateMutability: "nonpayable",
+                    type: "function",
+                },
+                {
+                    inputs: [],
+                    name: "finalizeProposal",
+                    outputs: [],
+                    stateMutability: "nonpayable",
+                    type: "function",
+                },
+                {
+                    inputs: [
+                        {
+                            internalType: "address",
+                            name: "_tokenAddress",
+                            type: "address",
+                        },
+                    ],
+                    stateMutability: "nonpayable",
+                    type: "constructor",
+                },
+                {
+                    anonymous: false,
+                    inputs: [
+                        {
+                            indexed: false,
+                            internalType: "bool",
+                            name: "approved",
+                            type: "bool",
+                        },
+                    ],
+                    name: "ProposalFinalized",
+                    type: "event",
+                },
+                {
+                    anonymous: false,
+                    inputs: [
+                        {
+                            indexed: true,
+                            internalType: "address",
+                            name: "developer",
+                            type: "address",
+                        },
+                        {
+                            indexed: false,
+                            internalType: "uint256",
+                            name: "amount",
+                            type: "uint256",
+                        },
+                        {
+                            indexed: false,
+                            internalType: "string",
+                            name: "description",
+                            type: "string",
+                        },
+                    ],
+                    name: "ProposalStarted",
+                    type: "event",
+                },
+                {
+                    inputs: [
+                        {
+                            internalType: "uint256",
+                            name: "amount",
+                            type: "uint256",
+                        },
+                        {
+                            internalType: "string",
+                            name: "description",
+                            type: "string",
+                        },
+                    ],
+                    name: "startProposal",
+                    outputs: [],
+                    stateMutability: "nonpayable",
+                    type: "function",
+                },
+                {
+                    inputs: [],
+                    name: "unlockTokens",
+                    outputs: [],
+                    stateMutability: "nonpayable",
+                    type: "function",
+                },
+                {
+                    inputs: [
+                        {
+                            internalType: "bool",
+                            name: "_inFavor",
+                            type: "bool",
+                        },
+                        {
+                            internalType: "uint256",
+                            name: "_amount",
+                            type: "uint256",
+                        },
+                    ],
+                    name: "vote",
+                    outputs: [],
+                    stateMutability: "nonpayable",
+                    type: "function",
+                },
+                {
+                    anonymous: false,
+                    inputs: [
+                        {
+                            indexed: true,
+                            internalType: "address",
+                            name: "voter",
+                            type: "address",
+                        },
+                        {
+                            indexed: false,
+                            internalType: "bool",
+                            name: "inFavor",
+                            type: "bool",
+                        },
+                        {
+                            indexed: false,
+                            internalType: "uint256",
+                            name: "amount",
+                            type: "uint256",
+                        },
+                    ],
+                    name: "Voted",
+                    type: "event",
+                },
+                {
+                    inputs: [],
+                    name: "currentTotalSupply",
+                    outputs: [
+                        {
+                            internalType: "uint256",
+                            name: "",
+                            type: "uint256",
+                        },
+                    ],
+                    stateMutability: "view",
+                    type: "function",
+                },
+                {
+                    inputs: [],
+                    name: "developer",
+                    outputs: [
+                        {
+                            internalType: "address",
+                            name: "",
+                            type: "address",
+                        },
+                    ],
+                    stateMutability: "view",
+                    type: "function",
+                },
+                {
+                    inputs: [
+                        {
+                            internalType: "address",
+                            name: "_address",
+                            type: "address",
+                        },
+                    ],
+                    name: "getUnlockedTokens",
+                    outputs: [
+                        {
+                            internalType: "uint256",
+                            name: "",
+                            type: "uint256",
+                        },
+                    ],
+                    stateMutability: "view",
+                    type: "function",
+                },
+                {
+                    inputs: [
+                        {
+                            internalType: "address",
+                            name: "",
+                            type: "address",
+                        },
+                    ],
+                    name: "lockedTokens",
+                    outputs: [
+                        {
+                            internalType: "uint256",
+                            name: "",
+                            type: "uint256",
+                        },
+                    ],
+                    stateMutability: "view",
+                    type: "function",
+                },
+                {
+                    inputs: [],
+                    name: "PROPOSAL_DURATION",
+                    outputs: [
+                        {
+                            internalType: "uint256",
+                            name: "",
+                            type: "uint256",
+                        },
+                    ],
+                    stateMutability: "view",
+                    type: "function",
+                },
+                {
+                    inputs: [],
+                    name: "proposalActive",
+                    outputs: [
+                        {
+                            internalType: "bool",
+                            name: "",
+                            type: "bool",
+                        },
+                    ],
+                    stateMutability: "view",
+                    type: "function",
+                },
+                {
+                    inputs: [],
+                    name: "proposalAmount",
+                    outputs: [
+                        {
+                            internalType: "uint256",
+                            name: "",
+                            type: "uint256",
+                        },
+                    ],
+                    stateMutability: "view",
+                    type: "function",
+                },
+                {
+                    inputs: [],
+                    name: "proposalDescription",
+                    outputs: [
+                        {
+                            internalType: "string",
+                            name: "",
+                            type: "string",
+                        },
+                    ],
+                    stateMutability: "view",
+                    type: "function",
+                },
+                {
+                    inputs: [],
+                    name: "proposalExpiry",
+                    outputs: [
+                        {
+                            internalType: "uint256",
+                            name: "",
+                            type: "uint256",
+                        },
+                    ],
+                    stateMutability: "view",
+                    type: "function",
+                },
+                {
+                    inputs: [],
+                    name: "proposalId",
+                    outputs: [
+                        {
+                            internalType: "uint256",
+                            name: "",
+                            type: "uint256",
+                        },
+                    ],
+                    stateMutability: "view",
+                    type: "function",
+                },
+                {
+                    inputs: [],
+                    name: "token",
+                    outputs: [
+                        {
+                            internalType: "contract IToken",
+                            name: "",
+                            type: "address",
+                        },
+                    ],
+                    stateMutability: "view",
+                    type: "function",
+                },
+                {
+                    inputs: [],
+                    name: "tokensRequiredToFinalize",
+                    outputs: [
+                        {
+                            internalType: "uint256",
+                            name: "",
+                            type: "uint256",
+                        },
+                    ],
+                    stateMutability: "view",
+                    type: "function",
+                },
+                {
+                    inputs: [
+                        {
+                            internalType: "address",
+                            name: "",
+                            type: "address",
+                        },
+                    ],
+                    name: "voterLastProposalId",
+                    outputs: [
+                        {
+                            internalType: "uint256",
+                            name: "",
+                            type: "uint256",
+                        },
+                    ],
+                    stateMutability: "view",
+                    type: "function",
+                },
+                {
+                    inputs: [],
+                    name: "votesAgainst",
+                    outputs: [
+                        {
+                            internalType: "uint256",
+                            name: "",
+                            type: "uint256",
+                        },
+                    ],
+                    stateMutability: "view",
+                    type: "function",
+                },
+                {
+                    inputs: [],
+                    name: "votesInFavor",
+                    outputs: [
+                        {
+                            internalType: "uint256",
+                            name: "",
+                            type: "uint256",
+                        },
+                    ],
+                    stateMutability: "view",
+                    type: "function",
+                },
+            ];  // assuming 'contractABI' is exported from abi.js
+            const contractAddress = "0x0352cF5b6919626b41Ac34b630C2532C73e2Dd21";  // assuming 'contractAddress' is exported from abi.js
+
+            const contractInstance = new web3.eth.Contract(contractABI, contractAddress);
+
+            try {
+                await provider.request({ method: 'eth_requestAccounts' });
+                const accounts = await web3.eth.getAccounts();
+                const response = await contractInstance.methods.unlockTokens().send({ from: provider.selectedAddress });
+                console.log('Response from contract:', response);
+            } catch (error) {
+                console.error('Error calling developer method:', error);
             }
         }
+
     </script>
+
 </body>
 
 </html>
