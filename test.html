@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Web3 & WalletConnect Example</title>
+    <title>WalletConnect Example</title>
     <script type="text/javascript"
         src="https://unpkg.com/@walletconnect/web3-provider@1.2.1/dist/umd/index.min.js"></script>
 </head>
@@ -12,38 +12,59 @@
 <body>
 
     <button onclick="connectWallet()">Connect to Wallet</button>
+    <button onclick="fetchContractData()">Fetch Contract Data</button>
+    <div id="output"></div>
 
     <script>
-        async function connectWallet() {
-            let provider;
+        let provider;
 
-            // Check for web3 injection
-            if (window.ethereum) {
-                provider = window.ethereum;
-                try {
-                    // Request account access if needed
-                    await window.ethereum.request({ method: 'eth_requestAccounts' });
-                } catch (error) {
-                    console.error("User denied account access");
-                    return;
-                }
-            } else if (window.web3) {
-                // Legacy dapp browsers...
-                provider = window.web3.currentProvider;
-            } else {
-                console.log("No web3? Using WalletConnect instead.");
-                const WalletConnectProvider = window.WalletConnectProvider.default;
-                provider = new WalletConnectProvider({
-                    infuraId: "YOUR_INFURA_PROJECT_ID"
-                });
-                await provider.enable();
+        async function connectWallet() {
+            // Connect directly using WalletConnectProvider
+            const WalletConnectProvider = window.WalletConnectProvider.default;
+            provider = new WalletConnectProvider({
+                infuraId: "YOUR_INFURA_PROJECT_ID"
+            });
+
+            // Enable connection to the provider
+            await provider.enable();
+        }
+
+        async function fetchContractData() {
+            if (!provider) {
+                console.error("Please connect the wallet first!");
+                return;
             }
 
-            console.log("Provider set!");
-            // You can now use the provider...
+            const contractAddress = "0xbEd89dDCD4aDd270701af3e91a963dAaFf6149a7";
+            const methods = ["totalSupply", "proposalActive", "developer"];
+
+            for (let method of methods) {
+                try {
+                    // Formulate the JSON RPC payload
+                    const payload = {
+                        jsonrpc: "2.0",
+                        id: Date.now(),
+                        method: "eth_call",
+                        params: [
+                            {
+                                to: contractAddress,
+                                data: provider.encodeFunction(method, [])  // Assuming WalletConnectProvider has such utility
+                            },
+                            "latest"
+                        ]
+                    };
+
+                    // Send the JSON RPC payload
+                    const result = await provider.send(payload);
+                    
+                    const outputElem = document.getElementById("output");
+                    outputElem.innerHTML += `<p><strong>${method}:</strong> ${result}</p>`;
+                } catch (error) {
+                    console.error(`Failed to fetch data for method ${method}: `, error);
+                }
+            }
         }
     </script>
-
 </body>
 
 </html>
