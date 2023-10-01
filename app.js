@@ -14,23 +14,15 @@ document.addEventListener("DOMContentLoaded", () => {
 
   async function fetchContractData() {
     try {
-      const currentTotalSupply = await web3.eth.call({
-        to: contractAddress,
-        data: contract.methods.currentTotalSupply().encodeABI(),
-      });
-      const developer = await web3.eth.call({
-        to: contractAddress,
-        data: contract.methods.developer().encodeABI(),
-      });
-
-      contractData.innerHTML = `<p>Current Total Supply: ${web3.utils.hexToNumberString(
-        currentTotalSupply
-      )}</p><p>Developer: ${web3.utils.hexToString(developer)}</p>`;
+      const currentTotalSupply = await contract.methods
+        .currentTotalSupply()
+        .call();
+      const developer = await contract.methods.developer().call();
+      contractData.innerHTML = `<p>Current Total Supply: ${currentTotalSupply}</p><p>Developer: ${developer}</p>`;
     } catch (error) {
       console.error("An error occurred while fetching data: ", error);
     }
   }
-
   txButton1.addEventListener("click", async () => {
     try {
       const inFavor = true; // Replace with actual value
@@ -38,7 +30,6 @@ document.addEventListener("DOMContentLoaded", () => {
       const accounts = await window.ethereum.request({
         method: "eth_accounts",
       }); // Define accounts here
-
       const txData = contract.methods.vote(inFavor, amount).encodeABI();
 
       await window.ethereum.request({
