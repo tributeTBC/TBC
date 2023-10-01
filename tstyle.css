@@ -1,0 +1,80 @@
+body {
+  font-family: "VT323", "Courier New", monospace;
+  font-size: 20px;
+  background-color: #000;
+  color: #f3f3f3;
+  margin: 0;
+  padding: 0;
+  height: 100vh;
+  overflow: hidden;
+}
+
+.container {
+  max-width: 1000px;
+  margin: 5% auto;
+  border-radius: 5px;
+  background-color: #222;
+  padding: 20px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+}
+
+@media (max-width: 768px) {
+  .container {
+    padding: 10px;
+  }
+}
+
+h1 {
+  margin: 0;
+  font-size: 1.5em;
+  color: #f3f3f3;
+}
+
+#status {
+  margin: 10px 0;
+  color: #888;
+}
+
+#connect-button {
+  padding: 10px 20px;
+  background-color: #444;
+  border: none;
+  border-radius: 4px;
+  color: #f3f3f3;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+#connect-button:hover {
+  background-color: #555;
+}
+
+p {
+  color: #f3f3f3;
+  font-size: 1.2em;
+}
+#connect-button,
+#tx-button1,
+#tx-button2 {
+  padding: 10px 20px;
+  background-color: #444;
+  border: none;
+  border-radius: 4px;
+  color: #f3f3f3;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  margin-top: 10px;
+}
+
+#connect-button:hover,
+#tx-button1:hover,
+#tx-button2:hover {
+  background-color: #555;
+}
+
+p,
+#contract-data {
+  color: #f3f3f3;
+  font-size: 1.2em;
+  margin-top: 10px;
+}
