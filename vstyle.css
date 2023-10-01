@@ -225,10 +225,22 @@ input {
 input[type="number"] {
   width: 100px;
 }
+#metamaskNote {
+    display: none;
+}
 /* Existing styles here... */
 
 /* Media Query for Mobile screens */
 @media only screen and (max-width: 768px) {
+  #metamaskNote {
+        display: block;
+        background-color: #ffe5e5; /* light red background */
+        padding: 5px;
+        border-radius: 5px;
+        color: red;
+        font-size: 12px;
+        margin-bottom: 10px;
+    }
   body {
     font-size: 12px; /* 60% of 20px */
   }
