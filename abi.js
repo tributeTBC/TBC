@@ -1,4 +1,4 @@
-const contractAddress = "0xbEd89dDCD4aDd270701af3e91a963dAaFf6149a7";
+const contractAddress = "0x72225CFB07721fA75930FEb03675fa7C168af545";
 const ABI = [
   {
     inputs: [],
@@ -161,6 +161,25 @@ const ABI = [
     inputs: [
       {
         internalType: "address",
+        name: "_address",
+        type: "address",
+      },
+    ],
+    name: "getUnlockedTokens",
+    outputs: [
+      {
+        internalType: "uint256",
+        name: "",
+        type: "uint256",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "address",
         name: "",
         type: "address",
       },
@@ -243,6 +262,19 @@ const ABI = [
   },
   {
     inputs: [],
+    name: "proposalId",
+    outputs: [
+      {
+        internalType: "uint256",
+        name: "",
+        type: "uint256",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [],
     name: "token",
     outputs: [
       {
@@ -257,6 +289,25 @@ const ABI = [
   {
     inputs: [],
     name: "tokensRequiredToFinalize",
+    outputs: [
+      {
+        internalType: "uint256",
+        name: "",
+        type: "uint256",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "address",
+        name: "",
+        type: "address",
+      },
+    ],
+    name: "voterLastProposalId",
     outputs: [
       {
         internalType: "uint256",
