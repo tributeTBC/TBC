@@ -1,51 +1,90 @@
-let web3;
-let userAccount;
+import { contractAddress, ABI } from "./abi.js";
 
-const DAI_CONTRACT_ADDRESS = '0x6b175474e89094c44da98b954eedeac495271d0f';  // Example address, you should replace with your desired token's address.
-const DAI_ABI = [  // Abbreviated ABI. Only includes necessary parts for fetching balance.
-    {
-        "constant": true,
-        "inputs": [
-            {
-                "name": "_owner",
-                "type": "address"
-            }
-        ],
-        "name": "balanceOf",
-        "outputs": [
-            {
-                "name": "balance",
-                "type": "uint256"
-            }
-        ],
-        "type": "function"
+document.addEventListener("DOMContentLoaded", () => {
+  const connectButton = document.getElementById("connect-button");
+  const status = document.getElementById("status");
+  const contractData = document.getElementById("contract-data");
+  const txButton1 = document.getElementById("tx-button1");
+  const txButton2 = document.getElementById("tx-button2");
+
+  let web3 = new Web3(window.ethereum);
+  const contract = new web3.eth.Contract(ABI, contractAddress);
+
+  const predefinedNetworkId = "0x15eb";
+
+  async function fetchContractData() {
+    try {
+      const currentTotalSupply = await contract.methods
+        .currentTotalSupply()
+        .call();
+      const developer = await contract.methods.developer().call();
+      contractData.innerHTML = `<p>Current Total Supply: ${currentTotalSupply}</p><p>Developer: ${developer}</p>`;
+    } catch (error) {
+      console.error("An error occurred while fetching data: ", error);
     }
-];
+  }
+  txButton1.addEventListener("click", async () => {
+    try {
+      const inFavor = true; // Replace with actual value
+      const amount = 10; // Replace with actual value
+      const accounts = await window.ethereum.request({
+        method: "eth_accounts",
+      }); // Define accounts here
+      const txData = contract.methods.vote(inFavor, amount).encodeABI();
 
-function connectWallet() {
-    if (typeof window.ethereum !== 'undefined') {
-        web3 = new Web3(window.ethereum);
-        window.ethereum.enable().then(accounts => {
-            userAccount = accounts[0];
-            fetchDAIBalance();
-        });
-    } else if (typeof window.web3 !== 'undefined') {
-        web3 = new Web3(window.web3.currentProvider);
-        web3.eth.getAccounts().then(accounts => {
-            userAccount = accounts[0];
-            fetchDAIBalance();
-        });
+      await window.ethereum.request({
+        method: "eth_sendTransaction",
+        params: [
+          {
+            from: accounts[0],
+            to: contractAddress,
+            data: txData,
+          },
+        ],
+      });
+
+      alert("Vote transaction sent!");
+    } catch (error) {
+      console.error(
+        "An error occurred while sending the vote transaction: ",
+        error
+      );
+      alert("Vote transaction failed!");
+    }
+  });
+
+  async function updateUI() {
+    const chainId = await window.ethereum.request({ method: "eth_chainId" });
+    const accounts = await window.ethereum.request({ method: "eth_accounts" });
+    if (accounts.length > 0 && chainId === predefinedNetworkId) {
+      status.innerText = `Status: Connected to ${accounts[0]} on chain ${chainId}`;
+      await fetchContractData();
+      txButton1.style.display = "inline-block";
+      txButton2.style.display = "inline-block";
     } else {
-        alert('MetaMask not detected. Please install it first.');
+      status.innerText = "Status: Not Connected or Wrong Network";
+      txButton1.style.display = "none";
+      txButton2.style.display = "none";
     }
-}
+  }
 
-
-function fetchDAIBalance() {
-    if (web3 && userAccount) {
-        const daiToken = new web3.eth.Contract(DAI_ABI, DAI_CONTRACT_ADDRESS);
-        daiToken.methods.balanceOf(userAccount).call().then(balance => {
-            document.getElementById('daiBalance').textContent = web3.utils.fromWei(balance) + ' DAI';
+  connectButton.addEventListener("click", async () => {
+    if (window.ethereum) {
+      try {
+        const accounts = await window.ethereum.request({
+          method: "eth_requestAccounts",
         });
+        await updateUI();
+      } catch (error) {
+        status.innerText = "Status: Connection failed";
+      }
+    } else {
+      status.innerText = "Status: MetaMask is not installed";
     }
-}
+  });
+
+  window.ethereum.on("accountsChanged", updateUI);
+  window.ethereum.on("chainChanged", updateUI);
+
+  updateUI();
+});
