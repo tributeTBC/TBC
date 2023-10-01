@@ -1,5 +1,5 @@
-const contractAddress = "0x72225CFB07721fA75930FEb03675fa7C168af545";
-const ABI = [
+export const contractAddress = "0x0352cF5b6919626b41Ac34b630C2532C73e2Dd21";
+export const ABI = [
   {
     inputs: [],
     name: "emergencyReset",
