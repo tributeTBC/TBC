@@ -16,9 +16,11 @@
 <body>
     <div id="output" style="align-items: center;">
         <h2>Check Active Proposal</h2>
-         <div id="metamaskNote" style="color: rgb(131, 69, 69); font-size: 12px; margin-bottom: 10px;">Metamask mobile connection is
+        <div id="metamaskNote" style="color: rgb(131, 69, 69); font-size: 12px; margin-bottom: 10px;">Metamask mobile
+            connection is
             under
             construction</div>
+
         <button id="connectBtn">Connect</button>
         <button id="disconnectBtn" style="display:none;">Disconnect</button>
         <span id="loadingStatus" style="display: none;">Loading...</span>
@@ -72,10 +74,8 @@
                 console.log("No web3? Trying WalletConnect instead.");
                 const WalletConnectProvider = window.WalletConnectProvider.default;
                 const provider = new WalletConnectProvider({
-                    rpc: {
-
-                        5611: "https://opbnb-testnet-rpc.bnbchain.org" }
-                    });
+                    rpc: { 5611: "https://opbnb-testnet-rpc.bnbchain.org" }
+                });
                 await provider.enable();
                 window.web3 = new Web3(provider);
                 return true;
