@@ -64,10 +64,12 @@
     <script>
         const ethEnabled = async () => {
             if (window.ethereum) {
-                await window.ethereum.request({ method: 'eth_requestAccounts' });
                 window.web3 = new Web3(window.ethereum);
+                await window.ethereum.request({ method: 'eth_requestAccounts' });
+
                 return true;
             } else if (window.web3) {
+
                 window.web3 = new Web3(window.web3.currentProvider);
                 return true;
             } else {
@@ -85,7 +87,7 @@
 
         class EthereumApp {
             constructor() {
-                this.web3 = window.web3 ? new Web3(window.web3.currentProvider) : null;
+                this.web3 = window.ethereum ? new Web3(window.ethereum) : (window.web3 ? new Web3(window.web3.currentProvider) : null);
                 this.contract = this.web3 ? new this.web3.eth.Contract(ABI, contractAddress) : null;
                 this.currentAccount = null;
             }
@@ -168,15 +170,57 @@
                 }
                 return true;
             }
+            async getUnlockedTokens() {
 
+                const unlockableTokensWei = await this.contract.methods.getUnlockedTokens(this.currentAccount).call();
+                return this.web3.utils.fromWei(unlockableTokensWei, 'ether');
+            }
 
+            async unlockTokens() {
+                try {
+                    if (!this.currentAccount) {
+                        try {
+                            await this.connect();
+                        } catch (error) {
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Connection Error',
+                                text: 'Error connecting to MetaMask!'
+                            });
+                            console.error("Error connecting to MetaMask:", error);
+                            return;
+                        }
+                    }
+                    await this.checkNetwork();
+                    const transaction = await this.contract.methods.unlockTokens().send({ from: this.currentAccount });
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Unlock Successful',
+                        text: `Unlock Transaction Hash: ${transaction.transactionHash}`
+                    });
+                } catch (error) {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Transaction Error',
+                        text: 'Unlock Transaction Failed!'
+                    });
+                    console.error("Unlock Transaction Error:", error);
+                }
+            }
 
             async checkProposalStatus() {
                 const proposalActive = await this.contract.methods.proposalActive().call();
                 let explainerText = "";
 
+                const unlockableTokens = await this.getUnlockedTokens();
+
+
+
                 if (!proposalActive) {
                     explainerText = "No active proposal at the moment.";
+                    if (parseFloat(unlockableTokens) > 0) {
+                        explainerText += `<br><br>You have <span style="color:red">${unlockableTokens}</span> tokens available to unlock from previous proposals. <a href="#" id="unlockLink">Click here to unlock.</a>`;
+                    }
                 } else {
                     const proposalAmountWei = await this.contract.methods.proposalAmount().call();
                     const proposalAmount = this.web3.utils.fromWei(proposalAmountWei, 'ether');
@@ -199,6 +243,9 @@ The proposal will expire on
 <span style="color:red">${proposalExpiry}</span>.<br><br>
 You have already locked 
 <span style="color:red">${lockedTokens}</span> tokens in contract.`;
+                    if (parseFloat(unlockableTokens) > 0) {
+                        explainerText += `<br><br>You have <span style="color:red">${unlockableTokens}</span> tokens available to unlock from previous proposals. <a href="#" id="unlockLink">Click here to unlock.</a>`;
+                    }
                 }
 
                 const explainerBox = document.getElementById("explainerBox");
@@ -294,8 +341,11 @@ You have already locked
             }
 
             disconnectBtn.onclick = function () {
-                if (window.web3 && window.web3.currentProvider && window.web3.currentProvider.close) {
-                    window.web3.currentProvider.close();  // Disconnect WalletConnect
+                if (window.ethereum && window.ethereum.close) {
+                    window.ethereum.close();
+                } else if (window.web3 && window.web3.currentProvider && window.web3.currentProvider.close) {
+                    console.warn("Using deprecated web3. Consider switching to modern browsers or extensions");
+                    window.web3.currentProvider.close();
                 }
                 explainerText.innerHTML = "";
                 voteInterface.style.display = "none";
@@ -309,7 +359,12 @@ You have already locked
             }
 
         }
-
+        document.addEventListener("click", function (event) {
+            if (event.target && event.target.id === "unlockLink") {
+                event.preventDefault();
+                app.unlockTokens();
+            }
+        });
         main();
 
     </script>
