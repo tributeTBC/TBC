@@ -197,9 +197,15 @@ document.addEventListener("DOMContentLoaded", () => {
           }
           sect2.style.display = "inline-block";
           floatT.style.color = "white";
-          floatText = `<span class='red-text'>Please participate to proposal by locking tokens, devs need your vote!</span>`;
-          floatT.innerHTML = floatText;
-          tRelease.style.display = "none";
+          if (isProposalActive) {
+            floatText = `<span class='red-text'>Please participate to proposal by locking tokens, devs need your vote!</span>`;
+            floatT.innerHTML = floatText;
+            tRelease.style.display = "none";
+          } else {
+            floatText = `<span class='red-text'> Lets wait for next proposal!</span>`;
+            floatT.innerHTML = floatText;
+            tRelease.style.display = "none";
+          }
         }
 
         // Only fetch data if there are active proposals
@@ -310,6 +316,49 @@ document.addEventListener("DOMContentLoaded", () => {
       } else if (!isProposalActive) {
         document.getElementById("vote-amount").placeholder =
           "No active proposals";
+      }
+    } catch (error) {
+      // Display failure modal
+      Swal.fire({
+        icon: "error",
+        title: "Transaction Failed",
+        text: `An error occurred while sending the transaction: ${error}`,
+      });
+    }
+  });
+  tRelease.addEventListener("click", async () => {
+    try {
+      // Request accounts
+      const accounts = await window.ethereum.request({
+        method: "eth_requestAccounts",
+      });
+
+      if (accounts.length > 0) {
+        const userAddress = accounts[0];
+
+        // Prepare the transaction data for unlockTokens
+        const txData = {
+          from: userAddress,
+          to: contractAddress,
+          data: contract.methods.unlockTokens().encodeABI(),
+        };
+
+        // Send the transaction
+        await window.ethereum.request({
+          method: "eth_sendTransaction",
+          params: [txData],
+        });
+
+        // Display success modal
+        Swal.fire({
+          icon: "success",
+          title: "Transaction Successful",
+          text: "Your tokens have been unlocked. Please wait at least 30 seconds.",
+        }).then(() => {
+          setTimeout(async () => {
+            location.reload();
+          }, 25000);
+        });
       }
     } catch (error) {
       // Display failure modal
