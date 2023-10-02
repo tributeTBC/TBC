@@ -123,15 +123,23 @@ document.addEventListener("DOMContentLoaded", () => {
         return;
       }
 
-      const tokenContract = new web3.eth.Contract(tABI, tokenAd);
-      const balance = await tokenContract.methods.balanceOf(accounts[0]).call();
-      const balanceInEther = Number(
-        web3.utils.fromWei(balance, "ether")
-      ).toLocaleString();
-      document.getElementById(
-        "account-balance"
-      ).innerHTML = `<br><span style='font-size: 22px;'>You have: <span class='green-text'>${balanceInEther}</span> TBC</span>`;
+      try {
+    const tokenContract = new web3.eth.Contract(tABI, tokenAd);
+    const balance = await tokenContract.methods.balanceOf(accounts[0]).call();
+    const balanceInEther = Number(
+      web3.utils.fromWei(balance, "ether")
+    ).toLocaleString();
 
+    const balanceElement = document.getElementById("account-balance");
+    if (balanceElement) {
+      balanceElement.innerHTML = `<br><span style='font-size: 22px;'>You have: <span class='green-text'>${balanceInEther}</span> TBC</span>`;
+    } else {
+      console.error("Element with ID 'account-balance' not found.");
+    }
+  } catch (error) {
+    console.error("An error occurred:", error);
+  }
+});
       isProposalActive = await contract.methods.proposalActive().call();
       haveFloatingTokens =
         Number(await contract.methods.getUnlockedTokens(accounts[0]).call()) /
