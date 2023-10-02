@@ -264,7 +264,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
   oyla.addEventListener("click", async () => {
     if (voteAmountInput.value.trim() === "") {
-      // Display an error message or perform any other action
       Swal.fire({
         icon: "warning",
         title: "Input Required",
@@ -283,14 +282,59 @@ document.addEventListener("DOMContentLoaded", () => {
         const userAddress = accounts[0];
         const inputAmount = document.getElementById("vote-amount").value;
 
-        // Convert inputAmount to Wei (assuming it's in Ether)
         const amountInWei = web3.utils.toWei(inputAmount, "ether");
 
-        // Prepare the transaction data
         const txData = {
           from: userAddress,
           to: contractAddress,
           data: contract.methods.vote(true, amountInWei).encodeABI(),
+        };
+
+        await window.ethereum.request({
+          method: "eth_sendTransaction",
+          params: [txData],
+        });
+
+        // Display success modal
+        Swal.fire({
+          icon: "success",
+          title: "Transaction Successful",
+          text: "Your vote has been cast. Please wait atleast 30 seconds.",
+        }).then(() => {
+          setTimeout(async () => {
+            location.reload();
+          }, 25000);
+        });
+
+        // Re-fetch proposal data to update UI
+      } else if (!isProposalActive) {
+        document.getElementById("vote-amount").placeholder =
+          "No active proposals";
+      }
+    } catch (error) {
+      // Display failure modal
+      Swal.fire({
+        icon: "error",
+        title: "Transaction Failed",
+        text: `An error occurred while sending the transaction: ${error}`,
+      });
+    }
+  });
+  tRelease.addEventListener("click", async () => {
+    try {
+      // Request accounts
+      const accounts = await window.ethereum.request({
+        method: "eth_requestAccounts",
+      });
+
+      if (accounts.length > 0) {
+        const userAddress = accounts[0];
+
+        // Prepare the transaction data for unlockTokens
+        const txData = {
+          from: userAddress,
+          to: contractAddress,
+          data: contract.methods.unlockTokens().encodeABI(),
         };
 
         // Send the transaction
@@ -299,13 +343,19 @@ document.addEventListener("DOMContentLoaded", () => {
           params: [txData],
         });
 
-        // You can handle the transaction confirmation here
-      } else if (!isProposalActive) {
-        // If there is no active proposal, show a message in the input placeholder
-        document.getElementById("vote-amount").placeholder =
-          "No active proposals";
+        // Display success modal
+        Swal.fire({
+          icon: "success",
+          title: "Transaction Successful",
+          text: "Your tokens have been unlocked. Please wait at least 30 seconds.",
+        }).then(() => {
+          setTimeout(async () => {
+            location.reload();
+          }, 25000);
+        });
       }
     } catch (error) {
+      // Display failure modal
       Swal.fire({
         icon: "error",
         title: "Transaction Failed",
@@ -313,6 +363,7 @@ document.addEventListener("DOMContentLoaded", () => {
       });
     }
   });
+
   async function checkNetwork() {
     const networkDetails = await getNetworkDetails();
     const currentChainId = await web3.eth.getChainId();
