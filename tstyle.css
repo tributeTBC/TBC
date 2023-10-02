@@ -1,6 +1,6 @@
 body {
   font-family: "VT323", "Courier New", monospace;
-  font-size: 20px;
+  font-size: 32px;
   background-color: #000;
   color: #f3f3f3;
   margin: 20px 0; /* Small margin at the top */
@@ -13,7 +13,7 @@ body {
 }
 
 .container {
-  width: 97%; /* Set container width to 85% of the viewport */
+  width: 95%; /* Set container width to 85% of the viewport */
 
   border-radius: 5px;
   background-color: #222;
@@ -33,6 +33,7 @@ body {
 #tx-button2,
 #vote-button,
 #vote-again-button {
+  font-size: 0.9em;
   padding: 10px 20px;
   background-color: #444;
   border: none;
@@ -99,7 +100,7 @@ p {
   display: none;
 }
 #vote-actions {
-  font-size: small;
+  font-size: 0.8em;
   background-color: #0f0f0f;
   border-radius: 15px;
   border-color: #000;
@@ -130,7 +131,7 @@ p {
 #vote-amount::placeholder {
   color: #b3b3b34f; /* Placeholder text color matching body text color */
   font-family: "VT323", "Courier New", monospace;
-  font-size: 18px;
+  font-size: 0.8em;
 }
 .separator {
   height: 1px; /* Adjust the height as needed */
