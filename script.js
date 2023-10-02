@@ -229,24 +229,31 @@ function embedHTMLPage() {
 
   // Function to adjust the iframe height
   const adjustHeight = () => {
-    const currentHeight = iframe.contentWindow.document.body.scrollHeight;
-    const lineHeight = parseInt(
-      window.getComputedStyle(iframe.contentWindow.document.body).lineHeight,
-      10
-    );
-    const extraLines = 6; // Number of extra lines you want to add
-    const extraHeight = lineHeight * extraLines;
+    try {
+      const currentHeight = iframe.contentWindow.document.body.scrollHeight;
+      const lineHeight = parseInt(
+        window.getComputedStyle(iframe.contentWindow.document.body).lineHeight,
+        10
+      );
+      const extraLines = 6; // Number of extra lines you want to add
+      const extraHeight = lineHeight * extraLines;
 
-    
-if (lastHeight !== currentHeight) {
-      iframe.style.height = currentHeight + extraHeight + "px";
+      console.log("Current Height:", currentHeight); // Debugging
+      console.log("Line Height:", lineHeight); // Debugging
+      console.log("Extra Height:", extraHeight); // Debugging
 
-      // Scroll the #output area to the bottom
-      const outputDiv = document.getElementById("output");
-      outputDiv.scrollTop = outputDiv.scrollHeight;
+      if (lastHeight !== currentHeight) {
+        iframe.style.height = (currentHeight + extraHeight) + "px";
 
-      // Update lastHeight to the current height
-      lastHeight = currentHeight;
+        // Scroll the #output area to the bottom
+        const outputDiv = document.getElementById("output");
+        outputDiv.scrollTop = outputDiv.scrollHeight;
+
+        // Update lastHeight to the current height
+        lastHeight = currentHeight;
+      }
+    } catch (e) {
+      console.error("Could not adjust iframe height:", e);
     }
   };
 
