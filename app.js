@@ -2,13 +2,15 @@ import { contractAddress, ABI } from "./abi.js";
 
 document.addEventListener("DOMContentLoaded", () => {
   const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+  const connectButton = document.getElementById("connect-button");
   const status = document.getElementById("status");
   const isSmall = window.innerWidth < 800;
   if (isMobile || isSmall) {
-    status.innerText = "Use desktop to vote";
+    status.innerHTML =
+      "<span style='color: white; font-size:32px;'>Please Use desktop to Vote</span>";
+    connectButton.style.display = "none";
     return; // Stop further execution
   }
-  const connectButton = document.getElementById("connect-button");
 
   const contractData = document.getElementById("contract-data");
   const sect1 = document.getElementById("info-section");
