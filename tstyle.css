@@ -127,9 +127,9 @@ p {
 }
 
 #vote-amount::placeholder {
-  color: #434e45; /* Placeholder text color matching body text color */
+  color: #b3b3b34f; /* Placeholder text color matching body text color */
   font-family: "VT323", "Courier New", monospace;
-  font-size: 20px;
+  font-size: 18px;
 }
 .separator {
   height: 1px; /* Adjust the height as needed */
@@ -144,10 +144,9 @@ p {
 
 /* Style the explainer text in red */
 .explainer-text {
-  color: red;
-  font-size: 1.2em; /* Adjust the font size as needed */
-  font-weight: bold; /* Make the text bold */
-  margin-bottom: 10px; /* Add a margin below the explainer text */
+  color: rgb(241, 89, 89);
+  text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;
+  margin-bottom: 5px; /* Add a margin below the explainer text */
 }
 .info-text {
   text-align: left; /* Justify the text */
@@ -157,4 +156,8 @@ p {
   border-radius: 5px; /* Add border radius for rounded corners */
   box-shadow: 0 0 5px rgba(0, 0, 0, 0.2); /* Add a subtle shadow */
   margin-top: 20px; /* Add margin at the top */
+}
+.green-text {
+  color: #afff00;
+  text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;
 }
