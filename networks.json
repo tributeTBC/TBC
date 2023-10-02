@@ -1,4 +1,4 @@
-{
+/*{
   "desiredNetwork": {
     "chainId": "0x15eb",
     "chainName": "Binance opbnb",
@@ -9,5 +9,18 @@
     },
     "rpcUrls": ["https://opbnb-testnet-rpc.bnbchain.org"],
     "blockExplorerUrls": ["https://testnet.opbnbscan.com/"]
+  }
+}*/
+{
+  "desiredNetwork": {
+    "chainId": "0xa869",
+    "chainName": "Avalanche Fuji Testnet",
+    "nativeCurrency": {
+      "name": "AVAX",
+      "symbol": "avax",
+      "decimals": 18
+    },
+    "rpcUrls": ["https://api.avax-test.network/ext/bc/C/rpc"],
+    "blockExplorerUrls": ["https://testnet.snowtrace.io"]
   }
 }
