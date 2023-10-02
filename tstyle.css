@@ -122,9 +122,9 @@ p {
   padding: 10px; /* Increase padding for a more comfortable input area */
   font-size: 1.2em; /* Increase the font size */
   border: none; /* Remove the default input border */
-  background-color: #333; /* Input background color */
+  
   color: #f3f3f3; /* Input text color */
-  border-radius: 5px; /* Add border radius for rounded corners */
+ 
 }
 
 #vote-amount::placeholder {
