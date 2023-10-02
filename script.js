@@ -229,7 +229,7 @@ function embedHTMLPage() {
 
   // Function to adjust the iframe height
   const adjustHeight = () => {
-    try {
+    if (iframe.contentWindow && iframe.contentWindow.document) {
       const currentHeight = iframe.contentWindow.document.body.scrollHeight;
       const lineHeight = parseInt(
         window.getComputedStyle(iframe.contentWindow.document.body).lineHeight,
@@ -238,12 +238,8 @@ function embedHTMLPage() {
       const extraLines = 6; // Number of extra lines you want to add
       const extraHeight = lineHeight * extraLines;
 
-      console.log("Current Height:", currentHeight); // Debugging
-      console.log("Line Height:", lineHeight); // Debugging
-      console.log("Extra Height:", extraHeight); // Debugging
-
       if (lastHeight !== currentHeight) {
-        iframe.style.height = (currentHeight + extraHeight) + "px";
+        iframe.style.height = currentHeight + extraHeight + "px";
 
         // Scroll the #output area to the bottom
         const outputDiv = document.getElementById("output");
@@ -252,14 +248,14 @@ function embedHTMLPage() {
         // Update lastHeight to the current height
         lastHeight = currentHeight;
       }
-    } catch (e) {
-      console.error("Could not adjust iframe height:", e);
     }
   };
 
   // Adjust the height when the iframe loads
   iframe.onload = function () {
-    adjustHeight(); // Initial adjustment
-    setInterval(adjustHeight, 500); // Subsequent adjustments every 2 seconds
+    setTimeout(() => {
+      adjustHeight(); // Initial adjustment
+      setInterval(adjustHeight, 500); // Subsequent adjustments every 500 milliseconds
+    }, 1000); // Delay of 1 second to ensure iframe is fully loaded
   };
 }
