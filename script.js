@@ -225,26 +225,27 @@ function embedHTMLPage() {
   iframe.style.border = "none";
 
   document.getElementById("output").appendChild(iframe);
-  let lastHeight = 0; // variable to store the last known height of the iframe content
 
+  // Function to adjust the iframe height
   const adjustHeight = () => {
     const currentHeight = iframe.contentWindow.document.body.scrollHeight;
+    const lineHeight = parseInt(
+      window.getComputedStyle(iframe.contentWindow.document.body).lineHeight,
+      10
+    );
+    const extraLines = 6; // Number of extra lines you want to add
+    const extraHeight = lineHeight * extraLines;
 
-    // Check if the height has changed
-    if (lastHeight !== currentHeight) {
-      iframe.style.height = currentHeight + "px";
+    iframe.style.height = currentHeight + extraHeight + "px";
 
-      // Scroll the #output area to the bottom
-      const outputDiv = document.getElementById("output");
-      outputDiv.scrollTop = outputDiv.scrollHeight;
-
-      // Update lastHeight to the current height
-      lastHeight = currentHeight;
-    }
+    // Scroll the #output area to the bottom
+    const outputDiv = document.getElementById("output");
+    outputDiv.scrollTop = outputDiv.scrollHeight;
   };
 
+  // Adjust the height when the iframe loads
   iframe.onload = function () {
-    adjustHeight();
-    setInterval(adjustHeight, 500); // Check for height changes every half a second
+    adjustHeight(); // Initial adjustment
+    setInterval(adjustHeight, 2000); // Subsequent adjustments every 2 seconds
   };
 }
