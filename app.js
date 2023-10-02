@@ -73,10 +73,10 @@ document.addEventListener("DOMContentLoaded", () => {
       ).toString();
 
       infoText += `Proposal ID: <span class='green-text'>${proposalId}</span><br>`;
-      infoText += `Proposal Amount: <span class='green-text'>${proposalAmount} tokens</span><br>`;
+      infoText += `Proposal Amount: <span class='green-text'>${proposalAmount} TBC </span><br>`;
       infoText += `Proposal Description: <span class='green-text'>${proposalDescription}</span><br>`;
-      infoText += `Votes In Favor: <span class='green-text'>${votesInFavor} tokens</span><br>`;
-      infoText += `Required Votes: <span class='green-text'>${requiredVotes} tokens</span><br>`;
+      infoText += `Votes In Favor: <span class='green-text'>${votesInFavor} TBC</span><br>`;
+      infoText += `Required Votes: <span class='green-text'>${requiredVotes} TBC</span><br>`;
 
       // Convert proposalExpiry to a human-readable date format (EU format)
       const proposalExpiryDate =
@@ -136,7 +136,7 @@ document.addEventListener("DOMContentLoaded", () => {
           let floatText = ``;
           sect2.style.display = "inline-block";
           floatT.style.color = "white";
-          floatText = `You have <span class='green-text'>${haveFloatingTokens} </span> locked tokens from previous proposals.<br> You can unlock now by clicking button below.`;
+          floatText = `You have <span class='green-text'>${haveFloatingTokens} </span> locked TBC tokens from previous proposals.<br> You can unlock now by clicking button below.`;
           floatT.innerHTML = floatText;
         } else {
           console.log(haveFloatingTokens);
@@ -149,7 +149,7 @@ document.addEventListener("DOMContentLoaded", () => {
           }
           sect2.style.display = "inline-block";
           floatT.style.color = "white";
-          floatText = `You dont have any locked tokens from previous proposals.`;
+          floatText = `You dont have any locked TBC from previous proposals.`;
           floatT.innerHTML = floatText;
           tRelease.style.display = "none";
         }
