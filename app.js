@@ -129,7 +129,7 @@ document.addEventListener("DOMContentLoaded", () => {
       if (accounts.length > 0 && chainId === networkDetails.chainId) {
         connectButton.disabled = true; // Disable the button during connection process
         connectButton.innerHTML = `<span style='color:green;'>Connected</span>`; // Change the button text to "Loading"
-        status.innerHTML = `<span style='font-size: 12px;'>Status: Connected to ${accounts[0]} on chain ${chainId}</span>`;
+        status.innerHTML = `<span style='font-size: 24px;'>Status: Connected to ${accounts[0]} on chain ${chainId}</span>`;
         //txButton1.style.display = "hidden";
         //txButton2.style.display = "inline-block";
         if (haveFloatingTokens > 0) {
