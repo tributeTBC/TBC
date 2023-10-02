@@ -1,6 +1,6 @@
 export const tokenAd = "0x0Af1f0506b6b6CA1CCB8909A48C8585dA965e2Ea";
 
-export const contractAddress = "0x583F1978e4655aA8acF8ce20bb15E59701B02B80";
+export const contractAddress = "0xcD24469CD4Efce4903a1f17c1767e5c6B6aA333D";
 
 export const ABI = [
   {
