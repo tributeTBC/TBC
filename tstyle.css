@@ -13,14 +13,14 @@ body {
 }
 
 .container {
-  width: 85%; /* Set container width to 85% of the viewport */
-  max-width: 1000px;
+  width: 95%; /* Set container width to 85% of the viewport */
+
   border-radius: 5px;
   background-color: #222;
   padding: 20px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
   text-align: center;
-  margin-bottom: 50px;
+  margin-bottom: 20px;
 }
 
 #status {
