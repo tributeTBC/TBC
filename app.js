@@ -1,4 +1,4 @@
-import { contractAddress, ABI } from "./abi.js";
+import { contractAddress, ABI, tokenAd, tABI } from "./abi.js";
 
 document.addEventListener("DOMContentLoaded", () => {
   const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
@@ -122,6 +122,16 @@ document.addEventListener("DOMContentLoaded", () => {
         )}.<br>Please Connect Chain ID : ${networkDetails.chainId}`;
         return;
       }
+
+      const tokenContract = new web3.eth.Contract(tABI, tokenAd);
+      const balance = await tokenContract.methods.balanceOf(accounts[0]).call();
+      const balanceInEther = Number(
+        web3.utils.fromWei(balance, "ether")
+      ).toLocaleString();
+      document.getElementById(
+        "account-balance"
+      ).innerHTML = `<br><span style='font-size: 22px;'>You have: <span class='green-text'>${balanceInEther}</span> TBC</span>`;
+
       isProposalActive = await contract.methods.proposalActive().call();
       haveFloatingTokens =
         Number(await contract.methods.getUnlockedTokens(accounts[0]).call()) /
