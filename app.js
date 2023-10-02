@@ -1,8 +1,15 @@
 import { contractAddress, ABI } from "./abi.js";
 
 document.addEventListener("DOMContentLoaded", () => {
-  const connectButton = document.getElementById("connect-button");
+  const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
   const status = document.getElementById("status");
+  const isSmall = window.innerWidth < 800;
+  if (isMobile || isSmall) {
+    status.innerText = "Use desktop to vote";
+    return; // Stop further execution
+  }
+  const connectButton = document.getElementById("connect-button");
+
   const contractData = document.getElementById("contract-data");
   const sect1 = document.getElementById("info-section");
   const sect2 = document.getElementById("vote-section");
