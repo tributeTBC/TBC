@@ -154,6 +154,8 @@ function executeCommand(command) {
     "contact",
     "clear",
     "vote",
+     "cdaa",
+     "brotherhood",
   ];
   if (command === "vote") {
     embedHTMLPage();
