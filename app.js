@@ -129,7 +129,7 @@ document.addEventListener("DOMContentLoaded", () => {
       const balanceInEther = Number(
         web3.utils.fromWei(balance, "ether")
       ).toLocaleString();
-     acbal.innerHTML = `<br><span style='font-size: 22px;'>You have: <span class='green-text'>${balanceInEther}</span> TBC</span>`;
+     acBal.innerHTML = `<br><span style='font-size: 22px;'>You have: <span class='green-text'>${balanceInEther}</span> TBC</span>`;
 
       
       isProposalActive = await contract.methods.proposalActive().call();
