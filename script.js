@@ -158,6 +158,8 @@ function executeCommand(command) {
     "brotherhood",
   ];
   if (command === "vote") {
+    setupDisplay();
+    document.getElementById("output").innerHTML = "";
     embedHTMLPage();
     return;
   }
