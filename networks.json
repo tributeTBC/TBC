@@ -1,16 +1,3 @@
-/*{
-  "desiredNetwork": {
-    "chainId": "0x15eb",
-    "chainName": "Binance opbnb",
-    "nativeCurrency": {
-      "name": "BNB",
-      "symbol": "bnb",
-      "decimals": 18
-    },
-    "rpcUrls": ["https://opbnb-testnet-rpc.bnbchain.org"],
-    "blockExplorerUrls": ["https://testnet.opbnbscan.com/"]
-  }
-}*/
 {
   "desiredNetwork": {
     "chainId": "0xa869",
