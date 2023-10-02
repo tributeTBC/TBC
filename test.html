@@ -7,19 +7,38 @@
     <link href="https://fonts.googleapis.com/css2?family=VT323&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="tstyle.css">
     <script src="https://cdn.jsdelivr.net/npm/web3@4.1.2/dist/web3.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <link rel="stylesheet" href="dark.css">
 
 </head>
 
 <body>
     <div class="container">
-        <h1>MetaMask Connection Demo</h1>
+
         <p id="status">Status: Not Connected</p>
         <button id="connect-button">Connect MetaMask</button>
         <p>Click the button above to connect your MetaMask wallet.</p>
+
+        <div id="content">
+            <div id="info-section">
+                <p class="explainer-text" id="infor">Information</p>
+                <div id="contract-data" class="info-text"></div>
+
+            </div>
+            <div id="vote-section">
+                <p class="explainer-text" id="vote">Vote</p>
+                <div id="vote-input">
+                    <input type="text" id="vote-amount" placeholder="Lock tokens for Voting">
+                    <button id="tx-button1">Vote</button>
+                </div>
+                <div class="separator"></div> <!-- Add a separator here -->
+                <div id="vote-actions">
+                    <p class="explainer-text" id="floatT">Additional Information</p>
+                    <button id="tx-button2">Unlock</button>
+                </div>
+            </div>
+        </div>
     </div>
-    <div id="contract-data"></div>
-    <button id="tx-button1" style="display:none;">Send TX 1</button>
-    <button id="tx-button2" style="display:none;">Send TX 2</button>
     <script type="module" src="app.js"></script>
 </body>
 

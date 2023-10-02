@@ -3,31 +3,23 @@ body {
   font-size: 20px;
   background-color: #000;
   color: #f3f3f3;
-  margin: 0;
+  margin: 20px 0; /* Small margin at the top */
   padding: 0;
   height: 100vh;
   overflow: hidden;
+  display: flex;
+  flex-direction: column; /* Align content at the top */
+  align-items: center;
 }
 
 .container {
+  width: 85%; /* Set container width to 85% of the viewport */
   max-width: 1000px;
-  margin: 5% auto;
   border-radius: 5px;
   background-color: #222;
   padding: 20px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
-}
-
-@media (max-width: 768px) {
-  .container {
-    padding: 10px;
-  }
-}
-
-h1 {
-  margin: 0;
-  font-size: 1.5em;
-  color: #f3f3f3;
+  text-align: center;
 }
 
 #status {
@@ -35,7 +27,11 @@ h1 {
   color: #888;
 }
 
-#connect-button {
+#connect-button,
+#tx-button1,
+#tx-button2,
+#vote-button,
+#vote-again-button {
   padding: 10px 20px;
   background-color: #444;
   border: none;
@@ -43,38 +39,122 @@ h1 {
   color: #f3f3f3;
   cursor: pointer;
   transition: background-color 0.3s;
+  font-family: "VT323", "Courier New", monospace; /* Apply font to buttons */
 }
 
-#connect-button:hover {
+#connect-button:hover,
+#tx-button1:hover,
+#tx-button2:hover,
+#vote-button:hover,
+#vote-again-button:hover {
   background-color: #555;
 }
 
 p {
   color: #f3f3f3;
   font-size: 1.2em;
+  margin: 10px 0;
 }
-#connect-button,
-#tx-button1,
-#tx-button2 {
-  padding: 10px 20px;
-  background-color: #444;
+
+/* Add a media query for screens with a maximum width of 768px (typical for mobile) */
+@media (max-width: 768px) {
+  body {
+    font-size: 16px; /* Decrease the base font size for smaller screens */
+  }
+
+  p {
+    font-size: 0.8em; /* Reduce the font-size by 20% for mobile screens */
+  }
+
+  #content {
+    font-size: 0.9em; /* Slightly smaller font size for the "content" div on mobile */
+  }
+}
+
+#content-wrapper {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 20px;
+}
+
+#content-before {
+  flex: 1;
+}
+
+#content {
+  flex: 1;
+  display: flex;
+  justify-content: space-between;
+}
+
+#info-section,
+#vote-section {
+  flex: 1;
+  padding: 10px;
+  background-color: #333;
+  border-radius: 5px;
+  text-align: center;
+  position: relative;
+  display: none;
+}
+#vote-actions {
+  font-size: small;
+  background-color: #0f0f0f;
+  border-radius: 15px;
+  border-color: #000;
+  border: 2px solid #000; /* Use 'border' to set both border width and color */
+  padding: 10px; /* Add padding to create space between content and border */
+  align-self: flex-end; /* Align to the bottom */
+}
+#info-section {
+  margin-right: 5px; /* Add a margin to create a gap between sections */
+}
+
+#vote-input {
+  padding: 10px;
+  border: 1px solid #555; /* Add a border for a stylish look */
+  border-radius: 5px; /* Add border radius for rounded corners */
+  background-color: #333; /* Background color */
+}
+#vote-amount {
+  font-family: "VT323", "Courier New", monospace;
+  padding: 10px; /* Increase padding for a more comfortable input area */
+  font-size: 1.2em; /* Increase the font size */
+  border: none; /* Remove the default input border */
+  background-color: #333; /* Input background color */
+  color: #f3f3f3; /* Input text color */
+  border-radius: 5px; /* Add border radius for rounded corners */
+}
+
+#vote-amount::placeholder {
+  color: #434e45; /* Placeholder text color matching body text color */
+  font-family: "VT323", "Courier New", monospace;
+  font-size: 20px;
+}
+.separator {
+  height: 1px; /* Adjust the height as needed */
+  background-color: #f3f3f3; /* Set the desired color for the separator */
+  margin: 10px 0; /* Add margin for spacing */
+}
+.dashed-line {
   border: none;
-  border-radius: 4px;
-  color: #f3f3f3;
-  cursor: pointer;
-  transition: background-color 0.3s;
-  margin-top: 10px;
+  border-top: 1px dashed #f3f3f3;
+  margin: 10px 0;
 }
 
-#connect-button:hover,
-#tx-button1:hover,
-#tx-button2:hover {
-  background-color: #555;
+/* Style the explainer text in red */
+.explainer-text {
+  color: red;
+  font-size: 1.2em; /* Adjust the font size as needed */
+  font-weight: bold; /* Make the text bold */
+  margin-bottom: 10px; /* Add a margin below the explainer text */
 }
+.info-text {
+  text-align: left; /* Justify the text */
+  color: #ffffff; /* Change the text color */
 
-p,
-#contract-data {
-  color: #f3f3f3;
-  font-size: 1.2em;
-  margin-top: 10px;
+  padding: 10px; /* Add padding */
+  border-radius: 5px; /* Add border radius for rounded corners */
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.2); /* Add a subtle shadow */
+  margin-top: 20px; /* Add margin at the top */
 }
