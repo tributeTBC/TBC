@@ -22,6 +22,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const voteButton = document.getElementById("tx-button1");
   const vText = document.getElementById("vote");
   const vInput = document.getElementById("vote-input");
+  const acBal = document.getElementById("account-balance");
 
   let web3 = new Web3(window.ethereum);
   let isProposalActive = false;
@@ -123,23 +124,14 @@ document.addEventListener("DOMContentLoaded", () => {
         return;
       }
 
-      try {
-    const tokenContract = new web3.eth.Contract(tABI, tokenAd);
-    const balance = await tokenContract.methods.balanceOf(accounts[0]).call();
-    const balanceInEther = Number(
-      web3.utils.fromWei(balance, "ether")
-    ).toLocaleString();
+      const tokenContract = new web3.eth.Contract(tABI, tokenAd);
+      const balance = await tokenContract.methods.balanceOf(accounts[0]).call();
+      const balanceInEther = Number(
+        web3.utils.fromWei(balance, "ether")
+      ).toLocaleString();
+     acbal.innerHTML = `<br><span style='font-size: 22px;'>You have: <span class='green-text'>${balanceInEther}</span> TBC</span>`;
 
-    const balanceElement = document.getElementById("account-balance");
-    if (balanceElement) {
-      balanceElement.innerHTML = `<br><span style='font-size: 22px;'>You have: <span class='green-text'>${balanceInEther}</span> TBC</span>`;
-    } else {
-      console.error("Element with ID 'account-balance' not found.");
-    }
-  } catch (error) {
-    console.error("An error occurred:", error);
-  }
-});
+      
       isProposalActive = await contract.methods.proposalActive().call();
       haveFloatingTokens =
         Number(await contract.methods.getUnlockedTokens(accounts[0]).call()) /
