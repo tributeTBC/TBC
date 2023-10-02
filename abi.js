@@ -1,4 +1,7 @@
+export const tokenAd = "0x9d7a16C24C4Cb5782094E5CC9aC9f0e97B784BA8";
+
 export const contractAddress = "0x583F1978e4655aA8acF8ce20bb15E59701B02B80";
+
 export const ABI = [
   {
     inputs: [],
