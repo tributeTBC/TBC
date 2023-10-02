@@ -113,18 +113,15 @@ p {
 
 #vote-input {
   padding: 10px;
-  border: 1px solid #555; /* Add a border for a stylish look */
-  border-radius: 5px; /* Add border radius for rounded corners */
-  background-color: #333; /* Background color */
 }
 #vote-amount {
   font-family: "VT323", "Courier New", monospace;
   padding: 10px; /* Increase padding for a more comfortable input area */
-  font-size: 1.2em; /* Increase the font size */
+  font-size: 1em; /* Increase the font size */
   border: none; /* Remove the default input border */
-  
+  background-color: #333; /* Input background color */
   color: #f3f3f3; /* Input text color */
- 
+  border-radius: 5px; /* Add border radius for rounded corners */
 }
 
 #vote-amount::placeholder {
@@ -161,4 +158,10 @@ p {
 .green-text {
   color: #afff00;
   text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;
+  font-size: 1.2em;
+}
+.red-text {
+  color: #ff0000;
+  text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;
+  font-size: 1.4rem;
 }

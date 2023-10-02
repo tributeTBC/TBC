@@ -320,49 +320,6 @@ document.addEventListener("DOMContentLoaded", () => {
       });
     }
   });
-  tRelease.addEventListener("click", async () => {
-    try {
-      // Request accounts
-      const accounts = await window.ethereum.request({
-        method: "eth_requestAccounts",
-      });
-
-      if (accounts.length > 0) {
-        const userAddress = accounts[0];
-
-        // Prepare the transaction data for unlockTokens
-        const txData = {
-          from: userAddress,
-          to: contractAddress,
-          data: contract.methods.unlockTokens().encodeABI(),
-        };
-
-        // Send the transaction
-        await window.ethereum.request({
-          method: "eth_sendTransaction",
-          params: [txData],
-        });
-
-        // Display success modal
-        Swal.fire({
-          icon: "success",
-          title: "Transaction Successful",
-          text: "Your tokens have been unlocked. Please wait at least 30 seconds.",
-        }).then(() => {
-          setTimeout(async () => {
-            location.reload();
-          }, 25000);
-        });
-      }
-    } catch (error) {
-      // Display failure modal
-      Swal.fire({
-        icon: "error",
-        title: "Transaction Failed",
-        text: `An error occurred while sending the transaction: ${error}`,
-      });
-    }
-  });
 
   async function checkNetwork() {
     const networkDetails = await getNetworkDetails();
