@@ -126,19 +126,67 @@ document.addEventListener("DOMContentLoaded", () => {
       haveFloatingTokens =
         Number(await contract.methods.getUnlockedTokens(accounts[0]).call()) /
         1e18;
+      console.log(
+        Number(contract.methods.getLastVotedProposalId(accounts[0]).call())
+      );
+      let userCurrent;
+      try {
+        userCurrent = await contract.methods
+          .getLastVotedProposalId(accounts[0])
+          .call();
+        userCurrent = userCurrent.toString(); // Convert BigInt to string
+      } catch (error) {
+        userCurrent = "0";
+      }
+
+      let pCurrent;
+      try {
+        pCurrent = await contract.methods.proposalId().call();
+        pCurrent = pCurrent.toString(); // Convert BigInt to string
+      } catch (error) {
+        pCurrent = "0";
+      }
+
       if (accounts.length > 0 && chainId === networkDetails.chainId) {
         connectButton.disabled = true; // Disable the button during connection process
         connectButton.innerHTML = `<span style='color:green;'>Connected</span>`; // Change the button text to "Loading"
         status.innerHTML = `<span style='font-size: 24px;'>Status: Connected to ${accounts[0]} on chain ${chainId}</span>`;
         //txButton1.style.display = "hidden";
         //txButton2.style.display = "inline-block";
-        if (haveFloatingTokens > 0) {
+        if (userCurrent === pCurrent) {
+          let greenTokens;
+          greenTokens = (
+            Number(await contract.methods.lockedTokens(accounts[0]).call()) /
+            1e18
+          ).toLocaleString();
+          let floatText;
+          sect2.style.display = "inline-block";
+          floatT.style.color = "white";
+          tRelease.style.display = "none";
+          floatText = `You have <span class='green-text'>${greenTokens} </span> locked TBC tokens for this proposal round. You can vote for more.`;
+          floatT.innerHTML = floatText;
+          if (!isProposalActive) {
+            tRelease.style.display = "inline-block";
+            voteAmountInput.style.display = "none";
+            oyla.style.display = "none";
+            vInput.style.display = "none";
+          }
+        }
+        if (haveFloatingTokens > 0 && userCurrent !== pCurrent) {
           let floatText = ``;
           sect2.style.display = "inline-block";
           floatT.style.color = "white";
           floatText = `You have <span class='green-text'>${haveFloatingTokens} </span> locked TBC tokens from previous proposals.<br> You can unlock now by clicking button below.`;
+          if (isProposalActive) {
+            floatText += `<br><br><span class='red-text'>You need to Unlock tokens to participate new proposals.</span>`;
+          }
           floatT.innerHTML = floatText;
-        } else {
+          tRelease.style.display = "inline-block";
+          voteAmountInput.style.display = "none";
+          oyla.style.display = "none";
+          vInput.style.display = "none";
+          vText.innerText = "There are no active proposals right now.";
+        } else if (haveFloatingTokens == 0 && userCurrent !== pCurrent) {
           console.log(haveFloatingTokens);
           let floatText = ``;
           if (!isProposalActive) {
@@ -149,7 +197,7 @@ document.addEventListener("DOMContentLoaded", () => {
           }
           sect2.style.display = "inline-block";
           floatT.style.color = "white";
-          floatText = `You dont have any locked TBC from previous proposals.`;
+          floatText = `<span class='red-text'>Please participate to proposal by locking tokens, devs need your vote!</span>`;
           floatT.innerHTML = floatText;
           tRelease.style.display = "none";
         }
