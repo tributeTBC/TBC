@@ -18,15 +18,11 @@ document.addEventListener("DOMContentLoaded", () => {
   let haveFloatingTokens = 0;
   const contract = new web3.eth.Contract(ABI, contractAddress);
 
-  const predefinedNetworkId = "0x15eb";
+  const predefinedNetworkId = "";
 
   async function fetchContractData() {
     try {
-      const currentTotalSupply = (
-        await contract.methods.currentTotalSupply().call()
-      ).toString();
-      const developer = await contract.methods.developer().call();
-
+      contractData.innerHTML = `<span style='color: white;'>Loading proposal data please wait.</span>`;
       // Fetch contract information here
       const isProposalActive = await contract.methods.proposalActive().call();
 
@@ -35,7 +31,7 @@ document.addEventListener("DOMContentLoaded", () => {
       let vTextr = ``;
       if (isProposalActive) {
         infoText +=
-          "<span style='color: red;'>There is an active proposal</span><br>";
+          "<span class='green-text'>There is an active proposal</span><br>";
       } else {
         infoText +=
           "<span style='color: grey;'>No active proposal currently</span><br>";
@@ -66,11 +62,11 @@ document.addEventListener("DOMContentLoaded", () => {
         await contract.methods.proposalExpiry().call()
       ).toString();
 
-      infoText += `Proposal ID: <span style='color: red;'>${proposalId}</span><br>`;
-      infoText += `Proposal Amount: <span style='color: red;'>${proposalAmount} tokens</span><br>`;
-      infoText += `Proposal Description: <span style='color: red;'>${proposalDescription}</span><br>`;
-      infoText += `Votes In Favor: <span style='color: red;'>${votesInFavor} tokens</span><br>`;
-      infoText += `Required Votes: <span style='color: red;'>${requiredVotes} tokens</span><br>`;
+      infoText += `Proposal ID: <span class='green-text'>${proposalId}</span><br>`;
+      infoText += `Proposal Amount: <span class='green-text'>${proposalAmount} tokens</span><br>`;
+      infoText += `Proposal Description: <span class='green-text'>${proposalDescription}</span><br>`;
+      infoText += `Votes In Favor: <span class='green-text'>${votesInFavor} tokens</span><br>`;
+      infoText += `Required Votes: <span class='green-text'>${requiredVotes} tokens</span><br>`;
 
       // Convert proposalExpiry to a human-readable date format (EU format)
       const proposalExpiryDate =
@@ -78,9 +74,9 @@ document.addEventListener("DOMContentLoaded", () => {
         " " +
         new Date(proposalExpiry * 1000).toLocaleTimeString();
 
-      infoText += `Proposal Expiry Date: <span style='color: red;'>${proposalExpiryDate}</span><br>`;
+      infoText += `Proposal Expiry Date: <span class='green-text'>${proposalExpiryDate}</span><br>`;
 
-      vTextr = `Vote for Proposal:<span style='color: red;'>${proposalId}</span>`;
+      vTextr = `<span class='headtext'>Vote for Proposal:<span class='green-text'>${proposalId}</span></span>`;
       // Display the information in the contractData element
       contractData.innerHTML = infoText;
       vText.innerHTML = vTextr;
@@ -99,22 +95,38 @@ document.addEventListener("DOMContentLoaded", () => {
       const accounts = await window.ethereum.request({
         method: "eth_accounts",
       });
-
+      const networkDetails = await getNetworkDetails();
+      //console.log("Value of this: ", this);
+      const currentChainId = await web3.eth.getChainId();
       // Check if there are active proposals before updating the UI
+      console.log("Value of this: ", `0x${currentChainId.toString(16)}`);
+      console.log("Value of this: ", networkDetails.chainId);
+      if (
+        accounts.length > 0 &&
+        `0x${currentChainId.toString(16)}` !== networkDetails.chainId
+      ) {
+        console.log(`Current Chain ID: 0x${currentChainId.toString(16)}`);
+        console.log(`Expected Chain ID from file: ${networkDetails.chainId}`);
+        status.innerHTML = `Connected : Current Chain ID: 0x${currentChainId.toString(
+          16
+        )}.<br>Please Connect Chain ID : ${networkDetails.chainId}`;
+        return;
+      }
       isProposalActive = await contract.methods.proposalActive().call();
       haveFloatingTokens =
         Number(await contract.methods.getUnlockedTokens(accounts[0]).call()) /
         1e18;
-
-      if (accounts.length > 0 && chainId === predefinedNetworkId) {
-        status.innerText = `Status: Connected to ${accounts[0]} on chain ${chainId}`;
+      if (accounts.length > 0 && chainId === networkDetails.chainId) {
+        connectButton.disabled = true; // Disable the button during connection process
+        connectButton.innerHTML = `<span style='color:green;'>Connected</span>`; // Change the button text to "Loading"
+        status.innerHTML = `<span style='font-size: 12px;'>Status: Connected to ${accounts[0]} on chain ${chainId}</span>`;
         //txButton1.style.display = "hidden";
         //txButton2.style.display = "inline-block";
         if (haveFloatingTokens > 0) {
           let floatText = ``;
           sect2.style.display = "inline-block";
           floatT.style.color = "white";
-          floatText = `You have <span style='color: red;'>${haveFloatingTokens} </span> locked tokens from previous proposals.<br> You can unlock now by clicking button below.`;
+          floatText = `You have <span class='green-text'>${haveFloatingTokens} </span> locked tokens from previous proposals.<br> You can unlock now by clicking button below.`;
           floatT.innerHTML = floatText;
         } else {
           let floatText = ``;
@@ -143,6 +155,7 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   connectButton.addEventListener("click", async () => {
+    checkNetwork();
     if (window.ethereum) {
       try {
         connectButton.disabled = true; // Disable the button during connection process
@@ -153,7 +166,7 @@ document.addEventListener("DOMContentLoaded", () => {
         });
 
         if (accounts.length > 0) {
-          connectButton.innerHTML = "Connected"; // Change the button text to "Connected" on successful connection
+          connectButton.innerHTML = "Connect"; // Change the button text to "Connected" on successful connection
           await updateUI();
         } else {
           // Handle the case where the user cancels the connection or it fails
@@ -235,7 +248,75 @@ document.addEventListener("DOMContentLoaded", () => {
       });
     }
   });
+  async function checkNetwork() {
+    const networkDetails = await getNetworkDetails();
+    const currentChainId = await web3.eth.getChainId();
+    console.log(`Current Chain ID: 0x${currentChainId.toString(16)}`);
+    console.log(`Expected Chain ID from file: ${networkDetails.chainId}`);
 
+    if (`0x${currentChainId.toString(16)}` !== networkDetails.chainId) {
+      let userConfirmed = false;
+
+      await Swal.fire({
+        title: "Network Mismatch",
+        text: "You're connected to the wrong network. Would you like to switch?",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Yes, switch!",
+        cancelButtonText: "No, thanks",
+      }).then((result) => {
+        userConfirmed = result.isConfirmed;
+      });
+
+      if (userConfirmed) {
+        try {
+          // First, try switching to the chain
+          await window.ethereum.request({
+            method: "wallet_switchEthereumChain",
+            params: [{ chainId: networkDetails.chainId }],
+          });
+          return true;
+        } catch (switchError) {
+          console.error("Error switching chains:", switchError);
+
+          // If the error code indicates the chain is not added, then try adding it
+          if (switchError.code === 4902) {
+            try {
+              await window.ethereum.request({
+                method: "wallet_addEthereumChain",
+                params: [networkDetails],
+              });
+              return true;
+            } catch (addError) {
+              await Swal.fire({
+                title: "Error",
+                text: "Failed to add or switch to the network. Please switch manually.",
+                icon: "error",
+              });
+              return false;
+            }
+          } else {
+            await Swal.fire({
+              title: "Error",
+              text: "Failed to switch network. Please switch manually.",
+              icon: "error",
+            });
+            return false;
+          }
+        }
+      } else {
+        return false;
+      }
+    }
+    return true;
+  }
+  async function getNetworkDetails() {
+    const response = await fetch("networks.json");
+    const data = await response.json();
+    return data.desiredNetwork;
+  }
   window.ethereum.on("accountsChanged", updateUI);
   window.ethereum.on("chainChanged", updateUI);
 
