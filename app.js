@@ -180,6 +180,7 @@ document.addEventListener("DOMContentLoaded", () => {
             voteAmountInput.style.display = "none";
             oyla.style.display = "none";
             vInput.style.display = "none";
+             vText.innerText = "There are no active proposals right now.";
           }
         }
         if (haveFloatingTokens > 0 && userCurrent !== pCurrent) {
