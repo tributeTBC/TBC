@@ -21,6 +21,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const voteAmountInput = document.getElementById("vote-amount");
   const voteButton = document.getElementById("tx-button1");
   const vText = document.getElementById("vote");
+  const vInput = document.getElementById("vote-input");
 
   let web3 = new Web3(window.ethereum);
   let isProposalActive = false;
@@ -138,7 +139,14 @@ document.addEventListener("DOMContentLoaded", () => {
           floatText = `You have <span class='green-text'>${haveFloatingTokens} </span> locked tokens from previous proposals.<br> You can unlock now by clicking button below.`;
           floatT.innerHTML = floatText;
         } else {
+          console.log(haveFloatingTokens);
           let floatText = ``;
+          if (!isProposalActive) {
+            voteAmountInput.style.display = "none";
+            oyla.style.display = "none";
+            vInput.style.display = "none";
+            vText.innerText = "There are no active proposals right now.";
+          }
           sect2.style.display = "inline-block";
           floatT.style.color = "white";
           floatText = `You dont have any locked tokens from previous proposals.`;
