@@ -85,14 +85,14 @@
        
          function onYouTubeIframeAPIReady() {
                 player = new YT.Player('player', {
-                    height: 390, // Changed to number
-                    width: 640,  // Changed to number
+                    height: 140, // Changed to number
+                    width: 140,  // Changed to number
                     videoId: '_lK4cX5xGiQ',
                     playerVars: {
                         'controls': 0,
                         'autoplay': 1,
                         'frameborder': 0,
-                        'start': 16  // Kept only inside playerVars
+                        'start': 55  // Kept only inside playerVars
                     },
                     events: {
                         'onReady': onPlayerReady  // Removed 'startSeconds'
