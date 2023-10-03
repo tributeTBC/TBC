@@ -1,6 +1,93 @@
-<div style="display: flex; justify-content: center;">
-    <iframe width="560" height="315" src="https://www.youtube.com/embed/_lK4cX5xGiQ?si=4Nyt5rJaMSwr0jkw&amp;controls=0"
-        title="YouTube video player" frameborder="0"
-        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-        allowfullscreen></iframe>
-</div>
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <link href="https://fonts.googleapis.com/css2?family=VT323&display=swap" rel="stylesheet">
+    <style>
+        #typewriter {
+            font-family: "VT323", "Courier New", monospace;
+            white-space: pre-wrap;
+            /* Keeps the text format */
+            display: flex;
+            color: white;
+            justify-content: center;
+            width: 60%;
+            overflow: hidden;
+            font-size: larger;
+            text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;
+        }
+    </style>
+
+</head>
+
+<body>
+    <div style="display: flex; justify-content: center;position:relative;width:267px;height:25px;overflow:hidden;">
+        <div style="position:absolute;top:-276px;left:-5px">
+            <iframe width="300" height="300"
+                src="https://www.youtube.com/embed/_lK4cX5xGiQ?si=4Nyt5rJaMSwr0jkw&amp;controls=0" awllo="autoplay">
+            </iframe>
+        </div>
+    </div>
+    <div style="display: flex; justify-content: center;">
+        <pre style="color: dimgray;">
+████████╗██████╗ ██╗██████╗ ██╗   ██╗████████╗███████╗ 
+╚══██╔══╝██╔══██╗██║██╔══██╗██║   ██║╚══██╔══╝██╔════╝ 
+   ██║   ██████╔╝██║██████╔╝██║   ██║   ██║   █████╗  
+   ██║   ██╔══██╗██║██╔══██╗██║   ██║   ██║   ██╔══╝  
+   ██║   ██║  ██║██║██████╔╝╚██████╔╝   ██║   ███████╗
+   ╚═╝   ╚═╝  ╚═╝╚═╝╚═════╝  ╚═════╝    ╚═╝   ╚══════╝
+  </pre>
+    </div>
+    <div style="display: flex; justify-content: center;">
+        <div id="typewriter"
+            style="border-radius:5px;background-color:rgba(128, 128, 128, 0.055); aliceblue;text-align: justify;width: 60%; overflow: hidden;">
+            <!-- Text will appear here -->
+        </div>
+    </div>
+
+
+    <script>
+        const text = `In an age long past, when the digital realm of the blockchain was still a vast, uncharted expanse, there existed two companions, Jack and Kyle. These were not ordinary wanderers; they were developers, architects of code, etching their vision into the indelible fabric of the blockchain. Their quest was nothing short of monumental - to birth the most exemplary coin the world had ever seen.
+
+On an eve of destiny, under the spectral glow of countless lines of code, they toiled in a marathon of creation. The room, bathed in the harsh, electric blue light, was a crucible where something extraordinary was taking shape. Abruptly, from the tangled labyrinth of their screens, a figure began to emerge. It was a luminous, holographic manifestation of the elusive entity known only as Satoshi Nakamoto.
+
+The figure spoke in cryptic riddles and complex equations, guiding their hands and minds to the climax of their creation. In the chilling silence that followed, the glow from their screens cast long shadows across their awestruck faces. They had done it. They had created the best coin the world had ever seen.
+
+However, if you dare to ask Jack and Kyle to recount the tale of the best coin in the world, they might falter. The exact specifics have faded with time, blurred by the excitement of invention and the exhaustion of their endeavor. What was once considered the best coin in the world now existed as a hazy memory, its details elusive and faint.
+
+Yet, they will assure you of one thing: while it may no longer hold the title of the best coin in the world, it remains a powerful tribute. A tribute to the limitless potential of the blockchain, a homage to the power of human ingenuity. A tribute to their relentless quest and the extraordinary journey they had embarked on.
+
+And that coin, that gleaming testament to their quest, was merely the opening chapter of their grand adventure. An adventure that, even now, is only just beginning.
+
+In the wake of the coin's creation, its allure stretched across the digital landscape, luring in all who dared venture into the realm of the blockchain. Yet, this was no ordinary coin. It was a masterpiece of code, a testament to human ingenuity, and it bore a unique, enigmatic trait, a curse known as: "The Curse of the Weak Hands".
+
+This curse was an intricate part of the coin's design, imprinted deep within its indelible blockchain fabric. Whenever the coin changed hands, a fee was extracted, a tribute to the coin's inherent value and a reminder of its creators' original intent: to encourage long-term belief in their creation.
+
+But there was a way to lift the curse. If a holder possessed the coin for exactly 42 hours, a seemingly arbitrary duration yet imbued with a veiled significance, the curse would be broken, and they could then pass on the coin without the customary fee.
+
+However, should a holder succumb to the lure of immediate profit and relinquish the coin before the designated time, the curse would renew itself. The countdown would reset, and the 42-hour wait would begin anew for the new holder.
+
+In a fascinating twist, the curse had a finite lifespan. Once only 21 billion coins remained, the curse would be permanently lifted. This feature was a testament to the coin's ultimate scarcity and the balance between creation and preservation.
+
+As Jack and Kyle watched their creation make its way through the intricate networks of the digital world, they knew their adventure was far from over. They had merely set the stage for a grand saga in the annals of the blockchain, a saga that was only just beginning.
+
+`;
+
+        let index = 0;
+        const speed = 42; // Speed in milliseconds
+        const typewriterElement = document.getElementById('typewriter');
+
+        function typeWriter() {
+            if (index < text.length) {
+                typewriterElement.innerHTML += text.charAt(index);
+                index++;
+                setTimeout(typeWriter, speed);
+            }
+        }
+
+        typeWriter();
+    </script>
+</body>
+
+</html>
