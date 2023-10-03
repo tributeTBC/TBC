@@ -156,11 +156,18 @@ function executeCommand(command) {
     "vote",
     "cdaa",
     "brotherhood",
+    "showtribute -42",
   ];
   if (command === "vote") {
     setupDisplay();
     document.getElementById("output").innerHTML = "";
     embedHTMLPage();
+    return;
+  }
+  if (command === "showtribute -42") {
+    setupDisplay();
+    document.getElementById("output").innerHTML = "";
+    embedHTMLvid();
     return;
   }
   if (command === "clear") {
@@ -225,6 +232,37 @@ function scrollToBottom() {
 function embedHTMLPage() {
   const iframe = document.createElement("iframe");
   iframe.setAttribute("src", "vote.html");
+  iframe.style.width = "100%";
+  iframe.style.border = "none";
+
+  document.getElementById("output").appendChild(iframe);
+  let lastHeight = 0; // variable to store the last known height of the iframe content
+
+  const adjustHeight = () => {
+    const currentHeight = iframe.contentWindow.document.body.scrollHeight;
+
+    // Check if the height has changed
+    if (lastHeight !== currentHeight) {
+      const newHeight = currentHeight + 100;
+
+      iframe.style.height = newHeight + "px";
+
+      // Scroll the #output area to the bottom
+      const outputDiv = document.getElementById("output");
+      outputDiv.scrollTop = outputDiv.scrollHeight;
+      lastHeight = currentHeight + 100;
+      // Update lastHeight to the current height
+    }
+  };
+
+  iframe.onload = function () {
+    adjustHeight();
+    setInterval(adjustHeight, 2000); // Check for height changes every half a second
+  };
+}
+function embedHTMLvid() {
+  const iframe = document.createElement("iframe");
+  iframe.setAttribute("src", "vid.html");
   iframe.style.width = "100%";
   iframe.style.border = "none";
 
