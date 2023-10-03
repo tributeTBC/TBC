@@ -156,7 +156,7 @@ function executeCommand(command) {
     "vote",
     "cdaa",
     "brotherhood",
-    "showtribute -42",
+    "42",
   ];
   if (command === "vote") {
     setupDisplay();
@@ -164,7 +164,7 @@ function executeCommand(command) {
     embedHTMLPage();
     return;
   }
-  if (command === "showtribute -42") {
+  if (command === "42") {
     setupDisplay();
     document.getElementById("output").innerHTML = "";
     embedHTMLvid();
