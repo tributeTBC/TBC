@@ -17,6 +17,30 @@
             font-size: larger;
             text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;
         }
+
+        .video-container {
+            display: flex;
+            justify-content: center;
+            position: relative;
+            width: 267px;
+            height: 25px;
+            overflow: hidden;
+        }
+
+        .video {
+            position: absolute;
+            top: -276px;
+            left: -5px;
+        }
+
+        .play-button {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(168, 168, 168, 0.6);
+            z-index: 1;
+            cursor: pointer;
+        }
     </style>
 
 </head>
@@ -64,7 +88,9 @@
                 width: '640',
                 videoId: '_lK4cX5xGiQ',
                 playerVars: {
+                    'controls': 0
                     'autoplay': 1
+                    'frameborder': 0
                 },
                 events: {
                     'onReady': onPlayerReady,
