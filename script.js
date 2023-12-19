@@ -153,7 +153,7 @@ function executeCommand(command) {
     "tokenomics",
     "contact",
     "clear",
-    "vote",
+    //"vote",
     "cdaa",
     "brotherhood",
     "42",
