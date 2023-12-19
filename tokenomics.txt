@@ -1,28 +1,28 @@
 <div style="line-height: 1.4; display: flex; justify-content: space-between;">
     <div style="flex: 1; padding-right: 15px;">
-        <h1 style="font-size: 2em; margin-bottom: 8px; border-bottom: 2px solid #e74c3c; display: inline-block;">Tribute Tokenomics</h1>
+        <h1 style="font-size: 2em; margin-bottom: 8px; border-bottom: 2px solid #e74c3c; display: inline-block;">Tribute Tokenomics Overview</h1>
 
-        <p style="font-size: 0.9em; margin: 6px 0;"><strong>Total Supply:</strong> 42 Billion TBC tokens at genesis.</p>
-        <p style="font-size: 0.9em; margin: 6px 0;"><strong>Liquidity:</strong> 1 billion TBC used for liquidity at the start.</p>
-        <p style="font-size: 0.9em; margin: 6px 0;"><strong>Dev Allocation:</strong> 7 billion TBC allocated for Dev team.</p>
-        <p style="font-size: 0.9em; margin: 6px 0;"><strong>Community Allocation:</strong> 34 billion TBC will be decided by the community.</p>
+        <p style="font-size: 0.9em; margin: 6px 0;"><strong>Initial Total Supply:</strong> 42 Billion TBC tokens at launch.</p>
+        <p style="font-size: 0.9em; margin: 6px 0;"><strong>Initial Liquidity Provision:</strong> 35 billion TBC allocated for initial liquidity.</p>
+        <p style="font-size: 0.9em; margin: 6px 0;"><strong>Initial Auto Airdrop:</strong> 7 billion TBC reserved for airdropping through inner auto-reward system.</p>
+        <p style="font-size: 0.9em; margin: 6px 0; color:#e74c3c;"><strong>NO TEAM TOKENS</strong></p>
+        <p style="font-size: 0.9em; margin: 6px 0;color:#e74c3c;"><strong>LP LOCKED</strong></p>
     </div>
 
     <div style="flex: 1; padding-left: 15px;">
-        <p style="font-size: 0.9em; margin: 6px 0;">Tax diminishes over time based on user interactions. A portion is burned, the rest is for rewards.</p>
+        <p style="font-size: 0.9em; margin: 6px 0;">A dynamic tax system is implemented, reducing over time with user activity. Part of this tax is perpetually burned, while the remainder is distributed as rewards.</p>
         <ul style="font-size: 0.9em; margin-top: 6px; list-style-type: none; padding-left: 0;">
-            <li style="margin: 6px 0;">Users earn points for interactions.</li>
-            <li style="margin: 6px 0;">More tokens transferred = more points.</li>
-            <li style="margin: 6px 0;">Top interactors get rewards from tax.</li>
+            <li style="margin: 6px 0;">Interaction-based point system for users.</li>
+            <li style="margin: 6px 0;">Increased token transfers result in higher points.</li>
+            <li style="margin: 6px 0;">Top interactors receive rewards from the tax pool.</li>
         </ul>
         <ul style="font-size: 0.9em; list-style-type: none; padding-left: 0;">
-            <li style="margin: 6px 0;">Whitelisted addresses aren't taxed.LPs whitelisted, This way buying from LPs wont trigger tax.</li>
-            
+            <li style="margin: 6px 0;">Whitelisted addresses are exempt from tax. Liquidity providers (LPs) are included to prevent tax on purchases from LPs.</li>
         </ul>
         <ul style="font-size: 0.9em; list-style-type: none; padding-left: 0;">
-            <li style="margin: 6px 0;">Every 42 hours Top 10 interactors get rewards.</li>
-            <li style="margin: 6px 0;">Reward distrubition is automatic after trigger, initiators get extra rewards.</li>
+            <li style="margin: 6px 0;">Every 42 hours, the top 10 interactors receive rewards.</li>
+            <li style="margin: 6px 0;">Reward distribution is automated, with initiators receiving additional rewards.</li>
         </ul>
-        <p style="font-size: 0.9em; margin: 6px 0;">Half the tax is burned through tax, reducing overall supply.</p>
+        <p style="font-size: 0.9em; margin: 6px 0;">Half of the collected tax is burned, contributing to a gradual reduction in the total supply.</p>
     </div>
 </div>
