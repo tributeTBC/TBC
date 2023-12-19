@@ -14,7 +14,7 @@
         <ul style="font-size: 0.9em; margin-top: 6px; list-style-type: none; padding-left: 0;">
             <li style="margin: 6px 0;">Interaction-based point system for users.</li>
             <li style="margin: 6px 0;">Increased token transfers result in higher points.</li>
-            <li style="margin: 6px 0; color:#e74c3c;">Top token interactors receive rewards from the tax pool.</li>
+            <li style="margin: 6px 0; color:#e74c3c;">Top token interactors receive auto airdrops from the tax pool periodically. More interaction = more airdrop.</li>
         </ul>
         <ul style="font-size: 0.9em; list-style-type: none; padding-left: 0;">
             <li style="margin: 6px 0;">Whitelisted addresses are exempt from tax. Liquidity providers (LPs) are included to prevent tax on purchases from LPs.</li>
