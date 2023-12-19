@@ -158,12 +158,12 @@ function executeCommand(command) {
     "brotherhood",
     "42",
   ];
-  if (command === "vote") {
-    setupDisplay();
-    document.getElementById("output").innerHTML = "";
-    embedHTMLPage();
-    return;
-  }
+  //if (command === "vote") {
+    //setupDisplay();
+   // document.getElementById("output").innerHTML = "";
+   // embedHTMLPage();
+  // return;
+ // }
   if (command === "42") {
     setupDisplay();
     document.getElementById("output").innerHTML = "";
