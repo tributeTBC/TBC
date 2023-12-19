@@ -14,7 +14,7 @@
         <ul style="font-size: 0.9em; margin-top: 6px; list-style-type: none; padding-left: 0;">
             <li style="margin: 6px 0;">Interaction-based point system for users.</li>
             <li style="margin: 6px 0;">Increased token transfers result in higher points.</li>
-            <li style="margin: 6px 0;">Top interactors receive rewards from the tax pool.</li>
+            <li style="margin: 6px 0; color:#e74c3c;">Top token interactors receive rewards from the tax pool.</li>
         </ul>
         <ul style="font-size: 0.9em; list-style-type: none; padding-left: 0;">
             <li style="margin: 6px 0;">Whitelisted addresses are exempt from tax. Liquidity providers (LPs) are included to prevent tax on purchases from LPs.</li>
@@ -23,6 +23,6 @@
             <li style="margin: 6px 0;">Every 42 hours, the top 10 interactors receive rewards.</li>
             <li style="margin: 6px 0;">Reward distribution is automated, with initiators receiving additional rewards.</li>
         </ul>
-        <p style="font-size: 0.9em; margin: 6px 0;">Half of the collected tax is burned, contributing to a gradual reduction in the total supply.</p>
+        <p style="font-size: 0.9em; margin: 6px 0;">Half of the collected tax is burned, contributing to a gradual reduction in the total supply. Other half is airdropped to top interactors automatically by contract.</p>
     </div>
 </div>
