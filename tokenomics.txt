@@ -13,7 +13,7 @@
     </div>
 
     <div style="flex: 1; padding-left: 15px;">
-        <p style="font-size: 1.2em; margin: 6px 0;color:#e74c3c;border-bottom: 2px solid #e74c3c">Worlds first smart tax! aka Curse of the Weak Hands </p>
+        <p style="font-size: 2em; margin: 6px 0;color:#e74c3c;border-bottom: 2px solid #e74c3c">Worlds first smart tax! aka Curse of the Weak Hands </p>
         <li style="font-size: 0.9em; margin: 6px 0;">Tax is flexible, if you dont sell instantly, tax is lesser for you.</li>
 
         <li style="font-size: 1.2em; margin: 6px 0;color:#e74c3c;">Weak hands / Bots are subject to high tax!</li>
@@ -22,7 +22,7 @@
            
        
         
-        <p style="font-size: 1.2em; margin: 6px 0;color:#e74c3c;border-bottom: 2px solid #e74c3c">Worlds first auto airdrop!</p>
+        <p style="font-size: 2em; margin: 6px 0;color:#e74c3c;border-bottom: 2px solid #e74c3c">Worlds first auto airdrop!</p>
             <li style="margin: 6px 0;">Every 42 hours, the top 10 interactors receive rewards.</li>
             <li style="font-size: 1.2em;margin: 6px 0;color:#e74c3c;">Buyers receive airdrops every 42 hours!</li>
        
