@@ -6,9 +6,12 @@
         <div style="margin-bottom: 20px;"></div>
         <p style="font-size: 0.9em; margin: 6px 0;">42 Billion TBC tokens at launch.</p>
         <p style="font-size: 0.9em; margin: 6px 0;"> 5 Billion TBC locked to LP.</p>
+         <p style="font-size: 0.9em; margin: 6px 0;"> 7 Billion TBC locked 3 months (team allocation).</p>
         <p style="font-size: 0.9em; margin: 6px 0;color:#e74c3c;"><strong>Auto Airdrop:</strong> 30 billion TBC airdropped to buyers periodically.</p>
        <div style="margin-bottom: 50px;"></div>
         <p style="font-size: 1.2em; margin: 6px 0;color:#e74c3c;"><strong>- LP LOCKED</strong></p>
+        <p style="font-size: 1.2em; margin: 6px 0;color:#e74c3c;"><strong>- Airdrop system prevents buying high amount of supply from LP initially.</strong></p>
+        
         
     </div>
 
