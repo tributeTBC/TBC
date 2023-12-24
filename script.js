@@ -154,7 +154,7 @@ function executeCommand(command) {
     "contact",
     "clear",
     //"vote",
-    "cdaa",
+    //"cdaa",
     "brotherhood",
     "42",
   ];
