@@ -19,7 +19,7 @@
     <div style="flex: 1; padding-left: 15px;">
         <p style="font-size: 2em; margin: 5px 0;color:#e74c3c;border-bottom: 2px solid #e74c3c">Worlds first smart tax! <br>aka <u>Curse of the Weak Hands!</u> </p>
         
-        <li style="font-size: 0.9em; margin: 6px 0;">Tax is flexible(getting lower everyhour you hold), if you dont sell instantly, tax is lesser for you.</li>
+        <li style="font-size: 0.9em; margin: 6px 0;">Tax is flexible (getting lower every hour you hold) , if you dont sell instantly, tax is lesser for you.</li>
 
         <li style="font-size: 0.9em; margin: 6px 0;color:#e74c3c;">Weak hands / Bots are subject to high tax!</li>
         <div style="margin-bottom: 50px;"></div>
