@@ -30,7 +30,7 @@
         
         <p style="font-size: 2em; margin: 6px 0;color:#e74c3c;border-bottom: 2px solid #e74c3c">Worlds first auto airdrop!</p>
             <li style="margin: 6px 0;">Every 21 hours, the top 10 interactors receive rewards.</li>
-            <li style="font-size: 0.9em;margin: 6px 0;color:#e74c3c;">Buyers receive airdrops every 42 hours!</li>
+            <li style="font-size: 0.9em;margin: 6px 0;color:#e74c3c;">Buyers receive airdrops every 21 hours!</li>
        
 
     </div>
