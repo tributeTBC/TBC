@@ -2,7 +2,7 @@
     <div style="flex: 1; padding-right: 10px;">
         
 
-        <p style="font-size: 0.9em; margin: 6px 0;"><strong>Initial Total Supply:</strong></p>
+        
         <div style="margin-bottom: 20px;"></div>
         <p style="font-size: 0.9em; margin: 6px 0;">42 Billion TBC tokens at launch.</p>
         <p style="font-size: 0.9em; margin: 6px 0;"> 2.8 Billion TBC locked to LP.</p>
@@ -12,7 +12,7 @@
        <div style="margin-bottom: 50px;"></div>
         <p style="font-size: 1.2em; margin: 6px 0;color:#e74c3c;"><strong>- LP LOCKED</strong></p>
         <p style="font-size: 1.2em; margin: 6px 0;color:#e74c3c;"><strong>- Airdrop system prevents buying high amount of supply from LP initially.</strong></p>
-        
+        <p style="font-size: 0.9em; margin: 6px 0;"><strong>Basically %90 of token automatically airdropped to community, in time.</strong></p>
         
     </div>
 
