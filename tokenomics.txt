@@ -1,37 +1,5 @@
-<div style="line-height: 1.4; display: flex; justify-content: space-between;">
-    <div style="flex: 1; padding-right: 10px;">
-        
+Who is developing this token?<br>
+<br>
+Answer: This token is the labor of love and resilience by a single, hobbyist Solidity developer who found strength in adversity. I was faced with the devastating loss of my life savings and home due to a severe earthquake in Turkey. It was a chapter of hardship and despair. But amidst the rubble, I found a spark of hope and determination. That's when THE BEST COIN IN THE WORLD was born. During these challenging times, I had moments of solitude which gave me a chance to create and contribute something to the world. This token is more than just a project for me; it's a testament to human resilience and the will to rise even when the odds are against you.
+<br><br>
 
-        
-        <div style="margin-bottom: 20px;"></div>
-        <p style="font-size: 0.9em; margin: 6px 0;">42 Billion TBC tokens at launch.</p>
-        <p style="font-size: 0.9em; margin: 6px 0;"> 2.8 Billion TBC locked to LP.</p>
-        
-         <p style="font-size: 0.9em; margin: 6px 0;"> 4.2 Billion TBC locked 3 months (team allocation).</p>
-        
-        <p style="font-size: 0.9em; margin: 6px 0;color:#e74c3c;"><strong>Auto Airdrop:</strong> 35 billion total TBC airdropped to buyers periodically.</p>
-       <div style="margin-bottom: 50px;"></div>
-        <p style="font-size: 1.2em; margin: 6px 0;color:#e74c3c;"><strong>- LP LOCKED</strong></p>
-        <p style="font-size: 1.2em; margin: 6px 0;color:#e74c3c;"><strong>- Airdrop system prevents buying high amount of supply from LP initially.</strong></p>
-        <p style="font-size: 0.9em; margin: 6px 0;"><strong>Basically %90 of token automatically airdropped to community, in time.</strong></p>
-        
-    </div>
-
-    <div style="flex: 1; padding-left: 15px;">
-        <p style="font-size: 2em; margin: 5px 0;color:#e74c3c;border-bottom: 2px solid #e74c3c">Worlds first smart tax! <br>aka <u>Curse of the Weak Hands!</u> </p>
-        
-        <li style="font-size: 0.9em; margin: 6px 0;">Tax is flexible (getting lower every hour you hold) , if you dont sell instantly, tax is lesser for you.</li>
-
-        <li style="font-size: 0.9em; margin: 6px 0;color:#e74c3c;">Weak hands / Bots are subject to high tax!</li>
-        <div style="margin-bottom: 50px;"></div>
-            
-           
-       
-        
-        <p style="font-size: 2em; margin: 6px 0;color:#e74c3c;border-bottom: 2px solid #e74c3c">Worlds first auto airdrop!</p>
-            <li style="margin: 6px 0;">Every 21 hours, the top 10 interactors receive rewards.</li>
-            <li style="font-size: 0.9em;margin: 6px 0;color:#e74c3c;">Buyers receive airdrops every 21 hours!</li>
-       
-
-    </div>
-</div>
